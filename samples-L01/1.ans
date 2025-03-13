@@ -1,0 +1,20 @@
+START
+!py 3
+..X..
+.XXX.
+XXXXX
+!ct 3
+..X..
+..X..
+.XXX.
+..X..
+.XXX.
+XXXXX
+!ld qwert
+abc
+qwe
+asd
+ok123_23sd
+ok
+!ha
+END OF EXECUTION

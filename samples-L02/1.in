@@ -1,0 +1,22 @@
+#Test for Lab2
+go 10
+ld doc1
+link=a and link=b
+write also link=c end finish.
+eod
+show
+add d
+show
+rem a
+remi 2
+show
+get 0
+set 1 w
+show
+ch 1
+ld doc2
+eod
+show
+remi 0
+index x
+ha

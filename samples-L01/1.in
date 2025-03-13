@@ -1,0 +1,14 @@
+#Name:L01-Example
+#Author: Dariusz Konieczny
+#User: Dariusz Konieczny
+#comment: example from PDF file
+py 3
+ct 3
+ld qwert
+nnothing is here
+link=abc link=qWe link=asd
+link= broken li nk=wrong link =not
+link=ok123_23sd what is here link=12wRong asdad link=_what12 dfasfdsdfsd 
+and now start LINK=$2323 LiNk=Ok 
+eod
+ha

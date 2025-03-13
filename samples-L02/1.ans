@@ -1,0 +1,42 @@
+START
+!go 10
+!ld doc1
+!show
+Document: doc1
+a
+b
+c
+!add d
+true
+!show
+Document: doc1
+a
+b
+c
+d
+!rem a
+true
+!remi 2
+d
+!show
+Document: doc1
+b
+c
+!get 0
+b
+!set 1 w
+c
+!show
+Document: doc1
+b
+w
+!ch 1
+!ld doc2
+!show
+Document: doc2
+!remi 0
+error
+!index x
+-1
+!ha
+END OF EXECUTION
