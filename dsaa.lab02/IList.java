@@ -5,7 +5,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 public interface IList<E> extends Iterable<E> {
-    boolean add(E e); // qdd element to the end of list
+    boolean add(E e); // add element to the end of list
 
     void add(int index, E element) throws NoSuchElementException; // add element on position index
 

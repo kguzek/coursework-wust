@@ -16,6 +16,7 @@ public class OneWayLinkedList<E> implements IList<E> {
     }
 
     Element sentinel;
+    private int size;
 
     private class InnerIterator implements Iterator<E> {
         Element current;
@@ -41,6 +42,7 @@ public class OneWayLinkedList<E> implements IList<E> {
 
     public OneWayLinkedList() {
         sentinel = new Element(null);
+        size = 0;
     }
 
     @Override
@@ -60,6 +62,7 @@ public class OneWayLinkedList<E> implements IList<E> {
             last = last.next;
         }
         last.next = new Element(e);
+        size++;
         return true;
     }
 
@@ -74,9 +77,9 @@ public class OneWayLinkedList<E> implements IList<E> {
             }
             parent = parent.next;
         }
-        if (parent.next == null) {
-            throw new NoSuchElementException();
-        }
+//        if (parent.next == null) {
+//            throw new NoSuchElementException();
+//        }
         return parent;
     }
 
@@ -87,11 +90,13 @@ public class OneWayLinkedList<E> implements IList<E> {
         Element newChild = new Element(element);
         newChild.next = child;
         parent.next = newChild;
+        size++;
     }
 
     @Override
     public void clear() {
         sentinel.next = null;
+        size = 0;
     }
 
     @Override
@@ -130,10 +135,12 @@ public class OneWayLinkedList<E> implements IList<E> {
 
     @Override
     public int indexOf(E element) {
-        for (int i = 0; i < size(); i++) {
-            if (element.equals(get(i))) {
+        Element current = sentinel.next;
+        for (int i = 0; current != null; i++) {
+            if (element.equals(current.object)) {
                 return i;
             }
+            current = current.next;
         }
         return -1;
     }
@@ -147,7 +154,11 @@ public class OneWayLinkedList<E> implements IList<E> {
     public E remove(int index) throws NoSuchElementException {
         Element parent = getParentAt(index);
         Element child = parent.next;
+        if (child == null) {
+            throw new NoSuchElementException();
+        }
         parent.next = child.next;
+        size--;
         return child.object;
     }
 
@@ -163,10 +174,6 @@ public class OneWayLinkedList<E> implements IList<E> {
 
     @Override
     public int size() {
-        int size = 0;
-        for (E _e : this) {
-            size++;
-        }
         return size;
     }
 
