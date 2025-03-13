@@ -27,9 +27,14 @@ for input_file in "${TEST_FILES[@]}"; do
       echo "Test $TEST_NUMBER passed"
       continue
     fi
-    OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.$(date '+%Y%m%d%H%M%S%3N').result"
-    echo "$output" > "$OUTPUT_FILE"
-    echo "Test $TEST_NUMBER failed, program output written to $OUTPUT_FILE"
+    MESSAGE="Test $TEST_NUMBER failed; program output"
+    if [ -z "$output" ]; then
+        echo "$MESSAGE was empty"
+    else
+      OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.$(date '+%Y%m%d%H%M%S%3N').result"
+      echo "$output" > "$OUTPUT_FILE"
+      echo "$MESSAGE written to $OUTPUT_FILE"
+    fi
     EXIT_CODE=1
 done
 
