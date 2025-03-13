@@ -7,20 +7,20 @@
 # Wrocław University of Science and Technology
 
 if [ "$1" = "clean" ]; then
-  if rm -rf ./samples-L*/*.*.result; then
-    echo "🧹 Removed all result files"
+  if rm -r ./samples-L*/*.*.result 2>/dev/null; then
+    echo "🧹 Removed all saved result files"
     exit 0
   else
-    echo "🚫 No files were removed"
+    echo "✖  No files were removed"
     exit 1
   fi
 fi
 
 EXERCISE=$1;
 OUTPUT_DIR="out/production"
-
+SAVE_OUTPUT_ARG='--save-output'
 if [ -z "$EXERCISE" ] || ! [[ "$EXERCISE" =~ ^[0-9]+$ ]]; then
-    echo "Usage: $0 <exercise number> [-q/--quiet] or $0 clean";
+    echo "Usage: $0 <exercise number> [-q/--quiet] [-s/$SAVE_OUTPUT_ARG] or $0 clean";
     exit 1;
 fi
 ZERO_PADDED=$(printf "%02d" "$EXERCISE")
@@ -40,17 +40,23 @@ fi
 
 mkdir -p "$OUTPUT_DIR"
 rm -rf "${OUTPUT_DIR:?}/${EXERCISE_DIR:?}"
-javac -d "$OUTPUT_DIR" "$EXERCISE_DIR"/*.java
+if ! javac -d "$OUTPUT_DIR" "$EXERCISE_DIR"/*.java; then
+  echo "❌  Failed to compile source code"
+  exit 1
+fi
 
 declare -i FAILED_TESTS=0
 
 TEST_FILES=("./$SAMPLES_DIR"/*.in)
 TOTAL_TESTS=${#TEST_FILES[@]}
 QUIET_MODE=false
+OUTPUT_ON_ERROR=false
 for arg in "$@"; do
     if [ "$arg" = "-q" ] || [ "$arg" = "--quiet" ]; then
         QUIET_MODE=true
-        break
+    fi
+    if [ "$arg" = "-s" ] || [ "$arg" = "$SAVE_OUTPUT_ARG" ]; then
+        OUTPUT_ON_ERROR=true
     fi
 done
 
@@ -81,17 +87,20 @@ for input_file in "${TEST_FILES[@]}"; do
         echo "$MESSAGE was empty"
         continue
     fi
+    if [ $QUIET_MODE = false ]; then
+      if $VIM_DIFF_AVAILABLE; then
+        vimdiff --not-a-term -c "set diffopt+=iwhite" "$EXPECTED_OUTPUT_FILE" <(echo "$output")
+      else
+        git diff --word-diff --no-index "$EXPECTED_OUTPUT_FILE" <(echo "$output")
+      fi
+    fi
+    if [ $OUTPUT_ON_ERROR = false ]; then
+      echo "$MESSAGE hidden (use -s/$SAVE_OUTPUT_ARG to save on error)"
+      continue
+    fi
     OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.$(date '+%Y%m%d%H%M%S%3N').result"
     echo "$output" > "$OUTPUT_FILE"
     echo "$MESSAGE written to $OUTPUT_FILE"
-    if [ $QUIET_MODE = true ]; then
-      continue
-    fi
-    if $VIM_DIFF_AVAILABLE; then
-      vimdiff --not-a-term -c "set diffopt+=iwhite" "$EXPECTED_OUTPUT_FILE" "$OUTPUT_FILE"
-    else
-      git diff --word-diff --no-index "$EXPECTED_OUTPUT_FILE" "$OUTPUT_FILE"
-    fi
 done
 
 pluralise() {

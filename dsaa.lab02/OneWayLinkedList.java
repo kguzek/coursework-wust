@@ -68,14 +68,14 @@ public class OneWayLinkedList<E> implements IList<E> {
      */
     private Element getParentAt(int index) throws NoSuchElementException {
         Element parent = sentinel;
-        if (index == 0) {
-            throw new NoSuchElementException();
-        }
         for (int i = 0; i < index; i++) {
-            if (parent.next == null || parent.next.next == null) {
+            if (parent.next == null) {
                 throw new NoSuchElementException();
             }
             parent = parent.next;
+        }
+        if (parent.next == null) {
+            throw new NoSuchElementException();
         }
         return parent;
     }
@@ -123,18 +123,19 @@ public class OneWayLinkedList<E> implements IList<E> {
             }
             child = child.next;
         }
+        E oldValue = child.object;
         child.object = element;
-        return element;
+        return oldValue;
     }
 
     @Override
     public int indexOf(E element) {
         for (int i = 0; i < size(); i++) {
-            if (get(i).equals(element)) {
+            if (element.equals(get(i))) {
                 return i;
             }
         }
-        return 0;
+        return -1;
     }
 
     @Override
