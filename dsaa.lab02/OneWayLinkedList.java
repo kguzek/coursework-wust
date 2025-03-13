@@ -68,6 +68,9 @@ public class OneWayLinkedList<E> implements IList<E> {
      */
     private Element getParentAt(int index) throws NoSuchElementException {
         Element parent = sentinel;
+        if (index == 0) {
+            throw new NoSuchElementException();
+        }
         for (int i = 0; i < index; i++) {
             if (parent.next == null || parent.next.next == null) {
                 throw new NoSuchElementException();
