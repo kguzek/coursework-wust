@@ -6,11 +6,21 @@
 # Faculty of Information and Communication Technology
 # Wrocław University of Science and Technology
 
+if [ "$1" = "clean" ]; then
+  if rm -rf ./samples-L*/*.*.result; then
+    echo "🧹 Removed all result files"
+    exit 0
+  else
+    echo "🚫 No files were removed"
+    exit 1
+  fi
+fi
+
 EXERCISE=$1;
 OUTPUT_DIR="out/production"
 
 if [ -z "$EXERCISE" ] || ! [[ "$EXERCISE" =~ ^[0-9]+$ ]]; then
-    echo "Usage: $0 <exercise number>";
+    echo "Usage: $0 <exercise number> [-q/--quiet] or $0 clean";
     exit 1;
 fi
 ZERO_PADDED=$(printf "%02d" "$EXERCISE")
@@ -36,6 +46,13 @@ declare -i FAILED_TESTS=0
 
 TEST_FILES=("./$SAMPLES_DIR"/*.in)
 TOTAL_TESTS=${#TEST_FILES[@]}
+QUIET_MODE=false
+for arg in "$@"; do
+    if [ "$arg" = "-q" ] || [ "$arg" = "--quiet" ]; then
+        QUIET_MODE=true
+        break
+    fi
+done
 
 
 VIM_DIFF_AVAILABLE=$(vimdiff --version >/dev/null 2>&1 && echo true || echo false)
@@ -58,24 +75,27 @@ for input_file in "${TEST_FILES[@]}"; do
       echo "✔️ Test $TEST_NUMBER passed"
       continue
     fi
+    FAILED_TESTS+=1
     MESSAGE="❌  Test $TEST_NUMBER failed; program output"
     if [ -z "$output" ]; then
         echo "$MESSAGE was empty"
-    else
-      OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.$(date '+%Y%m%d%H%M%S%3N').result"
-      echo "$output" > "$OUTPUT_FILE"
-      echo "$MESSAGE written to $OUTPUT_FILE"
-      if $VIM_DIFF_AVAILABLE; then
-        vimdiff --not-a-term -c "set diffopt+=iwhite" "$EXPECTED_OUTPUT_FILE" "$OUTPUT_FILE"
-      else
-        git diff --word-diff --no-index "$EXPECTED_OUTPUT_FILE" "$OUTPUT_FILE"
-      fi
+        continue
     fi
-    FAILED_TESTS+=1
+    OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.$(date '+%Y%m%d%H%M%S%3N').result"
+    echo "$output" > "$OUTPUT_FILE"
+    echo "$MESSAGE written to $OUTPUT_FILE"
+    if [ $QUIET_MODE = true ]; then
+      continue
+    fi
+    if $VIM_DIFF_AVAILABLE; then
+      vimdiff --not-a-term -c "set diffopt+=iwhite" "$EXPECTED_OUTPUT_FILE" "$OUTPUT_FILE"
+    else
+      git diff --word-diff --no-index "$EXPECTED_OUTPUT_FILE" "$OUTPUT_FILE"
+    fi
 done
 
 pluralise() {
-  if [ "$1" == "1" ]; then
+  if [ "$1" = "1" ]; then
     echo "$1$2"
   else
     echo "$1$2s"
