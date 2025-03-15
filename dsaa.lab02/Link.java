@@ -10,14 +10,14 @@ public class Link {
 
     @Override
     public boolean equals(Object other) {
-        if (other == null) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Link)) {
             return false;
         }
-        if (other.getClass() != this.getClass()) {
-            return false;
-        }
+//        Cannot use pattern variable because of compatibility with Java 8
         Link link = (Link) other;
         return ref.equals(link.ref);
     }
-
 }

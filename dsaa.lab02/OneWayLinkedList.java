@@ -70,6 +70,9 @@ public class OneWayLinkedList<E> implements IList<E> {
      * Gets the element handle at index, throwing NoSuchElementException if it doesn't exist or if it has no child
      */
     private Element getParentAt(int index) throws NoSuchElementException {
+        if (index < 0) {
+            throw new NoSuchElementException();
+        }
         Element parent = sentinel;
         for (int i = 0; i < index; i++) {
             if (parent.next == null) {
@@ -111,6 +114,9 @@ public class OneWayLinkedList<E> implements IList<E> {
 
     @Override
     public E get(int index) throws NoSuchElementException {
+        if (index < 0 || index >= size()) {
+            throw new NoSuchElementException();
+        }
         Iterator<E> it = iterator();
         E element = null;
         for (int i = 0; i <= index; i++) {
