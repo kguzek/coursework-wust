@@ -5,5 +5,12 @@ Technology.
 
 ## Courses
 
+### Semester 1
+
+- [Logic for IT Specialists](logic)
+- [Structural and Object-Oriented Programming](psio)
+
+### Semester 2
+
 - [Algorithms and Data Structures](aisd)
 - [Operating Systems](os-labs)
