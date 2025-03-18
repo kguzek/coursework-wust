@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Lab1" type="Application" factoryName="Application">
+  <configuration default="false" name="AiSD-Lab1" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="dsaa.lab01.Main" />
-    <module name="coursework-wust" />
+    <module name="aisd" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

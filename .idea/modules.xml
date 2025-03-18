@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/aisd/aisd.iml" filepath="$PROJECT_DIR$/aisd/aisd.iml" />
       <module fileurl="file://$PROJECT_DIR$/coursework-wust.iml" filepath="$PROJECT_DIR$/coursework-wust.iml" />
+      <module fileurl="file://$PROJECT_DIR$/logic/logic.iml" filepath="$PROJECT_DIR$/logic/logic.iml" />
     </modules>
   </component>
 </project>
