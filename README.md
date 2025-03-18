@@ -6,4 +6,4 @@ Technology.
 ## Courses
 
 - [Algorithms and Data Structures](aisd)
-- [Operating Systems](os)
+- [Operating Systems](os-labs)

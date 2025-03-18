@@ -3,7 +3,7 @@ from .process import Process
 
 def has_incomplete_processes(processes: list[Process]):
     """Check if there are any incomplete processes"""
-    return any(not process.complete for process in processes)
+    return any(not process.is_complete for process in processes)
 
 
 def calculate_average_completion_time(processes: list[Process]):
@@ -16,7 +16,7 @@ def get_queued_processes(processes: list[Process], current_time: int):
     return [
         process
         for process in processes
-        if process.arrival_time <= current_time and not process.complete
+        if process.arrival_time <= current_time and not process.is_complete
     ]
 
 

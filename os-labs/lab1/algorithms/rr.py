@@ -9,6 +9,8 @@ class RR(Algorithm):
             return None
         if self.previous_process_id is None:
             return self.queue[0]
+        if len(self.queue) == 1:
+            return self.queue[0]
         for process in self.queue:
             if id(process) != self.previous_process_id:
                 return process

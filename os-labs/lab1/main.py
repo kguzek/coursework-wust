@@ -11,13 +11,22 @@ from .process import Process
 TIME_QUANTUM = 2
 
 
+def get_word_file(words_filename: str = "/usr/share/dict/words"):
+    with open(words_filename, 'r', encoding="utf-8") as file:
+        return file.read().splitlines()
+
+
+WORDS = get_word_file()
+
+
 def generate_processes(process_count: int):
     """Generate random processes"""
     processes: list[Process] = []
     for _ in range(process_count):
+        name = random.choice(WORDS)
         burst_time = random.randint(1, 10)
         arrival_time = random.randint(0, 20)
-        processes.append(Process(arrival_time, burst_time))
+        processes.append(Process(name, arrival_time, burst_time))
     return processes
 
 
