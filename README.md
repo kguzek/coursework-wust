@@ -1,10 +1,9 @@
-# Algorithms and Data Structures – Laboratory
+# Coursework WUST
 
-A test suite and solutions repository for my A&DS (Polish: AiSD) laboratory coursework.
+This is a repository containing coursework for all my courses during my studies at the Wrocław University of Science and
+Technology.
 
-## Directory structure
+## Courses
 
-- `/test.sh` – script for verifying solutions with predetermined input and output test cases
-- `/dsaa.lab<exercise number>/*.java` – source code for the given exercise
-- `/samples-L<exercise number>/<test number>.in` – test case input
-- `/samples-L<exercise number>/<test number>.ans` – test case expected output
+- [Algorithms and Data Structures](aisd)
+- [Operating Systems](os)

@@ -3,8 +3,8 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/dsaa.lab01" isTestSource="false" packagePrefix="dsaa.lab01" />
-      <sourceFolder url="file://$MODULE_DIR$/dsaa.lab02" isTestSource="false" packagePrefix="dsaa.lab02" />
+      <sourceFolder url="file://$MODULE_DIR$/aisd/dsaa.lab01" isTestSource="false" packagePrefix="dsaa.lab01" />
+      <sourceFolder url="file://$MODULE_DIR$/aisd/dsaa.lab02" isTestSource="false" packagePrefix="dsaa.lab02" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
