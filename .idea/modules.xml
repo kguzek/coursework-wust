@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/aisd/aisd.iml" filepath="$PROJECT_DIR$/aisd/aisd.iml" />
       <module fileurl="file://$PROJECT_DIR$/coursework-wust.iml" filepath="$PROJECT_DIR$/coursework-wust.iml" />
       <module fileurl="file://$PROJECT_DIR$/logic/logic.iml" filepath="$PROJECT_DIR$/logic/logic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/psio/psio.iml" filepath="$PROJECT_DIR$/psio/psio.iml" />
     </modules>
   </component>
 </project>
