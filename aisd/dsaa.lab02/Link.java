@@ -20,4 +20,9 @@ public class Link {
         @SuppressWarnings("PatternVariableCanBeUsed") Link link = (Link) other;
         return ref.equals(link.ref);
     }
+
+    @Override
+    public String toString() {
+        return ref;
+    }
 }

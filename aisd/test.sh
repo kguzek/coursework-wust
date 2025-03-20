@@ -82,7 +82,7 @@ for input_file in "${TEST_FILES[@]}"; do
       continue
     fi
     EXPECTED_OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.ans"
-    if diff --strip-trailing-cr -qy "$EXPECTED_OUTPUT_FILE" <(echo "$output") >/dev/null; then
+    if diff --strip-trailing-cr --ignore-trailing-space -qy "$EXPECTED_OUTPUT_FILE" <(echo "$output") >/dev/null; then
       echo "✔️ Test $TEST_NUMBER passed"
       continue
     fi

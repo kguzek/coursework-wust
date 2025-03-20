@@ -55,7 +55,7 @@ public class Document {
     public String toString() {
         StringBuilder result = new StringBuilder("Document: ").append(name);
         for (Link link : link) {
-            result.append("\n").append(link.ref);
+            result.append("\n").append(link);
         }
         return result.toString();
     }
