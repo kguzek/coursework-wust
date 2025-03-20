@@ -7,12 +7,13 @@ public class Main {
 
     static Scanner scan; // for input stream
 
+    @SuppressWarnings({"DuplicatedCode", "DataFlowIssue"})
     public static void main(String[] args) {
         System.out.println("START");
         scan = new Scanner(System.in);
         Document[] doc = null;
         int currentDocNo = 0;
-        int maxNo = -1;
+        int maxNo;
         boolean halt = false;
         while (!halt) {
             String line = scan.nextLine();

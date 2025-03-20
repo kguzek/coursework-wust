@@ -17,7 +17,7 @@ public class Link {
             return false;
         }
 //        Cannot use pattern variable because of compatibility with Java 8
-        Link link = (Link) other;
+        @SuppressWarnings("PatternVariableCanBeUsed") Link link = (Link) other;
         return ref.equals(link.ref);
     }
 }
