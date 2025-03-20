@@ -10,6 +10,8 @@ public class Main {
      * commands:
      * py size
      *   draw a pyramid with size
+     * dt size
+     *   draw a triangle with size
      * ct size
      *   draw a Christmas tree with size
      * ld documentName
@@ -36,6 +38,15 @@ public class Main {
             if (word[0].equalsIgnoreCase("py") && word.length == 2) {
                 int value = Integer.parseInt(word[1]);
                 Drawer.drawPyramid(value);
+                continue;
+            }
+            if (word[0].equalsIgnoreCase("dt") && word.length == 2) {
+                int value = Integer.parseInt(word[1]);
+                if (value < 2) {
+                    System.out.println("invalid argument");
+                    continue;
+                }
+                Drawer.drawTriangle(value);
                 continue;
             }
             if (word[0].equalsIgnoreCase("ct") && word.length == 2) {

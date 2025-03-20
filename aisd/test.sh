@@ -19,8 +19,13 @@ fi
 EXERCISE=$1;
 OUTPUT_DIR="out/production"
 SAVE_OUTPUT_ARG='--save-output'
+
+if [ -z "$EXERCISE" ]; then
+  read -rp "❓  Exercise number: " EXERCISE
+fi
+
 if [ -z "$EXERCISE" ] || ! [[ "$EXERCISE" =~ ^[0-9]+$ ]]; then
-    echo "Usage: $0 <exercise number> [-q/--quiet] [-s/$SAVE_OUTPUT_ARG] or $0 clean";
+    echo "Usage: $0 [exercise number] [-q/--quiet] [-s/$SAVE_OUTPUT_ARG] or $0 clean";
     exit 1;
 fi
 ZERO_PADDED=$(printf "%02d" "$EXERCISE")

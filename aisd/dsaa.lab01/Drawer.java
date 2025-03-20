@@ -26,4 +26,15 @@ public class Drawer {
             drawPyramid(i, n);
         }
     }
+
+    public static void drawTriangle(int n) {
+        System.out.println("X");
+        for (int i = 1; i < n - 1; i++) {
+            System.out.print("X");
+            drawLine(i - 1, ' ');
+            System.out.println("X");
+        }
+        drawLine(n, 'X');
+        System.out.println();
+    }
 }
