@@ -47,37 +47,51 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
         }
     }
 
-    private class InnerListIterator extends InnerIterator implements ListIterator<E> {
-        boolean removed = false;
-        boolean added = false;
+    private class InnerListIterator implements ListIterator<E> {
         int index = 0;
         boolean wasNext = false;
         boolean wasPrevious = false;
+        Element next;
+        Element prev;
+
+        public InnerListIterator() {
+            super();
+            next = head;
+            prev = null;
+        }
 
         @Override
         public void add(E e) {
             Element newElement = new Element(e);
-            if (pos == null) {
-                pos = newElement;
+            if (hasPrevious()) {
+                newElement.prev = prev;
+                prev.next = newElement;
             } else {
-                if (hasNext()) {
-                    pos.next.prev = newElement;
-                    newElement.next = pos.next;
-                }
-                pos.next = newElement;
+                head = newElement;
             }
-            next();
-            added = true;
+            if (hasNext()) {
+                newElement.next = next;
+                next.prev = newElement;
+            } else {
+                tail = newElement;
+            }
+            prev = newElement;
+            index++;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return next != null;
         }
 
         @Override
         public E next() {
-            E element = super.next();
+            Element current = next;
+            next = next.next;
+            prev = current;
             index++;
             wasNext = true;
-            added = false;
-            removed = false;
-            return element;
+            return current.object;
         }
 
         @Override
@@ -87,17 +101,17 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
 
         @Override
         public boolean hasPrevious() {
-            return pos != null && pos.prev != null;
+            return prev != null;
         }
 
         @Override
         public E previous() {
-            pos = pos.prev;
+            Element current = prev;
+            prev = prev.prev;
+            next = current;
             index--;
             wasPrevious = true;
-            added = false;
-            removed = false;
-            return pos.object;
+            return current.object;
         }
 
         @Override
@@ -107,29 +121,49 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
 
         @Override
         public void remove() {
-            try {
-                if (wasNext) {
-                    pos.prev.next = pos.next;
-                    if (hasNext()) {
-                        pos.next.prev = pos.prev;
-                    }
-                } else if (wasPrevious) {
-                    pos.next.prev = pos.prev;
-                    if (hasPrevious()) {
-                        pos.prev.next = pos.next;
-                    }
+            if (wasNext) {
+                if (hasPrevious() && prev.prev != null) {
+                    prev.prev.next = next;
                 } else {
-                    throw new IllegalStateException();
+                    head = next;
+                    if (hasNext()) {
+                        next.prev = null;
+                    }
                 }
-            } catch (NullPointerException e) {
-                throw new IllegalStateException(e);
+                if (hasNext()) {
+                    next.prev = prev;
+                } else {
+                    tail = prev;
+                    if (hasPrevious()) {
+                        prev.next = null;
+                    }
+                }
+            } else if (wasPrevious) {
+                if (hasNext()) {
+                    next.prev = prev;
+                }
+                if (hasPrevious()) {
+                    prev.next = next;
+                } else {
+                    head = next;
+                    if (hasNext()) {
+                        next.prev = null;
+                    }
+                }
+            } else {
+                throw new IllegalStateException();
             }
-            removed = true;
         }
 
         @Override
         public void set(E e) {
-            pos.object = e;
+            if (wasNext) {
+                prev.object = e;
+            } else if (wasPrevious) {
+                next.object = e;
+            } else {
+                throw new IllegalStateException();
+            }
         }
     }
 
@@ -157,7 +191,7 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
     }
 
     @Override
-    public void add(int index, E element) throws NoSuchElementException {
+    public void add(int index, E element) {
         if (index < 0 || index > size()) {
             throw new NoSuchElementException();
         }
@@ -166,7 +200,7 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
             return;
         }
         ListIterator<E> it = listIterator();
-        for (int i = 0; i <= index; i++) {
+        for (int i = 0; i < index; i++) {
             it.next();
         }
         it.add(element);
@@ -190,8 +224,15 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
         return false;
     }
 
+    private void throwIfIndexOutOfBounds(int index) {
+        if (index < 0 || index >= size()) {
+            throw new NoSuchElementException();
+        }
+    }
+
     @Override
     public E get(int index) {
+        throwIfIndexOutOfBounds(index);
         Iterator<E> it = iterator();
         for (int i = 0; it.hasNext(); i++) {
             E element = it.next();
@@ -204,6 +245,7 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
 
     @Override
     public E set(int index, E element) {
+        throwIfIndexOutOfBounds(index);
         ListIterator<E> it = listIterator();
         for (int i = 0; i < index; i++) {
             it.next();
@@ -241,21 +283,27 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
 
     @Override
     public E remove(int index) {
-        if (index < 0 || index >= size()) {
-            throw new NoSuchElementException();
-        }
+        throwIfIndexOutOfBounds(index);
         ListIterator<E> it = listIterator();
         for (int i = 0; i < index; i++) {
             it.next();
         }
         E removedElement = it.next();
-        it.remove();
-        _size--;
+        if (size() == 1) {
+            clear();
+        } else {
+            it.remove();
+            _size--;
+        }
         return removedElement;
     }
 
     @Override
     public boolean remove(E e) {
+        if (size() == 1) {
+            clear();
+            return true;
+        }
         ListIterator<E> it = listIterator();
         while (it.hasNext()) {
             if (it.next().equals(e)) {
@@ -273,35 +321,27 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
     }
 
     public String toStringReverse() {
-        if (isEmpty()) {
-            return "";
-        }
         ListIterator<E> iter = listIterator();
-        while (iter.hasNext() && iter.nextIndex() < size())
+        while (iter.hasNext()) {
             iter.next();
+        }
         StringBuilder bob = new StringBuilder();
-        bob.append("\n").append(iter.next());
         while (iter.hasPrevious()) {
-            bob.append("\n");
-            bob.append(iter.previous());
+            bob.append("\n").append(iter.previous());
         }
         return bob.toString();
     }
 
     public void add(TwoWayUnorderedListWithHeadAndTail<E> other) {
+        if (other == this || other.isEmpty()) {
+            return;
+        }
         if (isEmpty()) {
             head = other.head;
             tail = other.tail;
             _size = other.size();
             other.clear();
             return;
-        }
-        if (other.isEmpty()) {
-            return;
-        }
-        if (other == this) {
-//            this will cause an OutOfMemoryError
-            throw new UnsupportedOperationException();
         }
         tail.next = other.head;
         other.head.prev = tail;

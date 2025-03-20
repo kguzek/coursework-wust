@@ -110,15 +110,15 @@ done
 
 pluralise() {
   if [ "$1" = "1" ]; then
-    echo "$1$2"
+    echo "$1 $2"
   else
-    echo "$1$2s"
+    echo "$1 $2s"
   fi
 }
 
 if [ $FAILED_TESTS -eq 0 ]; then
   echo "✔️ All tests passed"
 else
-  echo "❌  $(pluralise $FAILED_TESTS "/$TOTAL_TESTS test") failed"
+  echo "❌  $FAILED_TESTS/$(pluralise "$TOTAL_TESTS" "test") failed"
   exit 1
 fi
