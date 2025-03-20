@@ -291,8 +291,9 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
     public void add(TwoWayUnorderedListWithHeadAndTail<E> other) {
         if (isEmpty()) {
             head = other.head;
-            tail = other.head;
+            tail = other.tail;
             _size = other.size();
+            other.clear();
             return;
         }
         if (other.isEmpty()) {
