@@ -16,7 +16,7 @@ public class OneWayLinkedList<E> implements IList<E> {
     }
 
     Element sentinel;
-    private int size;
+    private int _size;
 
     private class InnerIterator implements Iterator<E> {
         Element current;
@@ -38,11 +38,18 @@ public class OneWayLinkedList<E> implements IList<E> {
             current = current.next;
             return current.object;
         }
+
+        @Override
+        public void remove() {
+//          FIXME: technically incorrect implementation as per Java spec
+            Element child = current.next;
+            current.next = child == null ? null : child.next;
+        }
     }
 
     public OneWayLinkedList() {
         sentinel = new Element(null);
-        size = 0;
+        _size = 0;
     }
 
     @Override
@@ -62,7 +69,7 @@ public class OneWayLinkedList<E> implements IList<E> {
             last = last.next;
         }
         last.next = new Element(e);
-        size++;
+        _size++;
         return true;
     }
 
@@ -80,9 +87,6 @@ public class OneWayLinkedList<E> implements IList<E> {
             }
             parent = parent.next;
         }
-//        if (parent.next == null) {
-//            throw new NoSuchElementException();
-//        }
         return parent;
     }
 
@@ -93,13 +97,13 @@ public class OneWayLinkedList<E> implements IList<E> {
         Element newChild = new Element(element);
         newChild.next = child;
         parent.next = newChild;
-        size++;
+        _size++;
     }
 
     @Override
     public void clear() {
         sentinel.next = null;
-        size = 0;
+        _size = 0;
     }
 
     @Override
@@ -164,7 +168,7 @@ public class OneWayLinkedList<E> implements IList<E> {
             throw new NoSuchElementException();
         }
         parent.next = child.next;
-        size--;
+        _size--;
         return child.object;
     }
 
@@ -180,8 +184,14 @@ public class OneWayLinkedList<E> implements IList<E> {
 
     @Override
     public int size() {
-        return size;
+        return _size;
     }
 
+    public void removeOdd() {
+        Iterator<E> it = iterator();
+        while (it.hasNext()) {
+            it.next();
+            it.remove();
+        }
+    }
 }
-

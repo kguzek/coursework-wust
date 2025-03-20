@@ -114,6 +114,17 @@ public class Main {
                 }
                 continue;
             }
+
+            // ro
+            if (word[0].equalsIgnoreCase("ro") && word.length == 1) {
+                try {
+                    doc[currentDocNo].links.removeOdd();
+                } catch (NoSuchElementException e) {
+                    System.out.println("error");
+                }
+                continue;
+            }
+
             // rem str
             if (word[0].equalsIgnoreCase("rem") && word.length == 2) {
                 System.out.println(doc[currentDocNo].links.remove(new Link(word[1])));

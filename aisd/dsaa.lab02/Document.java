@@ -32,7 +32,8 @@ public class Document {
         }
     }
 
-    // accepted only small letters, capital letters, digits and '_' (except the first character)
+    // accepts only small letters, capital letters, digits and '_' (except the first character)
+    @SuppressWarnings({"JavaExistingMethodCanBeUsed", "DuplicatedCode"})
     public static boolean correctLink(String link) {
         if (link.isEmpty()) {
             return false;
@@ -57,5 +58,4 @@ public class Document {
         }
         return result.toString();
     }
-
 }
