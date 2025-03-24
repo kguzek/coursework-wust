@@ -4,6 +4,7 @@ import dsaa.util.AbstractList;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 public class ArrayList<E> extends AbstractList<E> {
     /**
@@ -91,11 +92,12 @@ public class ArrayList<E> extends AbstractList<E> {
 
     @Override
     public int indexOf(E value) {
-        int i = 0;
-        while (i < _size && !value.equals(_array[i]))
-            ++i;
-        // FIXME: I think this always returns size - 1 if not found instead of -1
-        return i < _size ? i : -1;
+        for (int i = 0; i < _size; i++) {
+            if (value.equals(_array[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -165,10 +167,15 @@ public class ArrayList<E> extends AbstractList<E> {
 
     private class InnerListIterator implements ListIterator<E> {
         int _pos = 0;
+        boolean _wasNext = false;
+        boolean _wasPrevious = false;
 
         @Override
         public void add(E Value) {
-            throw new UnsupportedOperationException();
+            ArrayList.this.add(_pos, Value);
+            _wasNext = false;
+            _wasPrevious = false;
+            _pos++;
         }
 
         @Override
@@ -178,11 +185,16 @@ public class ArrayList<E> extends AbstractList<E> {
 
         @Override
         public boolean hasPrevious() {
-            return _pos >= 0;
+            return _pos >= 0 && !isEmpty();
         }
 
         @Override
         public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            _wasNext = true;
+            _wasPrevious = false;
             return _array[_pos++];
         }
 
@@ -193,6 +205,11 @@ public class ArrayList<E> extends AbstractList<E> {
 
         @Override
         public E previous() {
+            if (!hasPrevious()) {
+                throw new NoSuchElementException();
+            }
+            _wasPrevious = true;
+            _wasNext = false;
             return _array[--_pos];
         }
 
@@ -201,14 +218,33 @@ public class ArrayList<E> extends AbstractList<E> {
             return _pos - 1;
         }
 
+        /**
+         * @return The index of the element last returned by {@link InnerListIterator#next()} or {@link InnerListIterator#previous()}.
+         * @throws IllegalStateException if neither {@link InnerListIterator#next()} nor {@link InnerListIterator#previous()} was called.
+         */
+        private int getCurrentIndex() throws IllegalStateException {
+            if (_wasNext) {
+                return _pos - 1;
+            }
+            if (_wasPrevious) {
+                return _pos;
+            }
+            throw new IllegalStateException("Neither next nor previous was called");
+        }
+
         @Override
         public void remove() {
-            throw new UnsupportedOperationException();
+            ArrayList.this.remove(getCurrentIndex());
+            if (_wasNext) {
+                _pos--;
+            }
+            _wasPrevious = false;
+            _wasNext = false;
         }
 
         @Override
         public void set(E e) {
-            throw new UnsupportedOperationException();
+            ArrayList.this.set(getCurrentIndex(), e);
         }
     }
 }
