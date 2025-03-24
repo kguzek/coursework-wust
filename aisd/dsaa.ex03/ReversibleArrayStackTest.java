@@ -15,7 +15,7 @@ class ReversibleArrayStackTest {
 
     @BeforeEach
     void setUp() {
-        stack = new ReversibleArrayStack<>(CAPACITY);
+        stack = new ReversibleArrayStackReversible<>(CAPACITY);
     }
 
     @Test
@@ -62,7 +62,7 @@ class ReversibleArrayStackTest {
     @Test
     void testReverseSingleElement() throws FullStackException, EmptyStackException {
         stack.push(1);
-        ((ReversibleArrayStack<Integer>) stack).reverse();
+        ((ReversibleArrayStackReversible<Integer>) stack).reverse();
         assertEquals(1, stack.pop(), "Reversing single element stack should not affect order");
     }
 
@@ -72,7 +72,7 @@ class ReversibleArrayStackTest {
         stack.push(2);
         stack.push(3); // Stack: [1, 2, 3] => Top is 3
 
-        ((ReversibleArrayStack<Integer>) stack).reverse();
+        ((ReversibleArrayStackReversible<Integer>) stack).reverse();
         // Stack should now be [3, 2, 1] => Top is 1
 
         assertEquals(1, stack.pop(), "First pop after reverse should be 1");
@@ -83,7 +83,7 @@ class ReversibleArrayStackTest {
 
     @Test
     void testReverseEmptyStack() {
-        ((ReversibleArrayStack<Integer>) stack).reverse();
+        ((ReversibleArrayStackReversible<Integer>) stack).reverse();
         assertTrue(stack.isEmpty(), "Reversing empty stack should still be empty");
     }
 }

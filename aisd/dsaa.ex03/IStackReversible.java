@@ -2,21 +2,14 @@ package dsaa.ex03;
 
 import dsaa.util.EmptyStackException;
 import dsaa.util.FullStackException;
+import dsaa.util.IStack;
 
-public class ReversibleArrayStack<E> extends ArrayStack<E> {
-    public ReversibleArrayStack() {
-        super();
-    }
-
-    public ReversibleArrayStack(int capacity) {
-        super(capacity);
-    }
-
+public interface IStackReversible<E> extends IStack<E> {
     /**
-     * Reverses all elements in the stack. Time complexity: O(3n)
+     * Reverses all elements in the stack using temporary instances of {@link ListStack}. Time complexity: O(3n)
      */
-    public void reverse() {
-        ArrayStack<E> tempStack1 = new ArrayStack<>(size());
+    default void reverse() {
+        IStack<E> tempStack1 = new ListStack<>();
         while (!isEmpty()) {
             try {
                 tempStack1.push(pop());
@@ -24,7 +17,7 @@ public class ReversibleArrayStack<E> extends ArrayStack<E> {
                 assert false : "Failed to copy elements from this stack to tempStack1.";
             }
         }
-        ArrayStack<E> tempStack2 = new ArrayStack<>(tempStack1.size());
+        IStack<E> tempStack2 = new ListStack<>();
         while (!tempStack1.isEmpty()) {
             try {
                 tempStack2.push(tempStack1.pop());
