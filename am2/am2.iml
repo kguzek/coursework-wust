@@ -7,5 +7,6 @@
     </content>
     <orderEntry type="jdk" jdkName="Python 3.13 (am2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Python 3.13 (am2) interpreter library" level="application" />
   </component>
 </module>

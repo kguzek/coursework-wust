@@ -13,4 +13,4 @@ Technology.
 ### Semester 2
 
 - [Algorithms and Data Structures](aisd)
-- [Operating Systems](os-labs)
+- [Operating Systems](sysop)
