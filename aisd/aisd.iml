@@ -6,9 +6,10 @@
       <sourceFolder url="file://$MODULE_DIR$/dsaa.lab01" isTestSource="false" packagePrefix="dsaa.lab01" />
       <sourceFolder url="file://$MODULE_DIR$/dsaa.lab02" isTestSource="false" packagePrefix="dsaa.lab02" />
       <sourceFolder url="file://$MODULE_DIR$/dsaa.lab03" isTestSource="false" packagePrefix="dsaa.lab03" />
-      <sourceFolder url="file://$MODULE_DIR$/dsaa.ex02" isTestSource="false" packagePrefix="dsaa.ex02" />
       <sourceFolder url="file://$MODULE_DIR$/dsaa.util" isTestSource="false" packagePrefix="dsaa.util" />
+      <sourceFolder url="file://$MODULE_DIR$/dsaa.ex02" isTestSource="false" packagePrefix="dsaa.ex02" />
       <sourceFolder url="file://$MODULE_DIR$/dsaa.ex03" isTestSource="false" packagePrefix="dsaa.ex03" />
+      <excludeFolder url="file://$MODULE_DIR$/out" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
