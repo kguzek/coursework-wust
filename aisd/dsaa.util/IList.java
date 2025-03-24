@@ -6,7 +6,7 @@ import java.util.ListIterator;
 public interface IList<E> extends Iterable<E> {
     boolean add(E e); // dodanie elementu na koniec listy
 
-    void add(int index, E element); // dodanie elementu na podanej pozycji
+    boolean add(int index, E element); // dodanie elementu na podanej pozycji
 
     void clear(); // skasowanie wszystkich elementów
 

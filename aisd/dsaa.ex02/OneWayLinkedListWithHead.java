@@ -80,20 +80,19 @@ public class OneWayLinkedListWithHead<E> extends AbstractList<E> {
     }
 
     @Override
-    public void add(int index, E data) {
+    public boolean add(int index, E data) {
         if (index < 0) throw new IndexOutOfBoundsException();
         Element newElem = new Element(data);
         if (index == 0) {
             newElem.setNext(head);
             head = newElem;
-//            return true;
         } else {
             Element actElem = getElement(index - 1);
             newElem.setNext(actElem.getNext());
             actElem.setNext(newElem);
         }
         _size++;
-//        return true;
+        return true;
     }
 
     @Override
