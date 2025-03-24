@@ -13,22 +13,30 @@ public class ReversibleArrayStack<E> extends ArrayStack<E> {
     }
 
     /**
-     * Reverses all elements in the stack. Time complexity: O(2n)
+     * Reverses all elements in the stack. Time complexity: O(3n)
      */
     public void reverse() {
-        ArrayStack<E> tempStack = new ArrayStack<>(size());
+        ArrayStack<E> tempStack1 = new ArrayStack<>(size());
         while (!isEmpty()) {
             try {
-                tempStack.push(pop());
+                tempStack1.push(pop());
             } catch (FullStackException | EmptyStackException e) {
-                assert false : "Failed to copy elements from this stack to tempStack.";
+                assert false : "Failed to copy elements from this stack to tempStack1.";
             }
         }
-        while (!tempStack.isEmpty()) {
+        ArrayStack<E> tempStack2 = new ArrayStack<>(tempStack1.size());
+        while (!tempStack1.isEmpty()) {
             try {
-                push(tempStack.pop());
+                tempStack2.push(tempStack1.pop());
             } catch (FullStackException | EmptyStackException e) {
-                assert false : "Failed to copy elements from tempStack to this stack.";
+                assert false : "Failed to copy elements from tempStack1 to tempStack2.";
+            }
+        }
+        while (!tempStack2.isEmpty()) {
+            try {
+                push(tempStack2.pop());
+            } catch (FullStackException | EmptyStackException e) {
+                assert false : "Failed to copy elements from tempStack2 to this stack.";
             }
         }
     }
