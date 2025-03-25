@@ -1,8 +1,9 @@
 """Simulation module for the CPU scheduling algorithms."""
+
+import random
 from concurrent.futures import as_completed, ProcessPoolExecutor
 
 import matplotlib
-import random
 from matplotlib import pyplot as plt
 from tabulate import tabulate
 
