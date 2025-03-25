@@ -1,10 +1,8 @@
 import copy
 from abc import abstractmethod
 
-from ..common import get_queued_processes, calculate_average_completion_time, SimulationResult
+from ..common import get_queued_processes, calculate_average_completion_time, SimulationResult, DEBUG_MODE
 from ..process import Process
-
-DEBUG_MODE = False
 
 
 class Algorithm:

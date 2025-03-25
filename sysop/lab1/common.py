@@ -6,6 +6,7 @@ type SimulationResult = tuple[float, list[tuple[int, int, Process]], int | float
 type TestCase = tuple[int, int, int, str]
 
 DEFAULT_ITERATION_COUNT: int = 30
+DEBUG_MODE = False
 
 
 def get_word_file(words_filename: str = "/usr/share/dict/words"):
@@ -35,7 +36,7 @@ def get_queued_processes(processes: list[Process], current_time: int):
     ]
 
 
-def generate_processes(process_count: int, average_arrival_time: int = 10, max_burst_time: int = 30):
+def generate_processes(process_count: int, average_arrival_time: float, max_burst_time: int):
     """Generate random processes"""
     processes: list[Process] = []
     for name in random.sample(WORDS, process_count):

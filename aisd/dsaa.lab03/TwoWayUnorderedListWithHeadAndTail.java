@@ -23,13 +23,12 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
         Element prev = null;
     }
 
-    Element head;
-    Element tail;
-    // can be realization with the field size or without
-    int _size;
+    private Element head;
+    private Element tail;
+    private int _size;
 
     private class InnerIterator implements Iterator<E> {
-        Element pos;
+        private Element pos;
 
         public InnerIterator() {
             pos = new Element(null, head, null);
@@ -48,11 +47,11 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
     }
 
     private class InnerListIterator implements ListIterator<E> {
-        int index = 0;
-        boolean wasNext = false;
-        boolean wasPrevious = false;
-        Element next;
-        Element prev;
+        private int index = 0;
+        private boolean wasNext = false;
+        private boolean wasPrevious = false;
+        private Element next;
+        private Element prev;
 
         public InnerListIterator() {
             super();
@@ -91,6 +90,7 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
             prev = current;
             index++;
             wasNext = true;
+            wasPrevious = false;
             return current.object;
         }
 
@@ -111,6 +111,7 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
             next = current;
             index--;
             wasPrevious = true;
+            wasNext = false;
             return current.object;
         }
 

@@ -12,21 +12,19 @@ from .algorithms.fcfs import FCFS
 from .algorithms.rr import RR
 from .algorithms.sjf import SJF
 from .algorithms.srtf import SRTF
-from .common import generate_processes, SimulationResult, TestCase, DEFAULT_ITERATION_COUNT
+from .common import generate_processes, SimulationResult, TestCase, DEFAULT_ITERATION_COUNT, DEBUG_MODE
 
 TIME_QUANTUM = 2
-DEFAULT_ARRIVAL_TIME = 30
 MAX_SUMMARY_TEST_DESCRIPTIONS = 3
 
 
-def run_simulation(process_count: int, average_arrival_time: int = DEFAULT_ARRIVAL_TIME,
-                   max_burst_time: int | None = None) -> \
-        dict[
-            str, SimulationResult]:
+def run_simulation(process_count: int, average_arrival_time: float | None = None,
+                   max_burst_time: int | None = None, *, n: int = None) -> dict[str, SimulationResult]:
     """Run the simulation for all algorithms with the given number of processes.
     :return: The run results for each algorithm, formatted as: average_completion_time, execution_log, starved_processes, processes."""
 
-    processes = generate_processes(process_count, average_arrival_time,
+    processes = generate_processes(process_count,
+                                   process_count ** 1.5 if average_arrival_time is None else average_arrival_time,
                                    process_count * 4 if max_burst_time is None else max_burst_time)
 
     algorithms = {
@@ -48,6 +46,8 @@ def run_simulation(process_count: int, average_arrival_time: int = DEFAULT_ARRIV
             algorithm_name = future_to_algorithm[future]
             results[algorithm_name] = future.result()
 
+    if DEBUG_MODE and n is not None:
+        print(f"Iteration {n} complete")
     return dict(sorted(results.items(), key=lambda item: item[1][0]))
 
 
@@ -62,14 +62,14 @@ def get_average_result(results: list[SimulationResult]):
     return average_completion_time, execution_log, starved_processes, processes, process_switches
 
 
-def repeat_simulation(iterations: int, process_count: int, average_arrival_time: int = DEFAULT_ARRIVAL_TIME,
+def repeat_simulation(iterations: int, process_count: int, average_arrival_time: int | None = None,
                       max_burst_time: int = None, *_) -> dict[str, SimulationResult]:
     all_results: dict[str, list[SimulationResult]] = {}
 
     with ProcessPoolExecutor() as executor:
         futures = [
-            executor.submit(run_simulation, process_count, average_arrival_time, max_burst_time) for _ in
-            range(iterations)
+            executor.submit(run_simulation, process_count, average_arrival_time, max_burst_time, n=n) for n in
+            range(1, iterations + 1)
         ]
 
         for future in as_completed(futures):
