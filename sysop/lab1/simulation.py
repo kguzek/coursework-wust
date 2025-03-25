@@ -1,6 +1,7 @@
 """Simulation module for the CPU scheduling algorithms."""
 
 import random
+import timeit
 from concurrent.futures import as_completed, ProcessPoolExecutor
 
 import matplotlib
@@ -11,16 +12,22 @@ from .algorithms.fcfs import FCFS
 from .algorithms.rr import RR
 from .algorithms.sjf import SJF
 from .algorithms.srtf import SRTF
-from .common import generate_processes, SimulationResult
+from .common import generate_processes, SimulationResult, TestCase, DEFAULT_ITERATION_COUNT
 
 TIME_QUANTUM = 2
+DEFAULT_ARRIVAL_TIME = 30
+MAX_SUMMARY_TEST_DESCRIPTIONS = 3
 
 
-def run_simulation(process_count: int) -> dict[str, SimulationResult]:
+def run_simulation(process_count: int, average_arrival_time: int = DEFAULT_ARRIVAL_TIME,
+                   max_burst_time: int | None = None) -> \
+        dict[
+            str, SimulationResult]:
     """Run the simulation for all algorithms with the given number of processes.
-    :return the run results for each algorithm, formatted as: average_completion_time, execution_log, starved_processes, processes."""
+    :return: The run results for each algorithm, formatted as: average_completion_time, execution_log, starved_processes, processes."""
 
-    processes = generate_processes(process_count)
+    processes = generate_processes(process_count, average_arrival_time,
+                                   process_count * 4 if max_burst_time is None else max_burst_time)
 
     algorithms = {
         "first come first serve": FCFS(processes),
@@ -55,12 +62,14 @@ def get_average_result(results: list[SimulationResult]):
     return average_completion_time, execution_log, starved_processes, processes, process_switches
 
 
-def repeat_simulation(process_count: int, iterations: int) -> dict[str, SimulationResult]:
+def repeat_simulation(iterations: int, process_count: int, average_arrival_time: int = DEFAULT_ARRIVAL_TIME,
+                      max_burst_time: int = None, *_) -> dict[str, SimulationResult]:
     all_results: dict[str, list[SimulationResult]] = {}
 
     with ProcessPoolExecutor() as executor:
         futures = [
-            executor.submit(run_simulation, process_count) for _ in range(iterations)
+            executor.submit(run_simulation, process_count, average_arrival_time, max_burst_time) for _ in
+            range(iterations)
         ]
 
         for future in as_completed(futures):
@@ -78,8 +87,11 @@ def get_best_result(results: dict[str, SimulationResult]):
     return min(results.items(), key=lambda i: i[1][0])
 
 
-def present_results_cli(results: dict[str, SimulationResult], execution_time: float):
-    """Present the results in the command line interface."""
+def present_results_cli(results: dict[str, SimulationResult], execution_time: float,
+                        test_case_meta: tuple[int, TestCase] = None):
+    """Present the results in the command line interface.
+
+    :return: The best result in terms of average completion time."""
 
     headers = ["Algorithm", "Average Wait Time", "Average Idle Time", "Average Completion Time", "Process Switches",
                "Starved Processes", "Total Processes", "Time Taken",
@@ -93,18 +105,25 @@ def present_results_cli(results: dict[str, SimulationResult], execution_time: fl
         algorithm, (average_wait_time, execution_log, starved_processes, processes, process_switches) in
         results.items()
     ]
-
+    best_result = get_best_result(results)[0]
     print()
     print(tabulate(rows, headers=headers, tablefmt="fancy_grid"))
-    print()
-    print(f"Best algorithm: {get_best_result(results)[0]}")
+    if test_case_meta is None:
+        print()
+        print(f"Best algorithm: {best_result}")
+    else:
+        test_number, test_case = test_case_meta
+        print(tabulate([[test_number, *test_case, best_result]],
+                       headers=["Test Case", "Process Count", "Average Arrival Time", "Maximum Burst Time",
+                                "Test Description", "Best Algorithm"],
+                       tablefmt="fancy_grid"))
+        print()
     print(f"Done in {execution_time:.3f} seconds.")
+    return best_result
 
 
 def show_execution_log(plot, algorithm: str, result: SimulationResult):
-    """Plot a Gantt chart from an execution log.
-       execution_log: list of tuples (start_time, end_time, process_name)
-    """
+    """Plot a Gantt chart from a simulation run result."""
 
     y_labels = []
 
@@ -148,3 +167,23 @@ def present_results_gui(results: dict[str, SimulationResult]):
     mng.window.attributes('-zoomed', True)
     plt.tight_layout()
     plt.show()
+
+
+def run_tests(test_cases: list[TestCase]):
+    best_algorithms: dict[str, set[int]] = {}
+    for test_number, test_case in enumerate(test_cases, start=1):
+        execution_time, results = timeit.timeit(lambda: repeat_simulation(DEFAULT_ITERATION_COUNT, *test_case),
+                                                number=1)
+        for result in results:
+            best_algorithms.setdefault(result, set())
+        best_result = present_results_cli(results, execution_time, (test_number, test_case))
+        best_algorithms[best_result].add(test_number)
+    table_data = [(alg, len(test_numbers),
+                   (", " if len(test_numbers) == 0 or len(test_numbers) > MAX_SUMMARY_TEST_DESCRIPTIONS else "\n").join(
+                       str(test) for test in test_numbers) or "—",
+                   "(too many to display)" if len(test_numbers) > MAX_SUMMARY_TEST_DESCRIPTIONS else "—" if len(
+                       test_numbers) == 0
+                   else "\n".join(test_cases[test_number - 1][3] for test_number in test_numbers))
+                  for alg, test_numbers in best_algorithms.items()]
+    print(tabulate(table_data,
+                   headers=["Best Algorithm", "Score", "Test Cases", "Test Description"], tablefmt="fancy_grid"))
