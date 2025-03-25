@@ -1,4 +1,16 @@
+import random
+
 from .process import Process
+
+type SimulationResult = tuple[float, list[tuple[int, int, Process]], int | float, list[Process], int | float]
+
+
+def get_word_file(words_filename: str = "/usr/share/dict/words"):
+    with open(words_filename, 'r', encoding="utf-8") as file:
+        return file.read().splitlines()
+
+
+WORDS = get_word_file()
 
 
 def has_incomplete_processes(processes: list[Process]):
@@ -20,8 +32,12 @@ def get_queued_processes(processes: list[Process], current_time: int):
     ]
 
 
-def reset_processes(processes: list[Process]):
-    """Resets the processes to their initial state and sorts them by arrival time"""
-    for process in processes:
-        process.reset()
-    processes.sort(key=lambda x: x.arrival_time)
+def generate_processes(process_count: int, max_burst_time: int = 30, average_arrival_time: int = 10):
+    """Generate random processes"""
+    processes: list[Process] = []
+    for name in random.sample(WORDS, process_count):
+        burst_time = random.randint(1, max_burst_time)
+        arrival_time = int(random.expovariate(1 / average_arrival_time))
+        processes.append(Process(name, arrival_time, burst_time))
+    processes.sort(key=lambda process: process.arrival_time)
+    return processes
