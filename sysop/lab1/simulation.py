@@ -11,7 +11,6 @@ from .algorithms.rr import RR
 from .algorithms.sjf import SJF
 from .algorithms.srtf import SRTF
 from .common import generate_processes, SimulationResult
-from .process import Process
 
 TIME_QUANTUM = 2
 
@@ -125,8 +124,6 @@ def show_execution_log(plot, algorithm: str, result: SimulationResult):
         # color = matplotlib.colors.colorConverter.to_rgba(process_color, alpha=0.5)
         plot.barh(y=process.name, width=process.burst_time, left=process.arrival_time,
                   height=0.5, color=process_color, edgecolor="black", alpha=0.25, zorder=0)
-
-    process_progress: dict[Process, int] = {process: process.burst_time for process in processes}
 
     for idx, (start, end, process) in enumerate(execution_log):
         name = "<None>" if process is None else process.name
