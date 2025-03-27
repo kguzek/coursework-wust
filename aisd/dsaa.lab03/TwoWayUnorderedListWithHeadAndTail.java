@@ -125,6 +125,7 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
             if (wasNext) {
                 if (hasPrevious() && prev.prev != null) {
                     prev.prev.next = next;
+                    prev = prev.prev;
                 } else {
                     head = next;
                     if (hasNext()) {
@@ -349,6 +350,22 @@ public class TwoWayUnorderedListWithHeadAndTail<E> implements IList<E> {
         tail = other.tail;
         _size += other.size();
         other.clear();
+    }
+
+    public void removeDuplicates() {
+        if (size() <= 1) {
+            return;
+        }
+        ListIterator<E> it = listIterator();
+        E previous = it.next();
+        while (it.hasNext()) {
+            E current = it.next();
+            if (current.equals(previous)) {
+                it.remove();
+            } else {
+                previous = current;
+            }
+        }
     }
 }
 
