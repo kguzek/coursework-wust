@@ -5,8 +5,7 @@ public class Link implements Comparable<Link> {
     public int weight;
 
     public Link(String ref) {
-        this.ref = ref;
-        weight = 1;
+        this(ref, 1);
     }
 
     public Link(String ref, int weight) {
@@ -34,8 +33,7 @@ public class Link implements Comparable<Link> {
 
     @Override
     public int compareTo(Link another) {
-        //TODO
-        return 0;
+        return ref.compareTo(another.ref);
     }
 }
 

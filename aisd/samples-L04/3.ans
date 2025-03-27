@@ -1,0 +1,26 @@
+START
+!go 1
+!ld test
+!add a(1)
+true
+!add a(b)
+error
+!add a(27)
+true
+!add bcde(400)
+true
+!add a
+true
+!add a(2)
+true
+!show
+Document: test
+a(1) a(27) a(1) a(2) bcde(400)
+!remall a
+!show
+Document: test
+a(27) a(2) bcde(400)
+!size
+3
+!ha
+END OF EXECUTION

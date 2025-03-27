@@ -1,0 +1,14 @@
+go 1
+ld test
+eod
+add a(1)
+add a(b)
+add a(27)
+add bcde(400)
+add a
+add a(2)
+show
+remall a
+show
+size
+ha

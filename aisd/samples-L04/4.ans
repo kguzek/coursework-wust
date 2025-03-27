@@ -1,0 +1,100 @@
+START
+!go 2
+!ld test
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!show
+Document: test
+b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1)
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!add b
+true
+!show
+Document: test
+b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1)
+b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1)
+b(1)
+!size
+21
+!add c
+true
+!add a
+true
+!show
+Document: test
+a(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1)
+b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1)
+b(1) b(1) c(1)
+!reverse
+Document: test
+c(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1)
+b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1) b(1)
+b(1) b(1) a(1)
+!remall b
+!show
+Document: test
+a(1) c(1)
+!ch 1
+!ld test2
+!add a
+true
+!add a
+true
+!add x
+true
+!add a
+true
+!add x
+true
+!add b
+true
+!show
+Document: test2
+a(1) a(1) a(1) b(1) x(1) x(1)
+!ch 0
+!addl 1
+!show
+Document: test
+a(1) a(1) a(1) a(1) b(1) c(1) x(1) x(1)
+!ch 1
+!show
+Document: test2
+!ha
+END OF EXECUTION

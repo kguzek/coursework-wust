@@ -1,0 +1,11 @@
+go 1
+ld test
+link=asdf(1)
+link=asdf2
+eod
+show
+size
+remall asdf
+show
+size
+ha

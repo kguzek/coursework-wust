@@ -2,10 +2,15 @@ package dsaa.lab04;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
-public class TwoWayCycledOrderedListWithSentinel<E> implements IList<E> {
+public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implements IList<E> {
 
     private class Element {
+        E object;
+        Element next = null;
+        Element prev = null;
+
         public Element(E e) {
             this.object = e;
         }
@@ -18,25 +23,17 @@ public class TwoWayCycledOrderedListWithSentinel<E> implements IList<E> {
 
         // add element e after this
         public void addAfter(Element elem) {
-            if (next != null) {
-                elem.next = next;
-            }
             elem.prev = this;
-            elem.next = null;
+            elem.next = next;
+            next.prev = elem;
             next = elem;
         }
 
         // assert it is NOT a sentinel
         public void remove() {
-            if (object != null) {
-                prev.next = next;
-                next.prev = prev;
-            }
+            prev.next = next;
+            next.prev = prev;
         }
-
-        E object;
-        Element next = null;
-        Element prev = null;
     }
 
 
@@ -47,12 +44,12 @@ public class TwoWayCycledOrderedListWithSentinel<E> implements IList<E> {
         private Element pos;
 
         public InnerIterator() {
-            pos = new Element(null, sentinel, null);
+            pos = sentinel;
         }
 
         @Override
         public boolean hasNext() {
-            return pos != null && pos.next != null;
+            return pos.next != null && pos.next != sentinel;
         }
 
         @Override
@@ -62,104 +59,146 @@ public class TwoWayCycledOrderedListWithSentinel<E> implements IList<E> {
         }
     }
 
+    @SuppressWarnings({"duplicates"})
     private class InnerListIterator implements ListIterator<E> {
-        //TODO
+        private int index = 0;
+        private boolean wasNext = false;
+        private boolean wasPrevious = false;
+        private Element next;
+        private Element prev;
+
         public InnerListIterator() {
-            //TODO
+            next = sentinel.next;
+            prev = sentinel;
+        }
+
+        @Override
+        public void add(E e) {
+            Element newElement = new Element(e, prev, next);
+            (prev == null ? sentinel : prev).addAfter(newElement);
+            prev = newElement;
+            index++;
         }
 
         @Override
         public boolean hasNext() {
-            //TODO
-            return false;
+            return next != null && next != sentinel;
         }
 
         @Override
         public E next() {
-            //TODO
-            return null;
-        }
-
-        @Override
-        public void add(E arg0) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public boolean hasPrevious() {
-            //TODO
-            return false;
+            Element current = next;
+            next = next.next;
+            prev = current;
+            index++;
+            wasNext = true;
+            wasPrevious = false;
+            return current.object;
         }
 
         @Override
         public int nextIndex() {
-            throw new UnsupportedOperationException();
+            return hasNext() ? index + 1 : index;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return prev != null && prev != sentinel;
         }
 
         @Override
         public E previous() {
-            //TODO
-            return null;
+            Element current = prev;
+            prev = prev.prev;
+            next = current;
+            index--;
+            wasPrevious = true;
+            wasNext = false;
+            return current.object;
         }
 
         @Override
         public int previousIndex() {
-            throw new UnsupportedOperationException();
+            return hasPrevious() ? index - 1 : -1;
         }
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException();
+            if (wasNext) {
+                prev.remove();
+            } else if (wasPrevious) {
+                next.remove();
+            } else {
+                throw new IllegalStateException("remove must be called after next or previous");
+            }
+            size--;
         }
 
         @Override
-        public void set(E arg0) {
+        public void set(E e) {
             throw new UnsupportedOperationException();
         }
     }
 
     public TwoWayCycledOrderedListWithSentinel() {
-        //TODO
+        clear();
     }
 
-    //@SuppressWarnings("unchecked")
     @Override
     public boolean add(E e) {
-        //TODO
-        return false;
+        Element newElement = new Element(e);
+        Element current = sentinel;
+        while (current.next != null && current.next != sentinel) {
+            if (current.next.object.compareTo(e) > 0) {
+                break;
+            }
+            current = current.next;
+        }
+        current.addAfter(newElement);
+        size++;
+        return true;
     }
 
-    private Element getElement(int index) {
-        //TODO
-        return null;
-    }
-
-    private Element getElement(E obj) {
-        //TODO
-        return null;
+    private void throwOnInvalidIndex(int index) {
+        if (index < 0 || index >= size()) {
+            throw new NoSuchElementException();
+        }
     }
 
     @Override
     public void add(int index, E element) {
         throw new UnsupportedOperationException();
-
     }
 
     @Override
     public void clear() {
-        //TODO
+        sentinel = new Element(null);
+        sentinel.next = sentinel;
+        sentinel.prev = sentinel;
+        size = 0;
     }
 
     @Override
     public boolean contains(E element) {
-        //TODO
+        for (E elem : this) {
+            if (elem.equals(element)) {
+                return true;
+            }
+            if (element.compareTo(elem) < 0) {
+                return false;
+            }
+        }
         return false;
     }
 
     @Override
     public E get(int index) {
-        //TODO
-        return null;
+        throwOnInvalidIndex(index);
+        Iterator<E> it = iterator();
+        for (int i = 1; i < index; i++) {
+            it.next();
+        }
+        return it.next();
     }
 
     @Override
@@ -169,14 +208,22 @@ public class TwoWayCycledOrderedListWithSentinel<E> implements IList<E> {
 
     @Override
     public int indexOf(E element) {
-        //TODO
+        Iterator<E> it = iterator();
+        for (int i = 0; it.hasNext(); i++) {
+            E current = it.next();
+            if (current.equals(element)) {
+                return i;
+            }
+            if (current.compareTo(element) < 0) {
+                break;
+            }
+        }
         return -1;
     }
 
     @Override
     public boolean isEmpty() {
-        //TODO
-        return true;
+        return size == 0;
     }
 
     @Override
@@ -191,30 +238,73 @@ public class TwoWayCycledOrderedListWithSentinel<E> implements IList<E> {
 
     @Override
     public E remove(int index) {
-        //TODO
-        return null;
+        throwOnInvalidIndex(index);
+        ListIterator<E> it = listIterator();
+        for (int i = 1; i < index; i++) {
+            it.next();
+        }
+        E result = it.next();
+        it.remove();
+        return result;
     }
 
     @Override
     public boolean remove(E e) {
-        //TODO
+        ListIterator<E> it = listIterator();
+        while (it.hasNext()) {
+            E current = it.next();
+            if (current.equals(e)) {
+                it.remove();
+                return true;
+            }
+            if (current.compareTo(e) > 0) {
+                break;
+            }
+        }
         return false;
     }
 
     @Override
     public int size() {
-        //TODO
-        return -1;
+        return size;
     }
 
     //@SuppressWarnings("unchecked")
     public void add(TwoWayCycledOrderedListWithSentinel<E> other) {
-        //TODO
+        if (this == other || other.isEmpty()) {
+            return;
+        }
+        if (isEmpty()) {
+            sentinel = other.sentinel;
+            other.clear();
+            return;
+        }
+        Element thisCurrent = sentinel;
+        for (Element otherCurrent = other.sentinel.next; otherCurrent != null && otherCurrent != other.sentinel; ) {
+            while (thisCurrent.next != null && thisCurrent.next != sentinel) {
+                if (thisCurrent.next.object.compareTo(otherCurrent.object) > 0) {
+                    break;
+                }
+                thisCurrent = thisCurrent.next;
+            }
+            Element otherNext = otherCurrent.next;
+            thisCurrent.addAfter(otherCurrent);
+            otherCurrent = otherNext;
+        }
+        other.clear();
     }
 
     //@SuppressWarnings({ "unchecked", "rawtypes" })
     public void removeAll(E e) {
-        //TODO
+        ListIterator<E> it = listIterator();
+        while (it.hasNext()) {
+            E current = it.next();
+            if (e.equals(current)) {
+                it.remove();
+            } else if (current.compareTo(e) > 0) {
+                return;
+            }
+        }
     }
 
 }

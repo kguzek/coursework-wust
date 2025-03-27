@@ -1,0 +1,89 @@
+START
+!go 10
+!ld doc1
+!add a
+true
+!add b
+true
+!size
+2
+!add c
+true
+!add d
+true
+!show
+Document: doc1
+a(1) b(1) c(1) d(1)
+!rem a
+true
+!rem c
+true
+!rem d
+true
+!rem b
+true
+!show
+Document: doc1
+!clear
+!size
+0
+!get 0
+error
+!get 10
+error
+!remi 0
+error
+!remi 20
+error
+!add b
+true
+!show
+Document: doc1
+b(1)
+!add c
+true
+!show
+Document: doc1
+b(1) c(1)
+!show
+Document: doc1
+b(1) c(1)
+!size
+2
+!add b
+true
+!show
+Document: doc1
+b(1) b(1) c(1)
+!add zerowy
+true
+!add pierwszy
+true
+!show
+Document: doc1
+b(1) b(1) c(1) pierwszy(1) zerowy(1)
+!show
+Document: doc1
+b(1) b(1) c(1) pierwszy(1) zerowy(1)
+!size
+5
+!show
+Document: doc1
+b(1) b(1) c(1) pierwszy(1) zerowy(1)
+!show
+Document: doc1
+b(1) b(1) c(1) pierwszy(1) zerowy(1)
+!add b
+true
+!add c
+true
+!show
+Document: doc1
+b(1) b(1) b(1) c(1) c(1) pierwszy(1) zerowy(1)
+!remi 0
+b(1)
+!show
+Document: doc1
+b(1) b(1) c(1) c(1) pierwszy(1) zerowy(1)
+!ha
+END OF EXECUTION

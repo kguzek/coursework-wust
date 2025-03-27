@@ -1,0 +1,49 @@
+go 2
+ld test
+eod
+add b
+add b
+add b
+add b
+add b
+add b
+add b
+add b
+show
+add b
+add b
+add b
+add b
+add b
+add b
+add b
+add b
+add b
+add b
+add b
+add b
+add b
+show
+size
+add c
+add a
+show
+reverse
+remall b
+show
+ch 1
+ld test2
+eod
+add a
+add a
+add x
+add a
+add x
+add b
+show
+ch 0
+addl 1
+show
+ch 1
+show
+ha
