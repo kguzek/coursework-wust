@@ -1,0 +1,31 @@
+name: (CI) [AISD] unit tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+
+      - name: Run tests
+        working-directory: ./aisd
+        run: |
+          for folder in `ls | grep dsaa.lab`; do
+            lab="${folder#dsaa.lab}"
+            echo "\n📜 Testing Lab $lab..."
+            ./test.sh "$lab" -q
+          done
