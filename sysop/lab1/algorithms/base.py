@@ -55,7 +55,7 @@ class Algorithm:
         self.current_time += self.tick_duration
         self.current_process = self.select_current_process()
         for process in self.queue:
-            process.tick(self.current_time, self.tick_duration)
+            process.tick(self.tick_duration)
             if process.wait_time - process.burst_time > self.starvation_threshold:
                 self.starved_processes.add(process)
                 # process.complete(self.current_time)

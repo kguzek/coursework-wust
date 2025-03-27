@@ -19,7 +19,7 @@ class Process:
     #     self.process_start_time = None
     #     self.completion_time = None
 
-    def tick(self, _current_time: int, time=1):
+    def tick(self, time: int = 1):
         """Perform a tick of the process"""
         if not self.is_complete:
             self.wait_time += time

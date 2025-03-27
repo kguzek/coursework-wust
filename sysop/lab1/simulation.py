@@ -1,8 +1,8 @@
 """Simulation module for the CPU scheduling algorithms."""
-
 import random
 import timeit
 from concurrent.futures import as_completed, ProcessPoolExecutor
+from typing import Callable
 
 import matplotlib
 from matplotlib import pyplot as plt
@@ -14,6 +14,10 @@ from .algorithms.sjf import SJF
 from .algorithms.srtf import SRTF
 from .common import generate_processes, SimulationResult, TestCase, DEFAULT_ITERATION_COUNT, DEBUG_MODE
 
+# This will need an installation of
+# source sysop/.venv/bin/activate
+# pip install PyQt5
+matplotlib.use("Qt5Agg")
 TIME_QUANTUM = 2
 MAX_SUMMARY_TEST_DESCRIPTIONS = 3
 
@@ -122,22 +126,21 @@ def present_results_cli(results: dict[str, SimulationResult], execution_time: fl
     return best_result
 
 
-def show_execution_log(plot, algorithm: str, result: SimulationResult):
+def show_execution_log(plot, algorithm: str, result: SimulationResult, process_colors: dict[str, str],
+                       get_color: Callable[[str], str]):
     """Plot a Gantt chart from a simulation run result."""
 
     y_labels = []
 
     average_completion_time, execution_log, starved_processes, processes, process_switches = result
-    all_colors = [color for color in matplotlib.colors.CSS4_COLORS.keys() if
-                  all(c not in color for c in ["white", "black", "grey", "gray", "silver"])]
-    process_colors: dict[str, str] = {"<None>": "black"}
 
     plot.barh(y="<None>", width=0)
 
     for process in processes:
         # wait time bar
-        process_color = all_colors.pop(random.randrange(0, len(all_colors)))
-        process_colors[process.name] = process_color
+        process_color = process_colors.get(process.name)
+        if process_color is None:
+            process_color = get_color(process.name)
         plot.barh(y=process.name, width=process.completion_time - process.arrival_time, left=process.arrival_time,
                   height=0.5, color='lightgrey', zorder=0)
         # burst time bar
@@ -160,11 +163,26 @@ def present_results_gui(results: dict[str, SimulationResult]):
     """Present the results in the graphical user interface."""
     # algorithm_name, (average_completion_time, execution_log, _) = get_best_result(results)
     fig, axes = plt.subplots(2, 2, figsize=(20, 12))
+    all_colors = [color for color in matplotlib.colors.CSS4_COLORS.keys() if
+                  all(c not in color for c in ["white", "black", "grey", "gray", "silver"])]
+    process_colors: dict[str, str] = {"<None>": "black"}
+
+    def get_color(process_name: str):
+        color = all_colors.pop(random.randrange(0, len(all_colors)))
+        process_colors[process_name] = color
+        return color
+
     for i, (algorithm_name, result) in enumerate(results.items()):
         plot = axes[i % 2, i // 2]  # type: ignore
-        show_execution_log(plot, algorithm_name, result)
+        show_execution_log(plot, algorithm_name, result, process_colors, get_color)
     mng = plt.get_current_fig_manager()
-    mng.window.attributes('-zoomed', True)
+    try:
+        mng.window.showMaximized()
+    except AttributeError:
+        try:
+            mng.window.attributes('-zoomed', True)
+        except AttributeError as error:
+            print("Could not maximise window:", error)
     plt.tight_layout()
     plt.show()
 
