@@ -19,8 +19,8 @@ a(1) a(27) a(1) a(2) bcde(400)
 !remall a
 !show
 Document: test
-a(27) a(2) bcde(400)
+bcde(400)
 !size
-3
+1
 !ha
 END OF EXECUTION

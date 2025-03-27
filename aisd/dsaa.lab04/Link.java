@@ -9,7 +9,7 @@ public class Link implements Comparable<Link> {
     }
 
     public Link(String ref, int weight) {
-        this.ref = ref;
+        this.ref = ref.toLowerCase();
         this.weight = weight;
     }
 
@@ -23,7 +23,7 @@ public class Link implements Comparable<Link> {
         }
 //        Cannot use pattern variable because of compatibility with Java 8
         @SuppressWarnings("PatternVariableCanBeUsed") Link link = (Link) other;
-        return ref.equals(link.ref) && weight == link.weight;
+        return ref.equals(link.ref);
     }
 
     @Override
