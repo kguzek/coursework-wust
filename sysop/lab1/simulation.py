@@ -1,4 +1,5 @@
 """Simulation module for the CPU scheduling algorithms."""
+import functools
 import random
 import timeit
 from concurrent.futures import as_completed, ProcessPoolExecutor
@@ -14,10 +15,13 @@ from .algorithms.sjf import SJF
 from .algorithms.srtf import SRTF
 from .common import generate_processes, SimulationResult, TestCase, DEFAULT_ITERATION_COUNT, DEBUG_MODE
 
-# This will need an installation of
-# source sysop/.venv/bin/activate
-# pip install PyQt5
-matplotlib.use("Qt5Agg")
+try:
+    # This will need an installation of
+    # source sysop/.venv/bin/activate
+    # pip install PyQt5
+    matplotlib.use("Qt5Agg")
+except ImportError:
+    print("[warn] failed to use Qt5Agg backend. If this is a graphical environment, please run: pip install PyQt5")
 TIME_QUANTUM = 2
 MAX_SUMMARY_TEST_DESCRIPTIONS = 3
 
@@ -67,7 +71,7 @@ def get_average_result(results: list[SimulationResult]):
 
 
 def repeat_simulation(iterations: int, process_count: int, average_arrival_time: int | None = None,
-                      max_burst_time: int = None, *_) -> dict[str, SimulationResult]:
+                      max_burst_time: int = None, _=None) -> dict[str, SimulationResult]:
     all_results: dict[str, list[SimulationResult]] = {}
 
     with ProcessPoolExecutor() as executor:
@@ -132,7 +136,9 @@ def show_execution_log(plot, algorithm: str, result: SimulationResult, process_c
 
     y_labels = []
 
-    average_completion_time, execution_log, starved_processes, processes, process_switches = result
+    # average_completion_time, execution_log, starved_processes, processes, process_switches = result
+    execution_log = result[1]
+    processes = result[3]
 
     plot.barh(y="<None>", width=0)
 
@@ -148,7 +154,7 @@ def show_execution_log(plot, algorithm: str, result: SimulationResult, process_c
         plot.barh(y=process.name, width=process.burst_time, left=process.arrival_time,
                   height=0.5, color=process_color, edgecolor="black", alpha=0.25, zorder=0)
 
-    for idx, (start, end, process) in enumerate(execution_log):
+    for start, end, process in execution_log:
         name = "<None>" if process is None else process.name
         plot.barh(y=name, width=max(end - start, 1), left=start, height=0.5,
                   color=process_colors[name],
@@ -162,8 +168,8 @@ def show_execution_log(plot, algorithm: str, result: SimulationResult, process_c
 def present_results_gui(results: dict[str, SimulationResult]):
     """Present the results in the graphical user interface."""
     # algorithm_name, (average_completion_time, execution_log, _) = get_best_result(results)
-    fig, axes = plt.subplots(2, 2, figsize=(20, 12))
-    all_colors = [color for color in matplotlib.colors.CSS4_COLORS.keys() if
+    axes = plt.subplots(2, 2, figsize=(20, 12))[1]
+    all_colors = [color for color in matplotlib.colors.CSS4_COLORS if
                   all(c not in color for c in ["white", "black", "grey", "gray", "silver"])]
     process_colors: dict[str, str] = {"<None>": "black"}
 
@@ -190,8 +196,9 @@ def present_results_gui(results: dict[str, SimulationResult]):
 def run_tests(test_cases: list[TestCase]):
     best_algorithms: dict[str, set[int]] = {}
     for test_number, test_case in enumerate(test_cases, start=1):
-        execution_time, results = timeit.timeit(lambda: repeat_simulation(DEFAULT_ITERATION_COUNT, *test_case),
-                                                number=1)
+        execution_time, results = timeit.timeit(
+            functools.partial(repeat_simulation, DEFAULT_ITERATION_COUNT, *test_case),
+            number=1)
         for result in results:
             best_algorithms.setdefault(result, set())
         best_result = present_results_cli(results, execution_time, (test_number, test_case))
