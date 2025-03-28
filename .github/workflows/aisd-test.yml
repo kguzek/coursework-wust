@@ -26,6 +26,7 @@ jobs:
         run: |
           for folder in `ls | grep dsaa.lab`; do
             lab="${folder#dsaa.lab}"
-            echo "\n📜 Testing Lab $lab..."
+            echo
+            echo "📜 Testing Lab $lab..."
             ./test.sh "$lab" -q
           done
