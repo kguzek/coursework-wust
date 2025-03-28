@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  checkout:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
