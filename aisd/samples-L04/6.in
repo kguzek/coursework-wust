@@ -14,4 +14,5 @@ show
 reverse
 addl 0
 show
+add wrong_link(0)
 ha

@@ -24,9 +24,9 @@ public class Document {
         String line = "";
         while (!line.equals("eod")) {
             line = scan.nextLine();
-            String[] words = line.split(" ");
+            String[] words = line.toLowerCase().split(" ");
             for (String word : words) {
-                if (!word.toLowerCase().startsWith(LINK_PREFIX)) {
+                if (!word.startsWith(LINK_PREFIX)) {
                     continue;
                 }
                 String link = word.substring(LINK_PREFIX.length());
