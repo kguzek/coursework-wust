@@ -52,7 +52,8 @@ public class Document {
         }
         String ref = matcher.group(1);
         String idString = matcher.group(2);
-        return idString == null ? new Link(ref) : new Link(ref, Integer.parseInt(idString));
+        int weight = idString == null ? 1 : Integer.parseInt(idString);
+        return weight == 0 ? null : new Link(ref, weight);
     }
 
     @Override
