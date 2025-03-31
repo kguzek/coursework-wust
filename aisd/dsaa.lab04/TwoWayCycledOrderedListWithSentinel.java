@@ -243,7 +243,7 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
     public E remove(int index) {
         throwOnInvalidIndex(index);
         ListIterator<E> it = listIterator();
-        for (int i = 1; i < index; i++) {
+        for (int i = 0; i < index; i++) {
             it.next();
         }
         E result = it.next();

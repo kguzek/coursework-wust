@@ -87,5 +87,7 @@ b(1)
 !show
 Document: doc1
 b(1) b(1) c(1) c(1) pierwszy(1) zerowy(1)
+!remi 4
+pierwszy(1)
 !ha
 END OF EXECUTION
