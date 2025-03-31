@@ -11,7 +11,7 @@ if [ "$1" = "clean" ]; then
     echo "🧹 Removed all saved result files"
     exit 0
   else
-    echo "✖  No files were removed"
+    echo "⭕  No files were removed"
     exit 1
   fi
 fi
@@ -39,9 +39,11 @@ fi
 SAMPLES_DIR="samples-L$ZERO_PADDED"
 
 if [ ! -d "$SAMPLES_DIR" ]; then
-  echo "Tests directory $SAMPLES_DIR is missing"
+  echo "❌  Tests directory $SAMPLES_DIR is missing"
   exit 1
 fi
+
+echo "📜 Testing Lab $ZERO_PADDED..."
 
 mkdir -p "$OUTPUT_DIR"
 rm -rf "${OUTPUT_DIR:?}/${EXERCISE_DIR:?}"
@@ -71,23 +73,23 @@ VIM_DIFF_AVAILABLE=$(vimdiff --version >/dev/null 2>&1 && echo true || echo fals
 for input_file in "${TEST_FILES[@]}"; do
     FILE_WITHOUT_EXTENSION="${input_file%.in}"
     TEST_NUMBER=${FILE_WITHOUT_EXTENSION#./*/}
-    echo "Running test $TEST_NUMBER/$TOTAL_TESTS..."
-    output=$(java -cp "$OUTPUT_DIR" "$EXERCISE_DIR.Main" < "$input_file")
+    echo -n "⌛  Running test $TEST_NUMBER/$TOTAL_TESTS... "
+    output=$(java -cp "$OUTPUT_DIR" "$EXERCISE_DIR.Main" < "$input_file" 2>&1)
     APP_EXIT_CODE=$?
     if [ $APP_EXIT_CODE -ne 0 ]; then
-      echo "🐞  Application execution stopped at:"
+      echo "❌  program finished with exit code $APP_EXIT_CODE"
+      echo "🐞 Application execution stopped at:"
       echo "$output"
-      echo "❌  Test $TEST_NUMBER failed; program finished with exit code $APP_EXIT_CODE"
       FAILED_TESTS+=1
       continue
     fi
     EXPECTED_OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.ans"
     if diff --strip-trailing-cr -qy "$EXPECTED_OUTPUT_FILE" <(echo -n "$output") >/dev/null; then
-      echo "✔️ Test $TEST_NUMBER passed"
+      echo "✔️"
       continue
     fi
     FAILED_TESTS+=1
-    MESSAGE="❌  Test $TEST_NUMBER failed; program output"
+    MESSAGE="❌  program output"
     if [ -z "$output" ]; then
         echo "$MESSAGE was empty"
         continue

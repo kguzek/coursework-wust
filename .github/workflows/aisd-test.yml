@@ -25,8 +25,6 @@ jobs:
         working-directory: ./aisd
         run: |
           for folder in `ls | grep dsaa.lab`; do
-            lab="${folder#dsaa.lab}"
             echo
-            echo "📜 Testing Lab $lab..."
-            ./test.sh "$lab" -q
+            ./test.sh "${folder#dsaa.lab}" -q
           done
