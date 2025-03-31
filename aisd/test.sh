@@ -94,7 +94,7 @@ for input_file in "${TEST_FILES[@]}"; do
     fi
     if [ $QUIET_MODE = false ]; then
       if $VIM_DIFF_AVAILABLE; then
-        vimdiff --not-a-term -c "set diffopt+=iwhite" "$EXPECTED_OUTPUT_FILE" <(echo -n "$output")
+        vimdiff --not-a-term "$EXPECTED_OUTPUT_FILE" <(echo -n "$output")
       else
         git diff --word-diff --no-index "$EXPECTED_OUTPUT_FILE" <(echo -n "$output")
       fi
