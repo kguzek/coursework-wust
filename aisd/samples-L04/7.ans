@@ -55,6 +55,8 @@ true
 !show
 Document: doc1
 b(1) b(1) c(1)
+!get 2
+c
 !add zerowy
 true
 !add pierwszy

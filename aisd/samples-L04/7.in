@@ -26,6 +26,7 @@ show
 size
 add b
 show
+get 2
 add zerowy
 add pierwszy
 show

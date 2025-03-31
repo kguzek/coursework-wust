@@ -44,6 +44,7 @@ show
 ch 0
 addl 1
 show
+get 5
 ch 1
 show
 ha

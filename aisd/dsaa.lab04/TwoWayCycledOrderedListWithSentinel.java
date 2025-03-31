@@ -7,9 +7,9 @@ import java.util.NoSuchElementException;
 public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implements IList<E> {
 
     private class Element {
-        E object;
-        Element next = null;
-        Element prev = null;
+        private final E object;
+        private Element next = null;
+        private Element prev = null;
 
         public Element(E e) {
             this.object = e;
@@ -23,6 +23,9 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
 
         // add element e after this
         public void addAfter(Element elem) {
+            if (elem == this) {
+                return;
+            }
             elem.prev = this;
             elem.next = next;
             next.prev = elem;
@@ -38,7 +41,7 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
 
 
     Element sentinel;
-    int size;
+    private int size;
 
     private class InnerIterator implements Iterator<E> {
         private Element pos;
@@ -185,7 +188,7 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
                 return true;
             }
             if (element.compareTo(elem) < 0) {
-                return false;
+                break;
             }
         }
         return false;
@@ -195,7 +198,7 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
     public E get(int index) {
         throwOnInvalidIndex(index);
         Iterator<E> it = iterator();
-        for (int i = 1; i < index; i++) {
+        for (int i = 0; i < index; i++) {
             it.next();
         }
         return it.next();
@@ -291,6 +294,7 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
             thisCurrent.addAfter(otherCurrent);
             otherCurrent = otherNext;
         }
+        size += other.size;
         other.clear();
     }
 
@@ -306,6 +310,5 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
             }
         }
     }
-
 }
 
