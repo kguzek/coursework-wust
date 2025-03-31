@@ -82,7 +82,7 @@ for input_file in "${TEST_FILES[@]}"; do
       continue
     fi
     EXPECTED_OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.ans"
-    if diff --strip-trailing-cr --ignore-trailing-space -qy "$EXPECTED_OUTPUT_FILE" <(echo "$output") >/dev/null; then
+    if diff --strip-trailing-cr -qy "$EXPECTED_OUTPUT_FILE" <(echo -n "$output") >/dev/null; then
       echo "✔️ Test $TEST_NUMBER passed"
       continue
     fi
@@ -94,9 +94,9 @@ for input_file in "${TEST_FILES[@]}"; do
     fi
     if [ $QUIET_MODE = false ]; then
       if $VIM_DIFF_AVAILABLE; then
-        vimdiff --not-a-term -c "set diffopt+=iwhite" "$EXPECTED_OUTPUT_FILE" <(echo "$output")
+        vimdiff --not-a-term -c "set diffopt+=iwhite" "$EXPECTED_OUTPUT_FILE" <(echo -n "$output")
       else
-        git diff --word-diff --no-index "$EXPECTED_OUTPUT_FILE" <(echo "$output")
+        git diff --word-diff --no-index "$EXPECTED_OUTPUT_FILE" <(echo -n "$output")
       fi
     fi
     if [ $OUTPUT_ON_ERROR = false ]; then
@@ -104,7 +104,7 @@ for input_file in "${TEST_FILES[@]}"; do
       continue
     fi
     OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.$(date '+%Y%m%d%H%M%S%3N').result"
-    echo "$output" > "$OUTPUT_FILE"
+    echo -n "$output" > "$OUTPUT_FILE"
     echo "$MESSAGE written to $OUTPUT_FILE"
 done
 

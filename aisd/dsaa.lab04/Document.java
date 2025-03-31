@@ -62,13 +62,15 @@ public class Document {
         Iterator<Link> iter = link.iterator();
         while (iter.hasNext()) {
             StringBuilder subResult = new StringBuilder("\n");
-            for (int i = 0; i < 10; i++) {
-                Link link = iter.next();
-                subResult.append(link);
+            for (int i = 0; i < 9; i++) {
+                subResult.append(iter.next());
                 if (!iter.hasNext()) {
                     break;
                 }
                 subResult.append(" ");
+            }
+            if (iter.hasNext()) {
+                subResult.append(iter.next());
             }
             result.append(subResult);
         }
@@ -81,17 +83,18 @@ public class Document {
         while (iter.hasNext()) iter.next();
         while (iter.hasPrevious()) {
             StringBuilder subResult = new StringBuilder("\n");
-            for (int i = 0; i < 10; i++) {
-                Link link = iter.previous();
-                subResult.append(link);
+            for (int i = 0; i < 9; i++) {
+                subResult.append(iter.previous());
                 if (!iter.hasPrevious()) {
                     break;
                 }
                 subResult.append(" ");
+            }
+            if (iter.hasPrevious()) {
+                subResult.append(iter.previous());
             }
             result.append(subResult);
         }
         return result.toString();
     }
 }
-
