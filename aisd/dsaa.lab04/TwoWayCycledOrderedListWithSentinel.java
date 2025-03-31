@@ -279,6 +279,7 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
         }
         if (isEmpty()) {
             sentinel = other.sentinel;
+            size = other.size();
             other.clear();
             return;
         }
@@ -294,7 +295,7 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
             thisCurrent.addAfter(otherCurrent);
             otherCurrent = otherNext;
         }
-        size += other.size;
+        size += other.size();
         other.clear();
     }
 
