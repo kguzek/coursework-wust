@@ -2,6 +2,7 @@
 out
 
 __pycache__
+sysop/sysop_*.zip
 
 samples-L*/*.result
 
