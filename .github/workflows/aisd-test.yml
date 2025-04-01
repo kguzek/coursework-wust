@@ -2,6 +2,7 @@ name: (CI) [AISD] unit tests
 
 permissions:
   contents: read
+  checks: write
 
 on:
   push:
