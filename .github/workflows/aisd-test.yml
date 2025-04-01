@@ -14,6 +14,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+          
+      - name: Download Dependencies
+        run: git clone --depth 1 https://github.com/kguzek/dependencies.git dependencies
 
       - name: Setup Java 8
         uses: actions/setup-java@v4
@@ -21,10 +24,24 @@ jobs:
           distribution: 'temurin'
           java-version: '8'
 
-      - name: Run tests
+      - name: Run lab tests
         working-directory: ./aisd
         run: |
           for folder in `ls | grep dsaa.lab`; do
             echo
             ./test.sh "${folder#dsaa.lab}" -q
           done
+
+      - name: Build exercise tests
+        run: |
+          mkdir -p out
+          javac -cp "dependencies/junit/*" -d out $(find aisd -name "*.java")
+          
+      - name: Run exercise tests
+        run: |
+          java -jar dependencies/junit/junit-platform-console-standalone-1.9.3.jar \
+          --class-path out \
+          --scan-class-path
+
+      - name: Report exercise tests
+        uses: mikepenz/action-junit-report@v5
