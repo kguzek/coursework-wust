@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="AiSD-Lab2" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="dsaa.lab02.Main" />
-    <module name="aisd" />
-    <method v="2">
-      <option name="Make" enabled="true" />
-    </method>
-  </configuration>
-</component>
