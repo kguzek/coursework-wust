@@ -19,7 +19,7 @@ jobs:
         run: |
           eval `ssh-agent -s`
           ssh-add - <<< '${{ secrets.DEPENDENCIES_DEPLOY_KEY }}'
-          git clone --depth 1 https://github.com/kguzek/dependencies.git dependencies
+          git clone --depth 1 git@github.com:kguzek/dependencies
 
       - name: Setup Java 8
         uses: actions/setup-java@v4
