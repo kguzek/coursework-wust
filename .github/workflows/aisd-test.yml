@@ -44,7 +44,11 @@ jobs:
         run: |
           java -jar dependencies/junit/junit-platform-console-standalone-1.9.3.jar \
           --class-path out \
-          --scan-class-path
+          --scan-class-path \
+          --reports-dir=aisd/reports
 
       - name: Report exercise tests
         uses: mikepenz/action-junit-report@v5
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: '**/aisd/results/TEST-*.xml'
