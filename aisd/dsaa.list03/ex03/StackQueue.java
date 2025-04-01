@@ -8,12 +8,12 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 
 public class StackQueue<E> implements IQueue<E> {
-    private final Stack<E> stack1 = new Stack<>();
-    private final Stack<E> stack2 = new Stack<>();
+    private final Stack<E> inbox = new Stack<>();
+    private final Stack<E> outbox = new Stack<>();
 
     @Override
     public boolean isEmpty() {
-        return stack1.isEmpty();
+        return inbox.isEmpty() && outbox.isEmpty();
     }
 
     @Override
@@ -24,8 +24,12 @@ public class StackQueue<E> implements IQueue<E> {
     @Override
     public E dequeue() throws EmptyQueueException {
         try {
-            stack1.removeFirst();
-            return stack2.pop();
+            if (outbox.isEmpty()) {
+                while (!inbox.isEmpty()) {
+                    outbox.push(inbox.pop());
+                }
+            }
+            return outbox.pop();
         } catch (NoSuchElementException | EmptyStackException e) {
             throw new EmptyQueueException();
         }
@@ -33,21 +37,16 @@ public class StackQueue<E> implements IQueue<E> {
 
     @Override
     public void enqueue(E elem) {
-        stack1.push(elem);
-        stack2.addFirst(elem);
+        inbox.push(elem);
     }
 
     @Override
     public int size() {
-        return stack1.size();
+        return inbox.size() + outbox.size();
     }
 
     @Override
-    public E first() throws EmptyQueueException {
-        try {
-            return stack2.peek();
-        } catch (EmptyStackException e) {
-            throw new EmptyQueueException();
-        }
+    public E first() {
+        throw new UnsupportedOperationException();
     }
 }

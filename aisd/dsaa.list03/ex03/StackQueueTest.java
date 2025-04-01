@@ -34,11 +34,11 @@ public class StackQueueTest {
     }
 
     @Test
-    void testFirst() throws EmptyQueueException {
+    void testFirstThrows() {
         queue = new StackQueue<>();
         queue.enqueue(1);
         queue.enqueue(2);
-        assertEquals(1, queue.first());
+        assertThrows(UnsupportedOperationException.class, () -> queue.first());
     }
 
     @Test
