@@ -40,6 +40,7 @@ jobs:
         run: |
           mkdir -p out
           javac -cp "dependencies/junit/*" -d out $(find aisd -name "*.java")
+        if: always()
           
       - name: Run exercise tests
         run: |
