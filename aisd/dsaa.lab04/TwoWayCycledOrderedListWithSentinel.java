@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+@SuppressWarnings("DuplicatedCode")
 public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implements IList<E> {
 
     private class Element {
@@ -144,6 +145,7 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
     }
 
     public TwoWayCycledOrderedListWithSentinel() {
+        sentinel = new Element(null);
         clear();
     }
 
@@ -175,7 +177,6 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
 
     @Override
     public void clear() {
-        sentinel = new Element(null);
         sentinel.next = sentinel;
         sentinel.prev = sentinel;
         size = 0;
@@ -278,14 +279,16 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
             return;
         }
         if (isEmpty()) {
+            Element thisSentinel = sentinel;
             sentinel = other.sentinel;
             size = other.size();
+            other.sentinel = thisSentinel;
             other.clear();
             return;
         }
         Element thisCurrent = sentinel;
-        for (Element otherCurrent = other.sentinel.next; otherCurrent != null && otherCurrent != other.sentinel; ) {
-            while (thisCurrent.next != null && thisCurrent.next != sentinel) {
+        for (Element otherCurrent = other.sentinel.next; otherCurrent != other.sentinel; ) {
+            while (thisCurrent.next != sentinel) {
                 if (thisCurrent.next.object.compareTo(otherCurrent.object) > 0) {
                     break;
                 }
