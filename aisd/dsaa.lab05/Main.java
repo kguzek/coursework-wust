@@ -129,7 +129,8 @@ public class Main {
             if (word[0].equalsIgnoreCase("remall") && word.length == 2) {
                 doc[currentDocNo].link.removeAll(new Link(word[1]));
                 continue;
-            }            // addl <indexOfListArray>
+            }
+            // addl <indexOfListArray>
             if (word[0].equalsIgnoreCase("addl") && word.length == 2) {
                 int number = Integer.parseInt(word[1]);
                 doc[currentDocNo].link.add(doc[number].link);
