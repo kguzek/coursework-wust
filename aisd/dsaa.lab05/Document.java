@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings({"DuplicatedCode", "JavaExistingMethodCanBeUsed"})
 public class Document {
     public String name;
     public TwoWayCycledOrderedListWithSentinel<Link> link;
@@ -19,7 +20,6 @@ public class Document {
         load(scan);
     }
 
-    @SuppressWarnings("DuplicatedCode")
     public void load(Scanner scan) {
         String line = "";
         while (!line.equals("eod")) {
@@ -44,7 +44,6 @@ public class Document {
     }
 
     // accepts only small letters, capital letters, digits and '_' (except the first character)
-    @SuppressWarnings("DuplicatedCode")
     static Link createLink(String link) {
         Matcher matcher = LINK_PATTERN.matcher(link);
         if (!matcher.matches()) {
@@ -56,7 +55,6 @@ public class Document {
         return weight == 0 ? null : new Link(ref, weight);
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder("Document: ").append(name);
@@ -78,7 +76,6 @@ public class Document {
         return result.toString();
     }
 
-    @SuppressWarnings("DuplicatedCode")
     public String toStringReverse() {
         StringBuilder result = new StringBuilder("Document: ").append(name);
         ListIterator<Link> iter = link.listIterator();
@@ -152,7 +149,6 @@ public class Document {
             }
             showArray(arr);
         }
-
     }
 
     public void selectSort(int[] arr) {
