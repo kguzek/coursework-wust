@@ -1,4 +1,4 @@
-go 1
+go 2
 ld test
 eod
 add a(2)
@@ -14,4 +14,17 @@ bubblesort
 insertsort
 selectsort
 show
+ch 1
+ld test2
+eod
+add a(12)
+add a(7)
+add a(4)
+add a(2)
+add a
+add a(10)
+add a(9)
+add a(5)
+show
+bubblesort
 ha

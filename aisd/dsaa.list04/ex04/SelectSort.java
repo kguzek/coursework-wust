@@ -15,7 +15,7 @@ public class SelectSort {
             }
             if (minIndex != i) {
                 int minValue = arr[minIndex];
-                System.arraycopy(arr, minIndex + 1, arr, minIndex, i - minIndex);
+                arr[minIndex] = arr[i];
                 arr[i] = minValue;
             }
             showArray(arr);

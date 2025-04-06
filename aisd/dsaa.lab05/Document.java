@@ -162,7 +162,7 @@ public class Document {
             }
             if (maxIndex != i) {
                 int maxValue = arr[maxIndex];
-                System.arraycopy(arr, maxIndex + 1, arr, maxIndex, i - maxIndex);
+                arr[maxIndex] = arr[i];
                 arr[i] = maxValue;
             }
             showArray(arr);
