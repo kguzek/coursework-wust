@@ -1,11 +1,11 @@
-import copy
 from abc import abstractmethod
+from copy import deepcopy
 
-from ..common import get_queued_processes, calculate_average_completion_time, SimulationResult, DEBUG_MODE
-from ..process import Process
+from lab1.common import get_queued_processes, calculate_average_completion_time, SimulationResult, DEBUG_MODE
+from lab1.process import Process
 
 
-class Algorithm:
+class ProcessSchedulingAlgorithm:
     """Base class for scheduling algorithms"""
 
     def __init__(
@@ -22,7 +22,7 @@ class Algorithm:
         self.previous_process = None
         self.queue: list[Process] = []
         self.starved_processes = set()
-        self.processes = copy.deepcopy(processes)
+        self.processes = deepcopy(processes)
         self.tick_duration = tick_duration
         self.starvation_threshold = starvation_threshold
         self.debug_mode = debug_mode

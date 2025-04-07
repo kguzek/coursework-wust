@@ -1,6 +1,6 @@
 import random
 
-from .process import Process
+from lab1.process import Process
 
 type SimulationResult = tuple[float, list[tuple[int, int, Process]], int | float, list[Process], int | float]
 type TestCase = tuple[int, int, int, str]

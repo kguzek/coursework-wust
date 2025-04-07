@@ -1,10 +1,11 @@
 """Main module to run scheduling algorithms"""
 
-import sys
 import timeit
 
-from .common import DEFAULT_ITERATION_COUNT, TestCase
-from .simulation import repeat_simulation, present_results_cli, present_results_gui, run_simulation, run_tests
+import sys
+
+from lab1.common import DEFAULT_ITERATION_COUNT, TestCase
+from lab1.simulation import repeat_simulation, present_results_cli, present_results_gui, run_simulation, run_tests
 
 # Allows capturing the return value of the timeit function
 timeit.template = """

@@ -1,7 +1,7 @@
-from .base import Algorithm
+from lab1.algorithms.base import ProcessSchedulingAlgorithm
 
 
-class FCFS(Algorithm):
+class FCFS(ProcessSchedulingAlgorithm):
     """First-Come, First-Served (FCFS) scheduling algorithm"""
 
     def select_current_process(self):

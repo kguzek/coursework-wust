@@ -2,9 +2,11 @@
   <dictionary name="konrad">
     <words>
       <w>addl</w>
+      <w>fcfs</w>
       <w>insertsort</w>
       <w>remall</w>
       <w>selectsort</w>
+      <w>srtf</w>
     </words>
   </dictionary>
 </component>

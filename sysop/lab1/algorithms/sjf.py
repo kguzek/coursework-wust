@@ -1,7 +1,7 @@
-from .base import Algorithm
+from lab1.algorithms.base import ProcessSchedulingAlgorithm
 
 
-class SJF(Algorithm):
+class SJF(ProcessSchedulingAlgorithm):
     """Shortest Job First (SJF) scheduling algorithm"""
 
     def select_current_process(self):

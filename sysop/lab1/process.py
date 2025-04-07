@@ -51,11 +51,11 @@ class Process:
 
     def __repr__(self):
         name = self.name
-        arrival = self.arrival_time
-        burst = self.burst_time
-        waiting = self.wait_time
+        arrival_time = self.arrival_time
+        burst_time = self.burst_time
+        wait_time = self.wait_time
         remaining = self.remaining_time
         started = self.process_start_time
         completed = self.completion_time
         time = f"completed_in={self.get_completion_time()}" if self.is_complete else f"{remaining=}"
-        return f"<Process {name=} {arrival=} {burst=} {waiting=} {started=} {completed=} {time}>"
+        return f"Process({name=}, {arrival_time=}, {burst_time=}, {wait_time=}, {started=}, {completed=}, {time})"

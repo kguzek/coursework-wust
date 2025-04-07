@@ -1,7 +1,7 @@
-from .base import Algorithm
+from lab1.algorithms.base import ProcessSchedulingAlgorithm
 
 
-class SRTF(Algorithm):
+class SRTF(ProcessSchedulingAlgorithm):
     """Shortest Remaining Time First (SRTF) scheduling algorithm"""
 
     def select_current_process(self):

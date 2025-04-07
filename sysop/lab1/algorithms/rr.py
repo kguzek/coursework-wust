@@ -1,7 +1,7 @@
-from .base import Algorithm
+from lab1.algorithms.base import ProcessSchedulingAlgorithm
 
 
-class RR(Algorithm):
+class RR(ProcessSchedulingAlgorithm):
     """Round Robin (RR) scheduling algorithm"""
 
     def __init__(self, *args, **kwargs):

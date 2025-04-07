@@ -9,11 +9,11 @@ import matplotlib
 from matplotlib import pyplot as plt
 from tabulate import tabulate
 
-from .algorithms.fcfs import FCFS
-from .algorithms.rr import RR
-from .algorithms.sjf import SJF
-from .algorithms.srtf import SRTF
-from .common import generate_processes, SimulationResult, TestCase, DEFAULT_ITERATION_COUNT, DEBUG_MODE
+from lab1.algorithms.fcfs import FCFS
+from lab1.algorithms.rr import RR
+from lab1.algorithms.sjf import SJF
+from lab1.algorithms.srtf import SRTF
+from lab1.common import generate_processes, SimulationResult, TestCase, DEFAULT_ITERATION_COUNT, DEBUG_MODE
 
 try:
     # This will need an installation of
@@ -158,7 +158,7 @@ def show_execution_log(plot, algorithm: str, result: SimulationResult, process_c
         name = "<None>" if process is None else process.name
         plot.barh(y=name, width=max(end - start, 1), left=start, height=0.5,
                   color=process_colors[name],
-                  edgecolor='black', zorder=1)
+                  edgecolor="black", zorder=1)
         y_labels.append(name)
     plot.set_xlabel("Time")
     plot.set_ylabel("Processes")
