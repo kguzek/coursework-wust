@@ -4,6 +4,7 @@ import dsaa.util.IList;
 import dsaa.util.ListSorter;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import static dsaa.util.Common.listToString;
@@ -27,11 +28,16 @@ public class InsertSort<T> implements ListSorter<T> {
         itOuter.previous();
         for (int i = list.size() - 2; itOuter.hasPrevious(); i--) {
             T current = itOuter.previous();
-            int newIndex;
-            for (newIndex = i; newIndex < list.size() - 1; newIndex++) {
-                if (_comparator.compare(current, list.get(newIndex + 1)) > 0) {
+            Iterator<T> itInner = list.iterator();
+            for (int j = 0; j <= i; j++) {
+                itInner.next();
+            }
+            int newIndex = i;
+            while (itInner.hasNext()) {
+                if (_comparator.compare(current, itInner.next()) > 0) {
                     break;
                 }
+                newIndex++;
             }
             if (newIndex != i) {
                 itOuter.remove();
