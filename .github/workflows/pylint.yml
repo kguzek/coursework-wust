@@ -1,4 +1,4 @@
-name: (CI) [*] PyLint
+name: (CI) [SysOp|AM2] PyLint
 
 on: [push]
 
@@ -21,4 +21,8 @@ jobs:
         git ls-files '*requirements.txt' | xargs -I {} pip install -r {}
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        for root in am2 sysop; do
+          pushd "$root"
+          pylint $(git ls-files '*.py')
+          popd
+        done
