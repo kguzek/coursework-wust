@@ -5,6 +5,7 @@ from lab2.request import DiskAccessRequest
 
 
 class DiskAccessAlgorithm:
+    # pylint: disable=too-many-arguments
     def __init__(self, requests: list[DiskAccessRequest], scan: bool = False, cycled: bool = False, *,
                  current_chamber: int = 0, num_chambers: int = 100):
         self.requests = deepcopy(requests)

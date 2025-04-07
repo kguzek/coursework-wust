@@ -21,7 +21,6 @@ jobs:
         git ls-files '*requirements.txt' | xargs -I {} pip install -r {}
     - name: Analysing the code with pylint
       run: |
-        pwd
         ANY_FAILED=false
         for root in am2 sysop; do
           pushd "$root"
