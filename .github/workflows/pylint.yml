@@ -21,8 +21,13 @@ jobs:
         git ls-files '*requirements.txt' | xargs -I {} pip install -r {}
     - name: Analysing the code with pylint
       run: |
+        pwd
+        ANY_FAILED=false
         for root in am2 sysop; do
           pushd "$root"
-          pylint $(git ls-files '*.py')
+          if ! pylint --rcfile=../pylintrc.toml $(git ls-files '*.py'); then
+            ANY_FAILED=true
+          fi
           popd
         done
+        $ANY_FAILED && exit 1
