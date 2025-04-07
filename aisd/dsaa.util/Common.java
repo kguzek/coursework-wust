@@ -15,18 +15,17 @@ public class Common {
         return result;
     }
 
-
-    @SuppressWarnings("DuplicatedCode")
-    public static void showArray(int[] arr) {
-        if (arr.length == 0) {
-            System.out.println();
-            return;
+    public static <E> String listToString(IList<E> list) {
+        StringBuilder bob = new StringBuilder("[");
+        Iterator<E> it = list.iterator();
+        if (it.hasNext()) {
+            bob.append(it.next());
         }
-        StringBuilder bob = new StringBuilder(arr.length * 2 - 1).append(arr[0]);
-        for (int i = 1; i < arr.length; i++) {
-            bob.append(" ").append(arr[i]);
+        while (it.hasNext()) {
+            bob.append(", ").append(it.next());
         }
-        System.out.println(bob);
+        bob.append("]");
+        return bob.toString();
     }
 
     /**

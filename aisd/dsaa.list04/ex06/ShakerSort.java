@@ -1,49 +1,58 @@
 package dsaa.list04.ex06;
 
-import static dsaa.util.Common.showArray;
+import dsaa.util.IList;
+import dsaa.util.ListSorter;
 
-public class ShakerSort {
+import java.util.Comparator;
+
+import static dsaa.util.Common.listToString;
+
+public class ShakerSort<T> implements ListSorter<T> {
     private boolean swapped = false;
+    private final Comparator<T> _comparator;
     private final boolean optimized;
 
-    public ShakerSort() {
-        this(false);
+    public ShakerSort(Comparator<T> comparator) {
+        this(comparator, false);
     }
 
-    public ShakerSort(boolean optimized) {
+    public ShakerSort(Comparator<T> comparator, boolean optimized) {
+        this._comparator = comparator;
         this.optimized = optimized;
     }
 
-    private void trySwap(int[] arr, int idx) {
-        if (arr[idx] > arr[idx - 1]) {
-            int temp = arr[idx];
-            arr[idx] = arr[idx - 1];
-            arr[idx - 1] = temp;
+    private void trySwap(IList<T> list, int idx) {
+        T left = list.get(idx - 1);
+        T right = list.get(idx);
+        if (_comparator.compare(left, right) < 0) {
+            list.set(idx, right);
+            list.set(idx - 1, left);
             swapped = true;
         }
     }
 
-    public void sort(int[] arr) {
-        showArray(arr);
-        for (int i = 0; i < arr.length - 1; i++) {
+    public IList<T> sort(IList<T> list) {
+        System.out.println(listToString(list));
+        for (int i = 0; i < list.size(); i++) {
             swapped = false;
-            int lastIndex = arr.length - 1;
+            int lastIndex = list.size() - 1;
             if (optimized) {
                 lastIndex -= i;
             }
             for (int j = lastIndex; j > i; j--) {
-                trySwap(arr, j);
+                trySwap(list, j);
             }
             if (optimized && !swapped) {
                 break;
             }
             for (int j = i + 2; j < lastIndex; j++) {
-                trySwap(arr, j);
+                trySwap(list, j);
             }
             if (optimized && !swapped) {
                 break;
             }
-            showArray(arr);
+            System.out.println(listToString(list));
         }
+        return list;
     }
 }
