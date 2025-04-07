@@ -8,9 +8,9 @@ import java.util.Comparator;
 import static dsaa.util.Common.listToString;
 
 public class ShakerSort<T> implements ListSorter<T> {
-    private boolean swapped = false;
     private final Comparator<T> _comparator;
     private final boolean optimized;
+    private boolean swapped = false;
 
     public ShakerSort(Comparator<T> comparator) {
         this(comparator, false);
@@ -25,8 +25,8 @@ public class ShakerSort<T> implements ListSorter<T> {
         T left = list.get(idx - 1);
         T right = list.get(idx);
         if (_comparator.compare(left, right) < 0) {
-            list.set(idx, right);
-            list.set(idx - 1, left);
+            list.set(idx, left);
+            list.set(idx - 1, right);
             swapped = true;
         }
     }

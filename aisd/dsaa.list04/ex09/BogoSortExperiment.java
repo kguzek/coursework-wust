@@ -4,10 +4,9 @@ import dsaa.list02.ex02.OneWayLinkedListWithHead;
 import dsaa.util.IList;
 import dsaa.util.ListSorter;
 
-import java.util.Arrays;
 import java.util.Random;
 
-import static dsaa.util.Common.listToArray;
+import static dsaa.util.Common.listToString;
 
 public class BogoSortExperiment {
     private static final Random r = new Random();
@@ -20,10 +19,6 @@ public class BogoSortExperiment {
             list.add(r.nextInt(upperBound));
         }
         return list;
-    }
-
-    private static String listToString(IList<Integer> list) {
-        return Arrays.toString(listToArray(list));
     }
 
     /**

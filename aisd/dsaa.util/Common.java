@@ -1,5 +1,7 @@
 package dsaa.util;
 
+import dsaa.list03.ex05.TwoWayCycledListWithSentinel;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Iterator;
@@ -42,5 +44,13 @@ public class Common {
         // Restore System.out
         System.setOut(originalOut);
         return outputStream.toString().split(System.lineSeparator());
+    }
+
+    public static IList<Integer> arrayToList(int[] input) {
+        final IList<Integer> inputList = new TwoWayCycledListWithSentinel<>();
+        for (int element : input) {
+            inputList.add(element);
+        }
+        return inputList;
     }
 }

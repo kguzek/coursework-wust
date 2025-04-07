@@ -1,20 +1,34 @@
 package dsaa.list04.ex05;
 
-import static dsaa.util.Common.showArray;
+import dsaa.util.IList;
+import dsaa.util.ListSorter;
 
-public class BubbleSort {
-    @SuppressWarnings("DuplicatedCode")
-    public static void sort(int[] arr) {
-        showArray(arr);
-        for (int i = 0; i < arr.length - 1; i++) {
-            for (int j = arr.length - 1; j > i; j--) {
-                if (arr[j] > arr[j - 1]) {
-                    int temp = arr[j];
-                    arr[j] = arr[j - 1];
-                    arr[j - 1] = temp;
+import java.util.Comparator;
+
+import static dsaa.util.Common.listToString;
+
+public class BubbleSort<T> implements ListSorter<T> {
+    private final Comparator<T> _comparator;
+
+    public BubbleSort(Comparator<T> comparator) {
+        _comparator = comparator;
+    }
+
+    public IList<T> sort(IList<T> list) {
+        System.out.println(listToString(list));
+        for (int i = 0; i < list.size() - 1; i++) {
+            T right = list.get(list.size() - 1);
+            for (int j = list.size() - 2; j >= i; j--) {
+                T left = list.get(j);
+                if (_comparator.compare(right, left) > 0) {
+                    list.set(j + 1, left);
+                    list.set(j, right);
+                } else {
+                    right = left;
                 }
             }
-            showArray(arr);
+            System.out.println(listToString(list));
         }
+        return list;
     }
 }
