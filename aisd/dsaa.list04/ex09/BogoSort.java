@@ -1,30 +1,56 @@
 package dsaa.list04.ex09;
 
-import java.util.Random;
+import dsaa.list02.ex02.OneWayLinkedListWithHead;
+import dsaa.util.IList;
+import dsaa.util.ListSorter;
 
-public class BogoSort {
-    private static final Random r = new Random();
+import java.util.*;
 
-    public static void sort(int[] arr) {
-        while (!isSorted(arr)) {
-            shuffle(arr);
-        }
+
+public class BogoSort<T> implements ListSorter<T> {
+    private final Comparator<T> _comparator;
+
+    public BogoSort(Comparator<T> comparator) {
+        _comparator = comparator;
     }
 
-    private static void shuffle(int[] arr) {
-        for (int i = arr.length - 1; i > 0; i--) {
-            int j = r.nextInt(i + 1);
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
+    public IList<T> sort(IList<T> list) {
+        IList<T> sortedList = list;
+        while (!isSorted(sortedList)) {
+            sortedList = shuffle(list);
         }
+        return sortedList;
     }
 
-    private static boolean isSorted(int[] arr) {
-        for (int i = 1; i < arr.length; i++) {
-            if (arr[i - 1] > arr[i]) {
+    private IList<T> shuffle(IList<T> list) {
+        IList<T> shuffledList = new OneWayLinkedListWithHead<>();
+        int size = list.size();
+        if (size <= 1) return list;
+
+        List<T> tempList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            tempList.add(list.get(i));
+        }
+
+        Collections.shuffle(tempList);
+        for (T item : tempList) {
+            shuffledList.add(item);
+        }
+        return shuffledList;
+    }
+
+    private boolean isSorted(IList<T> list) {
+        if (list.isEmpty()) {
+            return true;
+        }
+        Iterator<T> it = list.iterator();
+        T first = it.next();
+        while (it.hasNext()) {
+            T second = it.next();
+            if (_comparator.compare(first, second) > 0) {
                 return false;
             }
+            first = second;
         }
         return true;
     }

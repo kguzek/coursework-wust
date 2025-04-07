@@ -1,0 +1,29 @@
+Sorting array: [67, 80, 93, 94, 56]...
+Sorted array: [56, 67, 80, 93, 94]
+Average time to sort array with 5 elements: 0.0 s
+Sorting array: [62, 58, 12, 47, 32, 33]...
+Sorted array: [12, 32, 33, 47, 58, 62]
+Average time to sort array with 6 elements: 0.0 s
+Sorting array: [55, 36, 73, 47, 73, 6, 14]...
+Sorted array: [6, 14, 36, 47, 55, 73, 73]
+Average time to sort array with 7 elements: 0.0 s
+Sorting array: [72, 52, 47, 14, 73, 68, 27, 51]...
+Sorted array: [14, 27, 47, 51, 52, 68, 72, 73]
+Average time to sort array with 8 elements: 0.1 s
+Sorting array: [9, 15, 10, 85, 77, 11, 53, 33, 77]...
+Sorted array: [9, 10, 11, 15, 33, 53, 77, 77, 85]
+Average time to sort array with 9 elements: 0.2 s
+Sorting array: [48, 5, 76, 39, 8, 90, 22, 51, 7, 51]...
+Sorted array: [5, 7, 8, 22, 39, 48, 51, 51, 76, 90]
+Average time to sort array with 10 elements: 0.8 s
+Sorting array: [82, 36, 87, 56, 68, 25, 73, 10, 38, 52, 34]...
+Sorted array: [10, 25, 34, 36, 38, 52, 56, 68, 73, 82, 87]
+Average time to sort array with 11 elements: 3.2 s
+Sorting array: [58, 28, 57, 89, 0, 26, 1, 66, 91, 57, 94, 80]...
+Sorted array: [0, 1, 26, 28, 57, 57, 58, 66, 80, 89, 91, 94]
+Average time to sort array with 12 elements: 26.3 s
+Sorting array: [34, 71, 86, 72, 7, 55, 70, 24, 32, 85, 52, 91, 31]...
+Sorted array: [7, 24, 31, 32, 34, 52, 55, 70, 71, 72, 85, 86, 91]
+Average time to sort array with 13 elements: 679.8 s
+
+Process finished with exit code 0
