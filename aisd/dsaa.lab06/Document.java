@@ -135,18 +135,13 @@ public class Document {
     public void insertSort(int[] arr) {
         showArray(arr);
         for (int i = arr.length - 2; i >= 0; i--) {
-            int current = arr[i];
-            int newIndex;
-            for (newIndex = i; newIndex < arr.length - 1; newIndex++) {
-                if (current < arr[newIndex + 1]) {
-                    break;
-                }
+            int value = arr[i];
+            int j = i;
+            while (j < arr.length - 1 && value > arr[j + 1]) {
+                arr[j] = arr[j + 1];
+                j++;
             }
-            if (newIndex != i) {
-                // przesuwam połowę posortowanej części w lewo o jedno miejsce
-                System.arraycopy(arr, i + 1, arr, i, newIndex - i);
-                arr[newIndex] = current;
-            }
+            arr[j] = value;
             showArray(arr);
         }
     }
