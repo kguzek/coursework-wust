@@ -167,7 +167,32 @@ public class Document {
 
     public void iterativeMergeSort(int[] arr) {
         showArray(arr);
-        //TODO
+        final int halfLength = arr.length / 2;
+        int subLength = 1;
+        int leftIndex;
+        int rightIndex;
+        int currentIndex;
+        while (subLength < halfLength) {
+            int splitLength = subLength * 2;
+            for (int subArrayIndex = 0; subArrayIndex < splitLength; subArrayIndex++) {
+                leftIndex = subArrayIndex * splitLength;
+                rightIndex = leftIndex;
+                for (currentIndex = leftIndex; currentIndex < splitLength; currentIndex++) {
+                    int temp = arr[currentIndex];
+                    if (arr[leftIndex] < arr[rightIndex]) {
+                        arr[currentIndex] = arr[leftIndex];
+                        arr[leftIndex] = temp;
+                        leftIndex++;
+                    } else {
+                        arr[currentIndex] = arr[rightIndex];
+                        arr[rightIndex] = temp;
+                        rightIndex++;
+                    }
+                }
+            }
+            subLength = splitLength;
+            showArray(arr);
+        }
     }
 
     public void radixSort(int[] arr) {
