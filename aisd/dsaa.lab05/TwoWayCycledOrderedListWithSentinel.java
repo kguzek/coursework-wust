@@ -7,142 +7,8 @@ import java.util.NoSuchElementException;
 @SuppressWarnings("DuplicatedCode")
 public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implements IList<E> {
 
-    private class Element {
-        private final E object;
-        private Element next = null;
-        private Element prev = null;
-
-        public Element(E e) {
-            this.object = e;
-        }
-
-        public Element(E e, Element next, Element prev) {
-            this.object = e;
-            this.next = next;
-            this.prev = prev;
-        }
-
-        // add element e after this
-        public void addAfter(Element elem) {
-            if (elem == this) {
-                return;
-            }
-            elem.prev = this;
-            elem.next = next;
-            next.prev = elem;
-            next = elem;
-        }
-
-        // assert it is NOT a sentinel
-        public void remove() {
-            prev.next = next;
-            next.prev = prev;
-        }
-    }
-
-
     Element sentinel;
     private int size;
-
-    private class InnerIterator implements Iterator<E> {
-        private Element pos;
-
-        public InnerIterator() {
-            pos = sentinel;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return pos.next != null && pos.next != sentinel;
-        }
-
-        @Override
-        public E next() {
-            pos = pos.next;
-            return pos.object;
-        }
-    }
-
-    @SuppressWarnings({"duplicates"})
-    private class InnerListIterator implements ListIterator<E> {
-        private int index = 0;
-        private boolean wasNext = false;
-        private boolean wasPrevious = false;
-        private Element next;
-        private Element prev;
-
-        public InnerListIterator() {
-            next = sentinel.next;
-            prev = sentinel;
-        }
-
-        @Override
-        public void add(E e) {
-            Element newElement = new Element(e, prev, next);
-            (prev == null ? sentinel : prev).addAfter(newElement);
-            prev = newElement;
-            index++;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return next != null && next != sentinel;
-        }
-
-        @Override
-        public E next() {
-            Element current = next;
-            next = next.next;
-            prev = current;
-            index++;
-            wasNext = true;
-            wasPrevious = false;
-            return current.object;
-        }
-
-        @Override
-        public int nextIndex() {
-            return hasNext() ? index + 1 : index;
-        }
-
-        @Override
-        public boolean hasPrevious() {
-            return prev != null && prev != sentinel;
-        }
-
-        @Override
-        public E previous() {
-            Element current = prev;
-            prev = prev.prev;
-            next = current;
-            index--;
-            wasPrevious = true;
-            wasNext = false;
-            return current.object;
-        }
-
-        @Override
-        public int previousIndex() {
-            return hasPrevious() ? index - 1 : -1;
-        }
-
-        @Override
-        public void remove() {
-            if (wasNext) {
-                prev.remove();
-            } else if (wasPrevious) {
-                next.remove();
-            } else {
-                throw new IllegalStateException("remove must be called after next or previous");
-            }
-            size--;
-        }
-
-        @Override
-        public void set(E e) {
-            throw new UnsupportedOperationException();
-        }
-    }
 
     public TwoWayCycledOrderedListWithSentinel() {
         clear();
@@ -310,6 +176,139 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
             } else if (current.compareTo(e) > 0) {
                 return;
             }
+        }
+    }
+
+    private class Element {
+        private final E object;
+        private Element next = null;
+        private Element prev = null;
+
+        public Element(E e) {
+            this.object = e;
+        }
+
+        public Element(E e, Element next, Element prev) {
+            this.object = e;
+            this.next = next;
+            this.prev = prev;
+        }
+
+        // add element e after this
+        public void addAfter(Element elem) {
+            if (elem == this) {
+                return;
+            }
+            elem.prev = this;
+            elem.next = next;
+            next.prev = elem;
+            next = elem;
+        }
+
+        // assert it is NOT a sentinel
+        public void remove() {
+            prev.next = next;
+            next.prev = prev;
+        }
+    }
+
+    private class InnerIterator implements Iterator<E> {
+        private Element pos;
+
+        public InnerIterator() {
+            pos = sentinel;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return pos.next != null && pos.next != sentinel;
+        }
+
+        @Override
+        public E next() {
+            pos = pos.next;
+            return pos.object;
+        }
+    }
+
+    @SuppressWarnings({"duplicates"})
+    private class InnerListIterator implements ListIterator<E> {
+        private int index = 0;
+        private boolean wasNext = false;
+        private boolean wasPrevious = false;
+        private Element next;
+        private Element prev;
+
+        public InnerListIterator() {
+            next = sentinel.next;
+            prev = sentinel;
+        }
+
+        @Override
+        public void add(E e) {
+            Element newElement = new Element(e, prev, next);
+            (prev == null ? sentinel : prev).addAfter(newElement);
+            prev = newElement;
+            index++;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return next != null && next != sentinel;
+        }
+
+        @Override
+        public E next() {
+            Element current = next;
+            next = next.next;
+            prev = current;
+            index++;
+            wasNext = true;
+            wasPrevious = false;
+            return current.object;
+        }
+
+        @Override
+        public int nextIndex() {
+            return hasNext() ? index + 1 : index;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return prev != null && prev != sentinel;
+        }
+
+        @Override
+        public E previous() {
+            Element current = prev;
+            prev = prev.prev;
+            next = current;
+            index--;
+            wasPrevious = true;
+            wasNext = false;
+            return current.object;
+        }
+
+        @Override
+        public int previousIndex() {
+            return hasPrevious() ? index - 1 : -1;
+        }
+
+        @Override
+        public void remove() {
+            if (wasNext) {
+                prev.remove();
+            } else if (wasPrevious) {
+                next.remove();
+            } else {
+                throw new IllegalStateException("remove must be called after next or previous");
+            }
+            size--;
+        }
+
+        @Override
+        public void set(E e) {
+            throw new UnsupportedOperationException();
         }
     }
 }

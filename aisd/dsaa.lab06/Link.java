@@ -5,19 +5,25 @@ public class Link implements Comparable<Link> {
     public int weight;
 
     public Link(String ref) {
-        this.ref = ref;
-        weight = 1;
+        this(ref, 1);
     }
 
     public Link(String ref, int weight) {
-        this.ref = ref;
+        this.ref = ref.toLowerCase();
         this.weight = weight;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        //TODO
-        return false;
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Link)) {
+            return false;
+        }
+//        Cannot use pattern variable because of compatibility with Java 8
+        @SuppressWarnings("PatternVariableCanBeUsed") Link link = (Link) other;
+        return ref.equals(link.ref);
     }
 
     @Override
@@ -27,8 +33,6 @@ public class Link implements Comparable<Link> {
 
     @Override
     public int compareTo(Link another) {
-        //TODO
-        return 0;
+        return ref.compareTo(another.ref);
     }
 }
-

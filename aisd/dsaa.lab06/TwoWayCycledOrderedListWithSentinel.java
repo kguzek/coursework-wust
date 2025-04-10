@@ -9,6 +9,7 @@ public class TwoWayCycledOrderedListWithSentinel<E extends Comparable<E>> implem
 
     Element sentinel;
     private int size;
+
     public TwoWayCycledOrderedListWithSentinel() {
         clear();
     }
