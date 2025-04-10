@@ -1,4 +1,4 @@
-package dsaa.lab05;
+package dsaa.lab06;
 
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -6,11 +6,11 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("DuplicatedCode")
+@SuppressWarnings({"DuplicatedCode", "JavaExistingMethodCanBeUsed"})
 public class Document {
-    private static final String LINK_PREFIX = "link=";
     private static final Pattern LINK_ID_PATTERN = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*$");
     private static final Pattern LINK_PATTERN = Pattern.compile("^([a-zA-Z][a-zA-Z0-9_]*)(?:\\(([0-9]+)\\))?$");
+    private static final String LINK_PREFIX = "link=";
     public String name;
     public TwoWayCycledOrderedListWithSentinel<Link> link;
 
@@ -168,4 +168,17 @@ public class Document {
             showArray(arr);
         }
     }
+
+
+    public void iterativeMergeSort(int[] arr) {
+        showArray(arr);
+        //TODO
+    }
+
+    public void radixSort(int[] arr) {
+        showArray(arr);
+        //TODO
+    }
+
+
 }
