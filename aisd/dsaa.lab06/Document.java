@@ -3,6 +3,7 @@ package dsaa.lab06;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -167,38 +168,65 @@ public class Document {
 
     public void iterativeMergeSort(int[] arr) {
         showArray(arr);
-        final int halfLength = arr.length / 2;
         int subLength = 1;
         int leftIndex;
         int rightIndex;
         int currentIndex;
-        while (subLength < halfLength) {
-            int splitLength = subLength * 2;
-            for (int subArrayIndex = 0; subArrayIndex < splitLength; subArrayIndex++) {
-                leftIndex = subArrayIndex * splitLength;
-                rightIndex = leftIndex;
-                for (currentIndex = leftIndex; currentIndex < splitLength; currentIndex++) {
-                    int temp = arr[currentIndex];
-                    if (arr[leftIndex] < arr[rightIndex]) {
-                        arr[currentIndex] = arr[leftIndex];
-                        arr[leftIndex] = temp;
-                        leftIndex++;
+        int[] tempArray = new int[arr.length];
+        while (subLength < arr.length) {
+            final int splitLength = subLength * 2;
+            for (int blockIndex = 0; blockIndex * splitLength < arr.length; blockIndex++) {
+                final int blockStart = blockIndex * splitLength;
+                final int endIndex = Math.min(arr.length, blockStart + splitLength);
+                leftIndex = blockStart;
+                rightIndex = leftIndex + subLength;
+                for (currentIndex = blockStart; currentIndex < endIndex; currentIndex++) {
+                    int relativeIndex = currentIndex - blockStart;
+                    if (rightIndex >= endIndex || leftIndex < endIndex && arr[leftIndex] < arr[rightIndex]) {
+                        tempArray[relativeIndex] = arr[leftIndex++];
                     } else {
-                        arr[currentIndex] = arr[rightIndex];
-                        arr[rightIndex] = temp;
-                        rightIndex++;
+                        tempArray[relativeIndex] = arr[rightIndex++];
                     }
                 }
+                System.arraycopy(tempArray, 0, arr, blockStart, endIndex - blockStart);
             }
             subLength = splitLength;
             showArray(arr);
         }
     }
 
-    public void radixSort(int[] arr) {
+    @SuppressWarnings("SameParameterValue")
+    private void countSort(int[] arr, int d, Function<Integer, Integer> mapper) {
+        int[] occurrences = new int[d];
+        for (int j : arr) {
+            occurrences[mapper.apply(j)]++;
+        }
+        int[] startIndexes = new int[d];
+        for (int i = 1; i < occurrences.length; i++) {
+            int previousIndex = i - 1;
+            startIndexes[i] = startIndexes[previousIndex] + occurrences[previousIndex];
+        }
+        int[] result = new int[arr.length];
+        for (int j : arr) {
+            int mappedResult = mapper.apply(j);
+            result[startIndexes[mappedResult]++] = j;
+        }
+        System.arraycopy(result, 0, arr, 0, arr.length);
         showArray(arr);
-        //TODO
     }
 
-
+    public void radixSort(int[] arr) {
+        showArray(arr);
+        int maxValue = 0;
+        for (int j : arr) {
+            if (j > maxValue) {
+                maxValue = j;
+            }
+        }
+        for (int radix = 1; radix <= maxValue; radix *= 10) {
+            final int finalRadix = radix;
+            countSort(arr, 10, (Integer a) -> (a / finalRadix % 10));
+        }
+        showArray(arr);
+    }
 }
