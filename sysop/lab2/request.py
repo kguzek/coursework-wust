@@ -15,6 +15,9 @@ class DiskAccessRequest:
         if self.deadline <= 0:
             self.failed = True
 
+    def is_pending(self) -> bool:
+        return self.time_completed is None and not self.failed
+
     def complete(self, current_time: int):
         self.time_completed = current_time
 
