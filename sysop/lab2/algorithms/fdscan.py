@@ -4,9 +4,6 @@ from lab2.request import DiskAccessRequest
 
 
 class FDScan(DeadlineStrategy, Scan):
-    def tick_chamber(self):
-        self.tick_chamber_simple()
-
     def tick_chamber_with_deadline(self):
         self.tick_chamber_simple()
 

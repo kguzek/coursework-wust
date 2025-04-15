@@ -3,11 +3,13 @@ from copy import deepcopy
 
 from lab2.request import DiskAccessRequest
 
+STARTING_CHAMBER = 1
+
 
 class DiskAccessAlgorithm:
     # pylint: disable=too-many-arguments
     def __init__(self, requests: list[DiskAccessRequest], scan: bool = False, cycled: bool = False, *,
-                 current_chamber: int = 0, num_chambers: int = 100):
+                 current_chamber: int = STARTING_CHAMBER, num_chambers: int = 100):
         self.requests = deepcopy(requests)
         self.queue: list[DiskAccessRequest] = []
         self.current_time: int = 0
@@ -64,9 +66,9 @@ class DiskAccessAlgorithm:
                 request.arrival_time <= self.current_time and request.is_pending()]
 
     def tick(self) -> None:
+        self.queue = self.generate_queue()
+        self.queue.sort(key=lambda queued_request: queued_request.arrival_time)
         if self.current_request is None:
-            self.queue = self.generate_queue()
-            self.queue.sort(key=lambda queued_request: queued_request.arrival_time)
             self.current_request = self.select_target_request()
         self.tick_chamber()
         requests_to_complete = self.queue if self.scan else [self.current_request]
@@ -78,3 +80,22 @@ class DiskAccessAlgorithm:
         for request in self.requests:
             request.tick(self.current_time)
         self.current_time += 1
+
+    def collect_results(self):
+        results = {
+            "time": self.current_time,
+            "requests": len(self.requests),
+            "completed": 0,
+            "failed": 0,
+            "average_wait_time": 0,
+        }
+        total_wait_time = 0
+        for request in self.requests:
+            if request.failed:
+                results["failed"] += 1
+            elif request.time_completed is not None:
+                results["completed"] += 1
+                total_wait_time += request.time_completed - request.arrival_time
+        if results["completed"] > 0:
+            results["average_wait_time"] = total_wait_time / results["completed"]
+        return results

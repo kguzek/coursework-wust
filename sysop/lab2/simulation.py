@@ -1,5 +1,7 @@
 import random
 
+from tabulate import tabulate
+
 from lab2.algorithms.base import DiskAccessAlgorithm
 from lab2.algorithms.cscan import CScan
 from lab2.algorithms.edf import EDF
@@ -11,7 +13,7 @@ from lab2.request import DiskAccessRequest
 from lab2.visualizer import SimulationVisualizer
 
 DEFAULT_REQUEST_COUNT: int = 30
-DEFAULT_DEADLINE_PROBABILITY: float = 0.3
+DEFAULT_DEADLINE_PROBABILITY: float = 0.5
 DEFAULT_CHAMBER_TOTAL: int = 100
 MINIMUM_DEADLINE: int = 30
 
@@ -34,10 +36,15 @@ def generate_requests(request_count: int, total_chambers: int, average_arrival_t
 
 def run_algorithms(algorithms: dict[str, DiskAccessAlgorithm]) -> None:
     visualizer = SimulationVisualizer()
+    all_results = []
     for name, algorithm in algorithms.items():
         print("Running algorithm", name)
         visualizer.run(algorithm)
-        print("Finish time:", algorithm.current_time)
+        results = algorithm.collect_results()
+        all_results.append([name, *results.values()])
+    print(tabulate(all_results,
+                   headers=["Algorithm", "Time taken", "Total Requests", "Completed Requests", "Failed Requests",
+                            "Average Wait Time"], tablefmt="fancy_grid"))
 
 
 def run_simulation_with_deadlines(total_chambers: int = DEFAULT_CHAMBER_TOTAL,

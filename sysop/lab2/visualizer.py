@@ -2,8 +2,8 @@ import pygame
 
 from lab2.algorithms.base import DiskAccessAlgorithm
 
-WIN_WIDTH = 1800
-WIN_HEIGHT = 1000
+WIN_WIDTH = 1200
+WIN_HEIGHT = 900
 CHAMBER_SIZE = 10
 FPS = 15
 COLORS = {
@@ -59,7 +59,8 @@ class SimulationVisualizer:
         head_pos = int(algorithm.current_chamber * spacing)
         needle_width = 10
         needle_height = 40
-        pygame.draw.rect(self.win, COLORS['head'],
+        color = COLORS['head'] if algorithm.current_request is None else COLORS['current']
+        pygame.draw.rect(self.win, color,
                          (
                              head_pos - needle_width // 2, CHAMBER_HEIGHT - needle_height // 2,
                              needle_width,

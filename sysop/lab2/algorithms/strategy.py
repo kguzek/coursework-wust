@@ -18,12 +18,10 @@ class DeadlineStrategy(DiskAccessAlgorithm):
         """Selects the target request based on its deadline."""
 
     def tick_chamber(self):
-        if self.has_pending_deadlines():
-            self.tick_chamber_with_deadline()
-        else:
-            # TODO: fix fd-scan stopping with pending requests without deadline
-            # print("Ticking super chamber")
+        if self.current_request is None:
             super().tick_chamber()
+        else:
+            self.tick_chamber_with_deadline()
 
     def select_target_request(self) -> DiskAccessRequest | None:
         self.scan = True
