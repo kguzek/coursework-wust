@@ -2,8 +2,8 @@ import pygame
 
 from lab2.algorithms.base import DiskAccessAlgorithm
 
-WIN_WIDTH = 600
-WIN_HEIGHT = 400
+WIN_WIDTH = 1800
+WIN_HEIGHT = 1000
 CHAMBER_SIZE = 10
 FPS = 15
 COLORS = {
@@ -18,6 +18,14 @@ COLORS = {
 }
 
 CHAMBER_HEIGHT = WIN_HEIGHT * 3 // 4
+
+
+def generate_queue_with_failed_requests(algorithm: DiskAccessAlgorithm):
+    queue = algorithm.generate_queue()
+    for request in algorithm.requests:
+        if request.failed:
+            queue.append(request)
+    return queue
 
 
 class SimulationVisualizer:
@@ -47,12 +55,15 @@ class SimulationVisualizer:
                              (mark_pos, CHAMBER_HEIGHT + 10), 1)
 
     def draw_needle(self, algorithm: DiskAccessAlgorithm):
-        head_pos = int((algorithm.current_chamber / algorithm.num_chambers) * WIN_WIDTH)
-        needle_width = 4
-        needle_height = 20
+        spacing = WIN_WIDTH / algorithm.num_chambers
+        head_pos = int(algorithm.current_chamber * spacing)
+        needle_width = 10
+        needle_height = 40
         pygame.draw.rect(self.win, COLORS['head'],
-                         (head_pos - needle_width // 2, CHAMBER_HEIGHT - needle_height // 2, needle_width,
-                          needle_height))
+                         (
+                             head_pos - needle_width // 2, CHAMBER_HEIGHT - needle_height // 2,
+                             needle_width,
+                             needle_height))
 
     def draw_fps_buttons(self):
         # +
@@ -70,7 +81,7 @@ class SimulationVisualizer:
         self.win.blit(fps_text, (WIN_WIDTH - 200, 30))
 
     def draw_requests(self, algorithm: DiskAccessAlgorithm):
-        for request in reversed(algorithm.generate_queue()):
+        for request in reversed(generate_queue_with_failed_requests(algorithm)):
             position = (request.chamber / algorithm.num_chambers) * WIN_WIDTH
             y_pos = WIN_HEIGHT * 3 // 4
 
@@ -84,7 +95,10 @@ class SimulationVisualizer:
                 color = COLORS['request']
 
             pygame.draw.circle(self.win, color,
-                               (int(position), y_pos), 5)
+                               (int(position), y_pos), 8)
+            if request.deadline > -1:
+                deadline_text = self.font.render(str(request.deadline), True, color)
+                self.win.blit(deadline_text, (int(position) - deadline_text.get_width() // 2, y_pos + 30))
 
     def draw_stats(self, algorithm: DiskAccessAlgorithm):
         stats = [
@@ -113,7 +127,7 @@ class SimulationVisualizer:
         self.draw_fps_buttons()
 
         pygame.display.flip()
-        self.clock.tick(FPS)
+        self.clock.tick(self.fps)
         # pygame.display.update()
 
     def run(self, algorithm: DiskAccessAlgorithm):
@@ -132,11 +146,8 @@ class SimulationVisualizer:
                 # Update simulation
                 if algorithm.has_pending_requests():
                     algorithm.tick()
+                    self.draw_state(algorithm)
                 else:
                     running = False
-                while algorithm.has_pending_requests():
-                    algorithm.tick()
-                    self.draw_state(algorithm)
         except KeyboardInterrupt:
             print("Received Ctrl+C")
-        pygame.quit()
