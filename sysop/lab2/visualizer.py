@@ -2,10 +2,11 @@ import pygame
 
 from lab2.algorithms.base import DiskAccessAlgorithm
 
-WIN_WIDTH = 1200
+WIN_WIDTH = 1600
 WIN_HEIGHT = 900
 CHAMBER_SIZE = 10
-FPS = 15
+STARTING_FPS = 120
+
 COLORS = {
     'background': (0, 0, 0),
     'chamber': (100, 100, 100),
@@ -35,7 +36,7 @@ class SimulationVisualizer:
         pygame.display.set_caption("Systemy Operacyjne | Lab 2")
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont('Arial', 18)
-        self.fps = FPS
+        self.fps = STARTING_FPS
         self.button_font = pygame.font.SysFont('Arial', 24)
         self.button_inc = pygame.Rect(WIN_WIDTH - 120, 20, 40, 40)
         self.button_dec = pygame.Rect(WIN_WIDTH - 60, 20, 40, 40)

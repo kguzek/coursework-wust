@@ -12,9 +12,9 @@ from lab2.algorithms.sstf import SSTF
 from lab2.request import DiskAccessRequest
 from lab2.visualizer import SimulationVisualizer
 
-DEFAULT_REQUEST_COUNT: int = 30
+DEFAULT_REQUEST_COUNT: int = 60
 DEFAULT_DEADLINE_PROBABILITY: float = 0.5
-DEFAULT_CHAMBER_TOTAL: int = 100
+DEFAULT_CHAMBER_TOTAL: int = 200
 MINIMUM_DEADLINE: int = 30
 
 
