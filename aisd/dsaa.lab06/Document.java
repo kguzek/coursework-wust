@@ -12,6 +12,7 @@ public class Document {
     private static final Pattern LINK_ID_PATTERN = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*$");
     private static final Pattern LINK_PATTERN = Pattern.compile("^([a-zA-Z][a-zA-Z0-9_]*)(?:\\(([0-9]+)\\))?$");
     private static final String LINK_PREFIX = "link=";
+    private static final int MAX_RADIX_VALUE = 999;
     public String name;
     public TwoWayCycledOrderedListWithSentinel<Link> link;
 
@@ -182,9 +183,11 @@ public class Document {
                 rightIndex = leftIndex + subLength;
                 for (currentIndex = blockStart; currentIndex < endIndex; currentIndex++) {
                     int relativeIndex = currentIndex - blockStart;
-                    if (rightIndex >= endIndex || leftIndex < endIndex && arr[leftIndex] < arr[rightIndex]) {
+                    boolean leftValid = leftIndex < blockStart + subLength;
+                    boolean rightValid = rightIndex < endIndex;
+                    if (leftValid && (!rightValid || arr[leftIndex] < arr[rightIndex])) {
                         tempArray[relativeIndex] = arr[leftIndex++];
-                    } else {
+                    } else if (rightValid) {
                         tempArray[relativeIndex] = arr[rightIndex++];
                     }
                 }
@@ -217,7 +220,7 @@ public class Document {
 
     public void radixSort(int[] arr) {
         showArray(arr);
-        int maxValue = 0;
+        int maxValue = MAX_RADIX_VALUE;
         for (int j : arr) {
             if (j > maxValue) {
                 maxValue = j;
@@ -227,6 +230,6 @@ public class Document {
             final int finalRadix = radix;
             countSort(arr, 10, (Integer a) -> (a / finalRadix % 10));
         }
-        showArray(arr);
+//        showArray(arr);
     }
 }
