@@ -80,14 +80,13 @@ public class ArrayList<E> extends AbstractList<E> {
     }
 
     @Override
-    public boolean add(int index, E value) {
+    public void add(int index, E value) {
         if (index < 0 || index > _size) throw new IndexOutOfBoundsException();
         ensureCapacity(_size + 1);
         if (index != _size)
             System.arraycopy(_array, index, _array, index + 1, _size - index);
         _array[index] = value;
         _size++;
-        return false;
     }
 
     @Override

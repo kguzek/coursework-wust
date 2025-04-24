@@ -8,32 +8,6 @@ import java.util.NoSuchElementException;
 
 public class OneWayLinkedListWithHead<E> extends AbstractList<E> {
     int _size = 0;
-
-    private class Element {
-        private E value;
-        private Element next;
-
-        public E getValue() {
-            return value;
-        }
-
-        public void setValue(E value) {
-            this.value = value;
-        }
-
-        public Element getNext() {
-            return next;
-        }
-
-        public void setNext(Element next) {
-            this.next = next;
-        }
-
-        Element(E data) {
-            this.value = data;
-        }
-    }
-
     Element head = null;
 
     public OneWayLinkedListWithHead() {
@@ -80,7 +54,7 @@ public class OneWayLinkedListWithHead<E> extends AbstractList<E> {
     }
 
     @Override
-    public boolean add(int index, E data) {
+    public void add(int index, E data) {
         if (index < 0) throw new IndexOutOfBoundsException();
         Element newElem = new Element(data);
         if (index == 0) {
@@ -92,7 +66,6 @@ public class OneWayLinkedListWithHead<E> extends AbstractList<E> {
             actElem.setNext(newElem);
         }
         _size++;
-        return true;
     }
 
     @Override
@@ -169,6 +142,41 @@ public class OneWayLinkedListWithHead<E> extends AbstractList<E> {
         return _size;
     }
 
+    @Override
+    public Iterator<E> iterator() {
+        return new InnerIterator();
+    }
+
+    @Override
+    public ListIterator<E> listIterator() {
+        throw new UnsupportedOperationException();
+    }
+
+    private class Element {
+        private E value;
+        private Element next;
+
+        Element(E data) {
+            this.value = data;
+        }
+
+        public E getValue() {
+            return value;
+        }
+
+        public void setValue(E value) {
+            this.value = value;
+        }
+
+        public Element getNext() {
+            return next;
+        }
+
+        public void setNext(Element next) {
+            this.next = next;
+        }
+    }
+
     private class InnerIterator implements Iterator<E> {
         private Element nextElement;
         private Element currentElement;
@@ -211,15 +219,5 @@ public class OneWayLinkedListWithHead<E> extends AbstractList<E> {
             wasNext = false;
             _size--;
         }
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return new InnerIterator();
-    }
-
-    @Override
-    public ListIterator<E> listIterator() {
-        throw new UnsupportedOperationException();
     }
 }
