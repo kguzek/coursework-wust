@@ -11,17 +11,18 @@ public class Document implements IWithName {
     private static final Pattern LINK_ID_PATTERN = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*$");
     private static final Pattern LINK_PATTERN = Pattern.compile("^([a-zA-Z][a-zA-Z0-9_]*)(?:\\(([0-9]+)\\))?$");
     private static final String LINK_PREFIX = "link=";
+    private final static int[] PRIME_CYCLE = new int[]{7, 11, 13, 17, 19};
+    private final static int MOD_VALUE = 100000000;
     public String name;
     public TwoWayCycledOrderedListWithSentinel<Link> link;
 
     public Document(String name) {
-        // TODO
-        this(name, new Scanner(System.in));
+        this.name = name.toLowerCase();
+        link = new TwoWayCycledOrderedListWithSentinel<>();
     }
 
     public Document(String name, Scanner scan) {
-        this.name = name.toLowerCase();
-        link = new TwoWayCycledOrderedListWithSentinel<>();
+        this(name);
         load(scan);
     }
 
@@ -43,7 +44,7 @@ public class Document implements IWithName {
 
     public void load(Scanner scan) {
         String line = "";
-        while (!line.equals("eod")) {
+        while (scan.hasNext() && !line.equals("eod")) {
             line = scan.nextLine();
             String[] words = line.toLowerCase().split(" ");
             for (String word : words) {
@@ -104,10 +105,32 @@ public class Document implements IWithName {
 
     @Override
     public String getName() {
-        // TODO
-        return null;
+        return name;
     }
 
+    public boolean equals(Document other) {
+        return name.equals(other.name);
+    }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Document) {
+            return equals((Document) other);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        if (name.isEmpty()) {
+            return 0;
+        }
+        int sum = Character.hashCode(name.charAt(0));
+        for (int i = 1; i < name.length(); i++) {
+            char c = name.charAt(i);
+            int multiplier = PRIME_CYCLE[(i - 1) % PRIME_CYCLE.length];
+            sum = (sum * multiplier + Character.hashCode(c)) % MOD_VALUE;
+        }
+        return sum;
+    }
 }
-
