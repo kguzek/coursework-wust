@@ -1,6 +1,6 @@
 package dsaa.list06.ex01;
 
-import dsaa.util.IList;
+import dsaa.lab07.IList;
 
 import java.util.Comparator;
 import java.util.ListIterator;

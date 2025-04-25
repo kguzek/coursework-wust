@@ -17,7 +17,7 @@ public class Common {
         return result;
     }
 
-    public static <E> String listToString(IList<E> list) {
+    public static <E> String listToString(Iterable<E> list) {
         StringBuilder bob = new StringBuilder("[");
         Iterator<E> it = list.iterator();
         if (it.hasNext()) {

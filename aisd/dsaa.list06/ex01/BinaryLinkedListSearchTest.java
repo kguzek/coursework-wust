@@ -1,8 +1,8 @@
 package dsaa.list06.ex01;
 
 
+import dsaa.lab07.IList;
 import dsaa.lab07.TwoWayCycledOrderedListWithSentinel;
-import dsaa.util.IList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +15,7 @@ public class BinaryLinkedListSearchTest {
 
     @BeforeEach
     public void before() {
-        // noinspection unchecked
-        list = (IList<Integer>) new TwoWayCycledOrderedListWithSentinel<Integer>();
+        list = new TwoWayCycledOrderedListWithSentinel<>();
     }
 
     @Test
