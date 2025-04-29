@@ -1,6 +1,6 @@
 # Systemy Operacyjne — Laboratoria
 
-## Zadanie 2 - Zgłoszenia Odczytu z Dysku
+## Zadanie 2 — Zgłoszenia Odczytu z Dysku
 
 ### Wymagane przypadki testowe
 
