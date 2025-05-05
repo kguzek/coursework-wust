@@ -19,6 +19,6 @@ public class InsertSequenceBST {
         tree.delete(12);
         tree.delete(1);
         tree.delete(20);
-        tree.print();
+        System.out.println(tree);
     }
 }

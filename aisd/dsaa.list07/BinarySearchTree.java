@@ -11,10 +11,6 @@ public class BinarySearchTree<T> {
         _root = null;
     }
 
-    private static void printWhitespaces(int count) {
-        for (int i = 0; i < count; i++)
-            System.out.print(" ");
-    }
 
     static <Y> boolean allElementsAreNull(Iterable<Y> iterable) {
         for (Y elem : iterable) {
@@ -24,8 +20,11 @@ public class BinarySearchTree<T> {
         return true;
     }
 
-    public void print() {
-        printNodeInternal(Collections.singletonList(_root), 1, getHeight());
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        printNodeInternal(Collections.singletonList(_root), 1, getHeight(), sb);
+        return sb.toString();
     }
 
     public T find(T elem) {
@@ -146,63 +145,54 @@ public class BinarySearchTree<T> {
         return node;
     }
 
-    @Override
-    public String toString() {
-        if (_root == null) return "<empty tree>";
-        final int NODE_WIDTH = 2;
-        int width = NODE_WIDTH + (int) Math.pow(2, getHeight());
-        return "";
-    }
-
-    private void printNodeInternal(List<Node> nodes, int level, int maxLevel) {
+    private void printNodeInternal(List<Node> nodes, int level, int maxLevel, StringBuilder sb) {
         if (nodes.isEmpty() || allElementsAreNull(nodes)) return;
-
 
         int floor = maxLevel - level;
         int edgeLines = (int) Math.pow(2, (Math.max(floor - 1, 0)));
         int firstSpaces = (int) Math.pow(2, (floor)) - 1;
         int betweenSpaces = (int) Math.pow(2, (floor + 1)) - 1;
 
-        BinarySearchTree.printWhitespaces(firstSpaces);
+        sb.append(" ".repeat(firstSpaces));
 
         List<Node> newNodes = new ArrayList<>();
         for (Node node : nodes) {
             if (node != null) {
-                System.out.print(node.value);
+                sb.append(node.value);
                 newNodes.add(node.left);
                 newNodes.add(node.right);
             } else {
                 newNodes.add(null);
                 newNodes.add(null);
-                System.out.print(" ");
+                sb.append(" ");
             }
 
-            BinarySearchTree.printWhitespaces(betweenSpaces);
+            sb.append(" ".repeat(betweenSpaces));
         }
-        System.out.println();
+        sb.append("\n");
 
         for (int i = 1; i <= edgeLines; i++) {
             for (Node node : nodes) {
-                BinarySearchTree.printWhitespaces(firstSpaces - i);
+                if (firstSpaces > i) sb.append(" ".repeat(firstSpaces - i));
                 if (node == null) {
-                    BinarySearchTree.printWhitespaces(edgeLines + edgeLines + i + 1);
+                    sb.append(" ".repeat(edgeLines + edgeLines + i + 1));
                     continue;
                 }
 
-                if (node.left != null) System.out.print("/");
-                else BinarySearchTree.printWhitespaces(1);
+                if (node.left != null) sb.append("/");
+                else sb.append(" ");
 
-                BinarySearchTree.printWhitespaces(i + i - 1);
+                sb.append(" ".repeat(i * 2 - 1));
 
-                if (node.right != null) System.out.print("\\");
-                else BinarySearchTree.printWhitespaces(1);
+                if (node.right != null) sb.append("\\");
+                else sb.append(" ");
 
-                BinarySearchTree.printWhitespaces(edgeLines + edgeLines - i);
+                sb.append(" ".repeat(edgeLines + edgeLines - i));
             }
 
-            System.out.println();
+            sb.append("\n");
         }
-        printNodeInternal(newNodes, level + 1, maxLevel);
+        printNodeInternal(newNodes, level + 1, maxLevel, sb);
     }
 
     public int getHeight() {
