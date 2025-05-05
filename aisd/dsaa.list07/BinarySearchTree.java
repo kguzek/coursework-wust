@@ -145,6 +145,17 @@ public class BinarySearchTree<T> {
         return node;
     }
 
+    void repeatSpace(StringBuilder sb, int count) {
+        repeatString(sb, count, ' ');
+    }
+
+    void repeatString(StringBuilder sb, int count, char c) {
+        //noinspection StringRepeatCanBeUsed
+        for (int i = 0; i < count; i++) {
+            sb.append(c);
+        }
+    }
+
     private void printNodeInternal(List<Node> nodes, int level, int maxLevel, StringBuilder sb) {
         if (nodes.isEmpty() || allElementsAreNull(nodes)) return;
 
@@ -153,7 +164,7 @@ public class BinarySearchTree<T> {
         int firstSpaces = (int) Math.pow(2, (floor)) - 1;
         int betweenSpaces = (int) Math.pow(2, (floor + 1)) - 1;
 
-        sb.append(" ".repeat(firstSpaces));
+        repeatSpace(sb, firstSpaces);
 
         List<Node> newNodes = new ArrayList<>();
         for (Node node : nodes) {
@@ -167,27 +178,27 @@ public class BinarySearchTree<T> {
                 sb.append(" ");
             }
 
-            sb.append(" ".repeat(betweenSpaces));
+            repeatSpace(sb, betweenSpaces);
         }
         sb.append("\n");
 
         for (int i = 1; i <= edgeLines; i++) {
             for (Node node : nodes) {
-                if (firstSpaces > i) sb.append(" ".repeat(firstSpaces - i));
+                if (firstSpaces > i) repeatSpace(sb, firstSpaces - i);
                 if (node == null) {
-                    sb.append(" ".repeat(edgeLines + edgeLines + i + 1));
+                    repeatSpace(sb, edgeLines + edgeLines + i + 1);
                     continue;
                 }
 
                 if (node.left != null) sb.append("/");
                 else sb.append(" ");
 
-                sb.append(" ".repeat(i * 2 - 1));
+                repeatSpace(sb, i * 2 - 1);
 
                 if (node.right != null) sb.append("\\");
                 else sb.append(" ");
 
-                sb.append(" ".repeat(edgeLines + edgeLines - i));
+                repeatSpace(sb, edgeLines + edgeLines - i);
             }
 
             sb.append("\n");

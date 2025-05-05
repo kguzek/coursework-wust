@@ -22,7 +22,6 @@ public class HashTable {
 
 
     public HashTable(int initCapacity, double maxLF) {
-        //TODO
         this.maxLoadFactor = maxLF;
         capacity = initCapacity;
         // noinspection unchecked
