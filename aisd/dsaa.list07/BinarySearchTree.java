@@ -1,7 +1,6 @@
 package dsaa.list07;
 
-import java.util.Comparator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class BinarySearchTree<T> {
     private final Comparator<T> _comparator;
@@ -10,6 +9,23 @@ public class BinarySearchTree<T> {
     public BinarySearchTree(Comparator<T> comp) {
         _comparator = comp;
         _root = null;
+    }
+
+    private static void printWhitespaces(int count) {
+        for (int i = 0; i < count; i++)
+            System.out.print(" ");
+    }
+
+    static <Y> boolean allElementsAreNull(Iterable<Y> iterable) {
+        for (Y elem : iterable) {
+            if (elem == null) continue;
+            return false;
+        }
+        return true;
+    }
+
+    public void print() {
+        printNodeInternal(Collections.singletonList(_root), 1, getHeight());
     }
 
     public T find(T elem) {
@@ -45,10 +61,18 @@ public class BinarySearchTree<T> {
         return node;
     }
 
-    protected T delete(T elem, T value) {
-        Node node = search(value);
+    private T deleteWrapper(T elem, Node node) {
         Node deletedNode = delete(elem, node);
         return deletedNode == null ? null : deletedNode.value;
+    }
+
+    public T delete(T elem, T value) {
+        return deleteWrapper(elem, search(value));
+    }
+
+    @SuppressWarnings("UnusedReturnValue")
+    public T delete(T value) {
+        return deleteWrapper(value, _root);
     }
 
     private Node detachMin(Node del, Node node) {
@@ -121,6 +145,79 @@ public class BinarySearchTree<T> {
         while (node.right != null) node = node.right;
         return node;
     }
+
+    @Override
+    public String toString() {
+        if (_root == null) return "<empty tree>";
+        final int NODE_WIDTH = 2;
+        int width = NODE_WIDTH + (int) Math.pow(2, getHeight());
+        return "";
+    }
+
+    private void printNodeInternal(List<Node> nodes, int level, int maxLevel) {
+        if (nodes.isEmpty() || allElementsAreNull(nodes)) return;
+
+
+        int floor = maxLevel - level;
+        int edgeLines = (int) Math.pow(2, (Math.max(floor - 1, 0)));
+        int firstSpaces = (int) Math.pow(2, (floor)) - 1;
+        int betweenSpaces = (int) Math.pow(2, (floor + 1)) - 1;
+
+        BinarySearchTree.printWhitespaces(firstSpaces);
+
+        List<Node> newNodes = new ArrayList<>();
+        for (Node node : nodes) {
+            if (node != null) {
+                System.out.print(node.value);
+                newNodes.add(node.left);
+                newNodes.add(node.right);
+            } else {
+                newNodes.add(null);
+                newNodes.add(null);
+                System.out.print(" ");
+            }
+
+            BinarySearchTree.printWhitespaces(betweenSpaces);
+        }
+        System.out.println();
+
+        for (int i = 1; i <= edgeLines; i++) {
+            for (Node node : nodes) {
+                BinarySearchTree.printWhitespaces(firstSpaces - i);
+                if (node == null) {
+                    BinarySearchTree.printWhitespaces(edgeLines + edgeLines + i + 1);
+                    continue;
+                }
+
+                if (node.left != null) System.out.print("/");
+                else BinarySearchTree.printWhitespaces(1);
+
+                BinarySearchTree.printWhitespaces(i + i - 1);
+
+                if (node.right != null) System.out.print("\\");
+                else BinarySearchTree.printWhitespaces(1);
+
+                BinarySearchTree.printWhitespaces(edgeLines + edgeLines - i);
+            }
+
+            System.out.println();
+        }
+        printNodeInternal(newNodes, level + 1, maxLevel);
+    }
+
+    public int getHeight() {
+        return getHeight(_root);
+    }
+
+    private int getHeight(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        int leftHeight = getHeight(node.left);
+        int rightHeight = getHeight(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
 
     class Node {
         T value; // element
