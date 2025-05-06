@@ -4,3 +4,4 @@
 
 - użyć LRU
 - wiele ciągów odwołań
+- dzielenie proporcjonalne do ilości ramek
