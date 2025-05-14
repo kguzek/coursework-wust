@@ -3,6 +3,7 @@
 	input_source: .asciiz "Input the source text: "
 	input_offset: .asciiz "Input the shift offset: "
 	invalid_operation: .asciiz "Invalid operation"
+	newline: .asciiz "\n"
 	
 	source_text: .space 17
 	source_size: .word 16
@@ -35,8 +36,23 @@ main:
 	beq $t0, 1, encode
 	j error_operator
 decode:
-	j end
+	sub $t2, $zero, $t2
+	j shift
 encode:
+	j shift
+shift:
+	li $t3, 0
+	lw $t4, source_size
+	loop:
+		beq $t3, $t4, loop_end
+		lb $t5, source_text($t3)
+		add $t5, $t5, $t2
+		add $t3, $t3, 1
+		j loop
+	loop_end:
+	li $v0, 4
+	la $a0, source_text
+	syscall
 	j end
 error_operator:
 	li $v0, 4
