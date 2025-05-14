@@ -2,6 +2,7 @@ package dsaa.lab08;
 
 import java.util.NoSuchElementException;
 
+@SuppressWarnings("SizeReplaceableByIsEmpty")
 public class BST<T extends Comparable<T>> {
     private Node root = null;
     private int size = 0;
@@ -29,11 +30,13 @@ public class BST<T extends Comparable<T>> {
 
     public T successor(T elem) {
         Node node = findNode(elem);
-        if (node == null) throw new NoSuchElementException();
+        if (node == null)
+            throw new NoSuchElementException();
 
         if (node.right != null) {
             Node next = node.right;
-            while (next.left != null) next = next.left;
+            while (next.left != null)
+                next = next.left;
             return next.value;
         } else {
             Node parent = node.parent;
@@ -71,8 +74,10 @@ public class BST<T extends Comparable<T>> {
         Node newNode = new Node(elem);
         newNode.parent = parent;
 
-        if (elem.compareTo(parent.value) < 0) parent.left = newNode;
-        else parent.right = newNode;
+        if (elem.compareTo(parent.value) < 0)
+            parent.left = newNode;
+        else
+            parent.right = newNode;
         size++;
         return true;
 
@@ -80,7 +85,8 @@ public class BST<T extends Comparable<T>> {
 
     public T remove(T value) {
         Node node = findNode(value);
-        if (node == null) return null;
+        if (node == null)
+            return null;
 
         T oldValue = node.value;
 
@@ -94,14 +100,19 @@ public class BST<T extends Comparable<T>> {
 
         if (pullUp != null) {
             pullUp.parent = node.parent;
-            if (node.parent == null) root = pullUp;
-            else if (node == node.parent.left) node.parent.left = pullUp;
-            else node.parent.right = pullUp;
+            if (node.parent == null)
+                root = pullUp;
+            else if (node == node.parent.left)
+                node.parent.left = pullUp;
+            else
+                node.parent.right = pullUp;
         } else if (node.parent == null) {
             root = null;
         } else {
-            if (node == node.parent.left) node.parent.left = null;
-            else node.parent.right = null;
+            if (node == node.parent.left)
+                node.parent.left = null;
+            else
+                node.parent.right = null;
         }
 
         size--;
@@ -143,7 +154,8 @@ public class BST<T extends Comparable<T>> {
     public String toStringInOrder() {
         StringBuilder sb = new StringBuilder();
         inOrder(root, sb);
-        if (sb.isEmpty()) return " ";
+        if (sb.length() == 0)
+            return " ";
         return sb.toString().trim().substring(0, sb.length() - 2);
     }
 
@@ -152,7 +164,7 @@ public class BST<T extends Comparable<T>> {
 
         preOrder(root, sb);
 
-        if (sb.isEmpty()) {
+        if (sb.length() == 0) {
             return " ";
         }
 
@@ -164,7 +176,7 @@ public class BST<T extends Comparable<T>> {
 
         postOrder(root, sb);
 
-        if (sb.isEmpty()) {
+        if (sb.length() == 0) {
             return " ";
         }
 
@@ -209,6 +221,5 @@ public class BST<T extends Comparable<T>> {
             value = v;
         }
     }
-
 
 }
