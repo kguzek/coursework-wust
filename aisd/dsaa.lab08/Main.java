@@ -120,7 +120,15 @@ public class Main {
                 System.out.print(hashTable);
                 continue;
             }
-
+            // ooc - count nodes with only one child
+            if (word[0].equalsIgnoreCase("ooc") && word.length == 1) {
+                if (currentDoc == null) {
+                    System.out.println("no current document");
+                } else {
+                    System.out.println(currentDoc.link.onlyOneChild());
+                }
+                continue;
+            }
             System.out.println("Wrong command");
         }
         System.out.println("END OF EXECUTION");

@@ -30,13 +30,11 @@ public class BST<T extends Comparable<T>> {
 
     public T successor(T elem) {
         Node node = findNode(elem);
-        if (node == null)
-            throw new NoSuchElementException();
+        if (node == null) throw new NoSuchElementException();
 
         if (node.right != null) {
             Node next = node.right;
-            while (next.left != null)
-                next = next.left;
+            while (next.left != null) next = next.left;
             return next.value;
         } else {
             Node parent = node.parent;
@@ -74,10 +72,8 @@ public class BST<T extends Comparable<T>> {
         Node newNode = new Node(elem);
         newNode.parent = parent;
 
-        if (elem.compareTo(parent.value) < 0)
-            parent.left = newNode;
-        else
-            parent.right = newNode;
+        if (elem.compareTo(parent.value) < 0) parent.left = newNode;
+        else parent.right = newNode;
         size++;
         return true;
 
@@ -85,8 +81,7 @@ public class BST<T extends Comparable<T>> {
 
     public T remove(T value) {
         Node node = findNode(value);
-        if (node == null)
-            return null;
+        if (node == null) return null;
 
         T oldValue = node.value;
 
@@ -100,19 +95,14 @@ public class BST<T extends Comparable<T>> {
 
         if (pullUp != null) {
             pullUp.parent = node.parent;
-            if (node.parent == null)
-                root = pullUp;
-            else if (node == node.parent.left)
-                node.parent.left = pullUp;
-            else
-                node.parent.right = pullUp;
+            if (node.parent == null) root = pullUp;
+            else if (node == node.parent.left) node.parent.left = pullUp;
+            else node.parent.right = pullUp;
         } else if (node.parent == null) {
             root = null;
         } else {
-            if (node == node.parent.left)
-                node.parent.left = null;
-            else
-                node.parent.right = null;
+            if (node == node.parent.left) node.parent.left = null;
+            else node.parent.right = null;
         }
 
         size--;
@@ -154,8 +144,7 @@ public class BST<T extends Comparable<T>> {
     public String toStringInOrder() {
         StringBuilder sb = new StringBuilder();
         inOrder(root, sb);
-        if (sb.length() == 0)
-            return " ";
+        if (sb.length() == 0) return " ";
         return sb.toString().trim().substring(0, sb.length() - 2);
     }
 
@@ -213,6 +202,18 @@ public class BST<T extends Comparable<T>> {
         sb.append(node.value).append(", ");
     }
 
+    private int onlyOneChild(Node node) {
+        if (node == null || (node.left == null && node.right == null)) {
+            return 0;
+        }
+        int sum = onlyOneChild(node.left) + onlyOneChild(node.right);
+        return node.left == null || node.right == null ? (sum + 1) : sum;
+    }
+
+    public int onlyOneChild() {
+        return onlyOneChild(root);
+    }
+
     private class Node {
         T value;
         Node left, right, parent;
@@ -221,5 +222,4 @@ public class BST<T extends Comparable<T>> {
             value = v;
         }
     }
-
 }
