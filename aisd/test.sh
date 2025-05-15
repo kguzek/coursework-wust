@@ -28,7 +28,7 @@ if [ -z "$EXERCISE" ] || ! [[ "$EXERCISE" =~ ^[0-9]+$ ]]; then
     echo "Usage: $0 [exercise number] [-q/--quiet] [-s/$SAVE_OUTPUT_ARG] or $0 clean";
     exit 1;
 fi
-ZERO_PADDED=$(printf "%02d" "$EXERCISE")
+ZERO_PADDED=$(printf "%02d" "${EXERCISE#0}")
 EXERCISE_DIR="dsaa.lab$ZERO_PADDED"
 
 if [ ! -d "$EXERCISE_DIR" ]; then
