@@ -40,19 +40,15 @@ class AlgorithmTestCase(NamedTuple):
 
 
 def generate_simulation_case(seed: int | None = None) -> List[AlgorithmTestCase]:
-    """
-    Generate a deeper simulation configuration to better stress test algorithm differences.
-    """
     if seed is not None:
         random.seed(seed)
 
-    # More varied and higher scale
     num_pages = random.choice([20, 50, 100])
     memory_ratios = [0.1, 0.25, 0.5]  # memory as % of num_pages
     memory_size = int(num_pages * random.choice(memory_ratios))
     memory_size = max(2, min(memory_size, num_pages))
 
-    request_count = random.choice([200, 500, 1000])  # longer sequences to observe long-term behavior
+    request_count = random.choice([200, 500, 1000])
 
     config = SimulationConfig(
         num_pages=num_pages,

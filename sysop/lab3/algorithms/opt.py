@@ -2,6 +2,10 @@ from lab3.algorithms.base import PageAllocationAlgorithm
 
 
 class OPT(PageAllocationAlgorithm):
+    def __init__(self, memory_size: int):
+        super().__init__(memory_size)
+        self.sequence: list[int] = []
+
     def run(self, sequence: list[int]) -> None:
         self.sequence = sequence
         super().run(sequence)
