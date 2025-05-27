@@ -1,5 +1,5 @@
 import random
-from typing import NamedTuple, List, Generator
+from typing import List, NamedTuple
 
 from lab3.algorithms.alru import ALRU
 from lab3.algorithms.base import PageAllocationAlgorithm
@@ -15,27 +15,15 @@ class SimulationConfig(NamedTuple):
     request_count: int
 
 
-class PageRequestSequence:
-    def __init__(self, config: SimulationConfig, seed: int | None = None):
-        self.config = config
-        if seed is not None:
-            random.seed(seed)
-        self.sequence: List[int] = self._generate_sequence()
-
-    def _generate_sequence(self) -> List[int]:
-        return [random.randint(0, self.config.num_pages - 1)
-                for _ in range(self.config.request_count)]
-
-    def __iter__(self) -> Generator[int, None, None]:
-        yield from self.sequence
-
-    def __repr__(self) -> str:
-        return f"<PageRequestSequence {self.sequence[:10]}{'...' if len(self.sequence) > 10 else ''}>"
+def generate_page_request_sequence(config: SimulationConfig, seed: int | None = None) -> List[int]:
+    if seed is not None:
+        random.seed(seed)
+    return [random.randint(0, config.num_pages - 1) for _ in range(config.request_count)]
 
 
 class AlgorithmTestCase(NamedTuple):
     config: SimulationConfig
-    sequence: PageRequestSequence
+    sequence: List[int]
     algorithm: PageAllocationAlgorithm
 
 
@@ -55,7 +43,7 @@ def generate_simulation_case(seed: int | None = None) -> List[AlgorithmTestCase]
         memory_size=memory_size,
         request_count=request_count
     )
-    sequence = PageRequestSequence(config=config, seed=seed)
+    sequence = generate_page_request_sequence(config, seed=seed)
 
     return [
         AlgorithmTestCase(config=config, sequence=sequence, algorithm=algorithm(config.memory_size))

@@ -9,7 +9,7 @@ class ALRU(PageAllocationAlgorithm):
         self.queue: deque[int] = deque()
         self.reference_bits: dict[int, bool] = {}
 
-    def _process_page(self, page: int) -> None:
+    def _process_page(self, page: int, *args) -> None:
         if page in self.memory:
             self.page_hits += 1
             self.reference_bits[page] = True

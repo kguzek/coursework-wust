@@ -6,7 +6,10 @@ from lab3.simulation import run_all_simulations, SimulationResult
 
 
 def print_results(results: List[SimulationResult]):
-    headers = ["Algorithm", "Page Faults", "Page Hits", "Requests", "Memory", "Pages"]
+    headers = [
+        "Algorithm", "Page Faults", "Page Hits", "Requests", "Memory", "Pages",
+        "Thrashing Events", "Locality Rate", "Avg. PFF"
+    ]
     table = [
         [
             r.algorithm,
@@ -14,7 +17,10 @@ def print_results(results: List[SimulationResult]):
             r.page_hits,
             r.requests,
             r.memory,
-            r.pages
+            r.pages,
+            r.thrashing_events,
+            f"{r.locality_rate:.2f}",
+            f"{r.average_pff:.2f}",
         ]
         for r in results
     ]

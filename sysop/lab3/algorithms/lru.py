@@ -6,7 +6,7 @@ class LRU(PageAllocationAlgorithm):
         super().__init__(memory_size)
         self.recently_used: list[int] = []
 
-    def _process_page(self, page: int) -> None:
+    def _process_page(self, page: int, *args) -> None:
         if page in self.memory:
             self.page_hits += 1
             self.recently_used.remove(page)
