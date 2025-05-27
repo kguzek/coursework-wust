@@ -1,7 +1,12 @@
 from dataclasses import dataclass
 from typing import List
 
-from lab3.config import generate_simulation_case, AlgorithmTestCase
+from lab3.algorithms.alru import ALRU
+from lab3.algorithms.fifo import FIFO
+from lab3.algorithms.lru import LRU
+from lab3.algorithms.opt import OPT
+from lab3.algorithms.rand import Rand
+from lab3.config import generate_simulation_config, AlgorithmTestCase, generate_page_request_sequence
 
 
 @dataclass
@@ -37,5 +42,10 @@ def run_test_case(test_case: AlgorithmTestCase) -> SimulationResult:
 
 
 def run_all_simulations() -> List[SimulationResult]:
-    cases = generate_simulation_case()
+    config = generate_simulation_config()
+    sequence = generate_page_request_sequence(config)
+    cases = [
+        AlgorithmTestCase(config=config, sequence=sequence, algorithm=algorithm(config.memory_size))
+        for algorithm in [ALRU, FIFO, LRU, OPT, Rand]
+    ]
     return [run_test_case(case) for case in cases]
