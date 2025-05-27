@@ -53,6 +53,7 @@ def populate_tables(setup: tuple[str, list[str]], faults_list: list[int], hits_l
     axs[1, 0].grid(True, axis="y")
 
     # Frame Allocation Pie Chart
+    # pylint: disable=no-member
     axs[1, 1].pie(frames_list, labels=pids, autopct="%1.1f%%", startangle=140, colors=plt.cm.tab20.colors)
     axs[1, 1].set_title("Frame Allocation per Process")
 
