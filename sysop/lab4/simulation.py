@@ -1,5 +1,3 @@
-from typing import List, Dict
-
 from tabulate import tabulate
 
 from lab3.algorithms.lru import LRU
@@ -19,12 +17,12 @@ STRATEGIES = {
 
 
 class MultiProcessLRUSimulator:
-    def __init__(self, total_frames: int, processes: Dict[str, List[int]], strategy: FrameAllocationStrategy):
+    def __init__(self, total_frames: int, processes: dict[str, list[int]], strategy: FrameAllocationStrategy):
         self.total_frames = total_frames
         self.processes = processes
         self.strategy = strategy
         self.allocations = self.strategy.allocate(total_frames, processes)
-        self.algorithms: Dict[str, LRU] = {}
+        self.algorithms: dict[str, LRU] = {}
 
     def run(self):
         results = {}

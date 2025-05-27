@@ -1,4 +1,4 @@
-from typing import List, Callable
+from typing import Callable
 
 from tabulate import tabulate
 
@@ -16,7 +16,7 @@ class TestCase:
             name: str,
             description: str,
             memory_size: int,
-            sequence: List[int],
+            sequence: list[int],
     ):
         self.name = name
         self.description = description
@@ -27,7 +27,7 @@ class TestCase:
         return f"<TestCase {self.name} (memory={self.memory_size}, seq_len={len(self.sequence)})>"
 
 
-def run_testcase_for_algos(testcase: TestCase, algos: List[Callable[[int], PageAllocationAlgorithm]]):
+def run_testcase_for_algos(testcase: TestCase, algos: list[Callable[[int], PageAllocationAlgorithm]]):
     print(f"Test case: {testcase.name}")
     print(f"Description: {testcase.description}")
     print(f"Memory size: {testcase.memory_size}")

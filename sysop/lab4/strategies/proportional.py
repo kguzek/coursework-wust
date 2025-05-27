@@ -1,10 +1,8 @@
-from typing import Dict, List
-
 from lab4.strategies.base import FrameAllocationStrategy
 
 
 class ProportionalAllocation(FrameAllocationStrategy):
-    def allocate(self, total_frames: int, processes: Dict[str, List[int]]) -> Dict[str, int]:
+    def allocate(self, total_frames: int, processes: dict[str, list[int]]) -> dict[str, int]:
         total_requests = sum(len(seq) for seq in processes.values())
         allocations = {pid: max(1, round(len(seq) / total_requests * total_frames)) for pid, seq in processes.items()}
         while sum(allocations.values()) > total_frames:

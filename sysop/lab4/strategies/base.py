@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List
 
 
 def normalize_allocations(allocations, total_frames):
@@ -17,5 +16,5 @@ def normalize_allocations(allocations, total_frames):
 
 class FrameAllocationStrategy(ABC):
     @abstractmethod
-    def allocate(self, total_frames: int, processes: Dict[str, List[int]]) -> Dict[str, int]:
+    def allocate(self, total_frames: int, processes: dict[str, list[int]]) -> dict[str, int]:
         pass

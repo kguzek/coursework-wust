@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from collections import deque
-from typing import List
 
 
 class PageAllocationAlgorithm(ABC):
@@ -12,10 +11,10 @@ class PageAllocationAlgorithm(ABC):
             pff_window: int = 5,
     ):
         self.memory_size = memory_size
-        self.memory: List[int] = []
+        self.memory: list[int] = []
         self.page_faults = 0
         self.page_hits = 0
-        self.history: List[List[int]] = []
+        self.history: list[list[int]] = []
 
         self.thrashing_window = thrashing_window
         self.thrashing_threshold = thrashing_threshold
@@ -27,11 +26,11 @@ class PageAllocationAlgorithm(ABC):
 
         self.pff_window = pff_window
         self.pff_faults = deque(maxlen=pff_window)
-        self.pff_values: List[float] = []
+        self.pff_values: list[float] = []
 
-        self.sequence: List[int] = []
+        self.sequence: list[int] = []
 
-    def run(self, sequence: List[int]) -> None:
+    def run(self, sequence: list[int]) -> None:
         """
         Run the page replacement algorithm on the given sequence.
         """

@@ -1,11 +1,9 @@
-from typing import List
-
 from tabulate import tabulate
 
 from lab3.simulation import run_all_simulations, SimulationResult
 
 
-def print_results(results: List[SimulationResult]):
+def print_results(results: list[SimulationResult]):
     headers = [
         "Algorithm", "Page Faults", "Page Hits", "Requests", "Memory", "Pages",
         "Thrashing Events", "Locality Rate", "Avg. PFF"

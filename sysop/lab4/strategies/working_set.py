@@ -1,10 +1,8 @@
-from typing import Dict, List
-
 from lab4.strategies.base import FrameAllocationStrategy, normalize_allocations
 
 
 class WorkingSetModel(FrameAllocationStrategy):
-    def allocate(self, total_frames: int, processes: Dict[str, List[int]]) -> Dict[str, int]:
+    def allocate(self, total_frames: int, processes: dict[str, list[int]]) -> dict[str, int]:
         working_sets = {
             pid: len(set(seq[-50:])) if len(seq) >= 50 else len(set(seq))
             for pid, seq in processes.items()

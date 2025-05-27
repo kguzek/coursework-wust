@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 from lab3.algorithms.alru import ALRU
 from lab3.algorithms.fifo import FIFO
@@ -41,7 +40,7 @@ def run_test_case(test_case: AlgorithmTestCase) -> SimulationResult:
     )
 
 
-def run_all_simulations() -> List[SimulationResult]:
+def run_all_simulations() -> list[SimulationResult]:
     config = generate_simulation_config()
     sequence = generate_page_request_sequence(config)
     cases = [

@@ -1,10 +1,8 @@
-from typing import Dict, List
-
 from lab4.strategies.base import FrameAllocationStrategy, normalize_allocations
 
 
 class PageFaultFrequency(FrameAllocationStrategy):
-    def allocate(self, total_frames: int, processes: Dict[str, List[int]]) -> Dict[str, int]:
+    def allocate(self, total_frames: int, processes: dict[str, list[int]]) -> dict[str, int]:
         simulated_faults = {
             pid: len(set(seq[:min(50, len(seq))]))  # mockup simulation of the first 50 requests
             for pid, seq in processes.items()

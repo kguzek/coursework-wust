@@ -1,5 +1,5 @@
 import random
-from typing import List, NamedTuple
+from typing import NamedTuple
 
 from lab3.algorithms.base import PageAllocationAlgorithm
 
@@ -10,7 +10,7 @@ class SimulationConfig(NamedTuple):
     request_count: int
 
 
-def generate_page_request_sequence(config: SimulationConfig, seed: int | None = None) -> List[int]:
+def generate_page_request_sequence(config: SimulationConfig, seed: int | None = None) -> list[int]:
     if seed is not None:
         random.seed(seed)
     return [random.randint(0, config.num_pages - 1) for _ in range(config.request_count)]
@@ -18,7 +18,7 @@ def generate_page_request_sequence(config: SimulationConfig, seed: int | None = 
 
 class AlgorithmTestCase(NamedTuple):
     config: SimulationConfig
-    sequence: List[int]
+    sequence: list[int]
     algorithm: PageAllocationAlgorithm
 
 
