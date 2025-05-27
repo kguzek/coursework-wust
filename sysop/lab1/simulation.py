@@ -2,8 +2,8 @@
 import functools
 import random
 import timeit
+from collections.abc import Callable
 from concurrent.futures import as_completed, ProcessPoolExecutor
-from typing import Callable
 
 import matplotlib
 from matplotlib import pyplot as plt
