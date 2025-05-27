@@ -76,6 +76,7 @@ class PageAllocationAlgorithm(ABC):
         `current_index` is the position in the sequence, used by algorithms like OPT.
         """
 
+    # pylint: disable=unused-argument
     def _process_page_hit(self, page: int) -> None:
         """Called when the page is already in memory. Can be overridden if `super()._process_page()` is called."""
         self.page_hits += 1

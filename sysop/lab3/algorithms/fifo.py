@@ -8,7 +8,7 @@ class FIFO(PageAllocationAlgorithm):
         super().__init__(memory_size)
         self.queue = deque()
 
-    def _process_page(self, page: int, *args) -> None:
+    def _process_page(self, page: int, *unused_args) -> None:
         if len(self.memory) < self.memory_size:
             self.memory.append(page)
             self.queue.append(page)

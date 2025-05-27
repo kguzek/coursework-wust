@@ -11,7 +11,7 @@ class LRU(PageAllocationAlgorithm):
         self.recently_used.remove(page)
         self.recently_used.append(page)
 
-    def _process_page(self, page: int, *args) -> None:
+    def _process_page(self, page: int, *unused_args) -> None:
         if len(self.memory) < self.memory_size:
             self.memory.append(page)
             self.recently_used.append(page)

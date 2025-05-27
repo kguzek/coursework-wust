@@ -13,7 +13,7 @@ class ALRU(PageAllocationAlgorithm):
         super()._process_page_hit(page)
         self.reference_bits[page] = True
 
-    def _process_page(self, page: int, *args) -> None:
+    def _process_page(self, page: int, *unused_args) -> None:
         if len(self.memory) < self.memory_size:
             self.memory.append(page)
             self.queue.append(page)
