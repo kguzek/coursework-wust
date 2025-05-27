@@ -3,11 +3,6 @@ from lab3.algorithms.base import PageAllocationAlgorithm
 
 class OPT(PageAllocationAlgorithm):
     def _process_page(self, page: int, current_index: int) -> None:
-        if page in self.memory:
-            self.page_hits += 1
-            return
-
-        self.page_faults += 1
         if len(self.memory) < self.memory_size:
             self.memory.append(page)
             return

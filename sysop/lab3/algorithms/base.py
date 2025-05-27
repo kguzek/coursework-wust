@@ -43,8 +43,12 @@ class PageAllocationAlgorithm(ABC):
             self.last_page = page
 
             before_faults = self.page_faults
-            self._process_page(page, idx)
-            fault_occurred = (self.page_faults > before_faults)
+            if page in self.memory:
+                self._process_page_hit(page)
+            else:
+                self.page_faults += 1
+                self._process_page(page, idx)
+            fault_occurred = self.page_faults > before_faults
 
             self.recent_faults.append(1 if fault_occurred else 0)
             if sum(self.recent_faults) >= self.thrashing_threshold:
@@ -60,7 +64,7 @@ class PageAllocationAlgorithm(ABC):
     def _record_memory_state(self):
         """
         Optional: record a snapshot of the current memory state.
-        Useful for debugging or visualization.
+        Useful for debugging or visualisation.
         """
         self.history.append(self.memory.copy())
 
@@ -69,9 +73,12 @@ class PageAllocationAlgorithm(ABC):
         """
         Must be implemented by subclasses.
         Process a single page reference.
-        current_index is the position in the sequence, used by algorithms like OPT.
+        `current_index` is the position in the sequence, used by algorithms like OPT.
         """
-        pass
+
+    def _process_page_hit(self, page: int) -> None:
+        """Called when the page is already in memory. Can be overridden if `super()._process_page()` is called."""
+        self.page_hits += 1
 
     def reset(self) -> None:
         """
@@ -96,9 +103,7 @@ class PageAllocationAlgorithm(ABC):
     def stats(self) -> dict:
         total_requests = len(self.sequence) if self.sequence else 0
         locality_rate = self.locality_hits / total_requests if total_requests else 0
-        average_pff = (
-            sum(self.pff_values) / len(self.pff_values) if self.pff_values else 0
-        )
+        average_pff = sum(self.pff_values) / len(self.pff_values) if self.pff_values else 0
 
         return {
             "page_faults": self.page_faults,
