@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from collections import deque
+from collections.abc import Callable
 
 
 class PageAllocationAlgorithm(ABC):
@@ -30,7 +31,7 @@ class PageAllocationAlgorithm(ABC):
 
         self.sequence: list[int] = []
 
-    def run(self, sequence: list[int]) -> None:
+    def run(self, sequence: list[int], after_loop: Callable[[], None] | None = None) -> None:
         """
         Run the page replacement algorithm on the given sequence.
         """
@@ -60,6 +61,8 @@ class PageAllocationAlgorithm(ABC):
                 self.pff_values.append(pff)
 
             self._record_memory_state()
+            if after_loop is not None:
+                after_loop()
 
     def _record_memory_state(self):
         """

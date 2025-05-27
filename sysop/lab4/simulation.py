@@ -21,15 +21,19 @@ class MultiProcessLRUSimulator:
         self.total_frames = total_frames
         self.processes = processes
         self.strategy = strategy
-        self.allocations = self.strategy.allocate(total_frames, processes)
         self.algorithms: dict[str, LRU] = {}
+        self.allocations: dict[str, int] = {}
+        self.allocate()
 
-    def run(self):
+    def allocate(self):
+        self.allocations = self.strategy.allocate(self.total_frames, self.processes)
+
+    def run(self) -> dict[str, dict]:
         results = {}
         for pid, sequence in self.processes.items():
             frames = self.allocations[pid]
             lru = LRU(memory_size=frames)
-            lru.run(sequence)
+            lru.run(sequence, self.allocate)
             self.algorithms[pid] = lru
             results[pid] = lru.stats()
         return results
@@ -38,26 +42,28 @@ class MultiProcessLRUSimulator:
         results = self.run()
 
         table = []
-        total_faults = total_hits = total_requests = 0
+        total_faults = total_hits = total_requests = total_thrashing = 0
 
         for pid, stats in results.items():
             faults = stats["page_faults"]
             hits = stats["page_hits"]
+            thrashing = stats["thrashing_events"]
             requests = faults + hits
             total_faults += faults
             total_hits += hits
             total_requests += requests
-            table.append([pid, self.allocations[pid], faults, hits, requests])
+            total_thrashing += thrashing
+            table.append([pid, self.allocations[pid], faults, hits, thrashing, requests])
 
-        table.append(["Total", "", total_faults, total_hits, total_requests])
+        table.append(["Total", self.total_frames, total_faults, total_hits, total_thrashing, total_requests])
 
-        headers = ["PID", "Frames", "Page Faults", "Page Hits", "Requests"]
-        print("\n" + tabulate(table, headers=headers, tablefmt="fancy_grid"))
+        headers = ["PID", "Frames", "Page Faults", "Page Hits", "Thrashing Events", "Requests"]
+        print(tabulate(table, headers=headers, tablefmt="fancy_grid"))
 
 
-def generate_processes(num_processes: int = 10, request_count: int = 1000) -> dict[str, list[int]]:
+def generate_processes(num_processes: int = 10) -> dict[str, list[int]]:
     return {
-        f"P{i}": generate_page_request_sequence(generate_simulation_config(request_count=request_count))
+        f"P{i}": generate_page_request_sequence(generate_simulation_config(None, 500, 1500))
         for i in range(1, num_processes + 1)
     }
 

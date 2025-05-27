@@ -22,7 +22,8 @@ class AlgorithmTestCase(NamedTuple):
     algorithm: PageAllocationAlgorithm
 
 
-def generate_simulation_config(seed: int | None = None, request_count: int | None = None) -> SimulationConfig:
+def generate_simulation_config(seed: int | None = None, request_count_min: int = 10_000,
+                               request_count_max: int = 20_000) -> SimulationConfig:
     if seed is not None:
         random.seed(seed)
 
@@ -30,7 +31,7 @@ def generate_simulation_config(seed: int | None = None, request_count: int | Non
     memory_ratios = [0.1, 0.25, 0.5]  # memory as % of num_pages
     memory_size = int(num_pages * random.choice(memory_ratios))
     memory_size = max(2, min(memory_size, num_pages))
-    request_count = random.randint(10_000, 20_000) if request_count is None else request_count
+    request_count = random.randint(request_count_min, request_count_max)
 
     return SimulationConfig(
         num_pages=num_pages,
