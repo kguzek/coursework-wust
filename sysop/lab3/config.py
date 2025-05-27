@@ -35,8 +35,7 @@ def generate_simulation_case(seed: int | None = None) -> List[AlgorithmTestCase]
     memory_ratios = [0.1, 0.25, 0.5]  # memory as % of num_pages
     memory_size = int(num_pages * random.choice(memory_ratios))
     memory_size = max(2, min(memory_size, num_pages))
-
-    request_count = random.choice([200, 500, 1000])
+    request_count = random.randint(10_000, 20_000)
 
     config = SimulationConfig(
         num_pages=num_pages,
