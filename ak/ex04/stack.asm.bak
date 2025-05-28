@@ -1,0 +1,48 @@
+.data
+	prompt_input: .asciiz "Input number of strings... "
+	invalid_input: .asciiz "Invalid input (1-10)\n"
+	input_buffer: .space 100
+	input_size: .byte 100
+.text
+main:
+	li $v0, 4
+	la $a0, prompt_input
+	syscall
+	li $v0, 5
+	syscall
+	move $t0, $v0
+	blt $t0, 1, error_input
+	bgt, $t0, 10, error_input
+	move $t1, $zero
+	move $t2, $zero
+loop:
+	bge $t1, $t0, loop_end
+	li $v0, 8
+	la $a0, input_buffer
+	la $a1, input_size
+	syscall
+	
+	la $t3, input_buffer
+parse_char:
+	lb $t4, 0($t3)
+	beqz $t4, 10, next_line # 10 == '\n'
+	beq $t4, 32, skip_space # 32 == ' '
+	move $t5, $sp
+skip_space:
+	addi $t3, $t3, 1
+	j parse_char
+next_line:
+	addi $t1, $t1, 1
+	j loop
+	
+	
+	add $t1, $t1, 1
+	j loop
+loop_end:
+	j end
+error_input:
+	li $v0, 4
+	la $a0, invalid_input
+	syscall 
+	j main
+end:
