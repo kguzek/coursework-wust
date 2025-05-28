@@ -77,7 +77,7 @@ end_parse:
 
 after_input:
 print_loop:
-	beq $sp, $s0, exit
+	beq $sp, $s0, end
 
 	move $a0, $sp
 	li $v0, 4
@@ -102,6 +102,4 @@ end_done:
 	addu  $sp, $sp, $t9 
 	j  print_loop
 
-exit:
-	li $v0, 10
-	syscall
+end:
