@@ -11,6 +11,8 @@
 	error_move_invalid: .asciiz "Invalid move (not 1-9)\n"
 	error_move_taken: .asciiz "Invalid move (that cell is taken)\n"
 	bot_chosen_move: .asciiz "Bot chose move: "
+	result: .asciiz "Result: "
+	dash: .asciiz "-"
 	victory_states:
 		# horizontal
 		.word 0x00015 # 0b000000000000010101
@@ -41,8 +43,8 @@ main:
 	move $t0, $v0
 	blt $t0, 1, invalid_rounds
 	bgt $t0, 5, invalid_rounds
-	move $t1, $zero
-	move $t2, $zero
+	move $t1, $zero # current round
+	move $t9, $zero # player win count
 	j start_round
 invalid_rounds:
 	li $v0, 4
@@ -62,6 +64,8 @@ invalid_move_taken:
 start_round:
 	add $t1, $t1, 1
 	bgtu $t1, $t0, end
+	move $t2, $zero # game state
+	jal draw_grid
 game_loop:
 	li $v0, 4
 	la $a0, round
@@ -162,18 +166,23 @@ victory_check_bot:
 	lw $t6, 0($t5)
 	sll $t6, $t6, 1 # shift left one bit for bot offset
 	and $t7, $t6, $t2
-	beq $t6, $t7, win_computer
+	beq $t6, $t7, win_bot
 	addi $t5, $t5, 4
 	addi $t4, $t4, 1
 	blt $t4, 8, victory_check_bot
 	j game_loop
-post_move:
-	
 win_player:
 	la $a0, victory_player
+	add $t9, $t9, 1
 	j post_round
-win_computer:
+win_bot:
 	la $a0, victory_computer
+	srl $t8, $t9, 3
+	add $t8, $t8, 1
+	sll $t8, $t8, 3
+	li $t7, 7 # 0b111
+	and $t9, $t9, $t7
+	or $t9, $t9, $t8
 	j post_round
 round_stalemate:
 	la $a0, victory_nobody
@@ -203,17 +212,15 @@ draw_loop:
 print_symbol:
 	syscall
 
-	li $t9, 2
 	remu $v1, $t5, 3
-	blt $v1, $t9, print_pipe
+	blt $v1, 2, print_pipe
 
 	li $v0, 4
 	la $a0, newline
 	syscall
 
 	divu $v1, $t5, 3
-	li $t9, 2
-	beq $v1, $t9, skip_separator
+	beq $v1, 2, skip_separator
 
 	li $v0, 4
 	la $a0, row_sep
@@ -233,5 +240,21 @@ next_cell:
 	blt $t5, $t7, draw_loop
 
 	jr $ra
-
 end:
+	li $v0, 4 
+	la $a0, result
+	syscall
+	
+	li $v0, 1
+	li $t7, 7 # 0b111
+	and $a0, $t9, $t7
+	syscall
+	li $v0, 4
+	la $a0, dash
+	syscall
+	li $v0, 1
+	srl $a0, $t9, 3
+	syscall
+	li $v0 ,4
+	la $a0, newline
+	syscall
