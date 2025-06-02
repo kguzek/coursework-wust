@@ -11,7 +11,7 @@
 	error_move_invalid: .asciiz "Invalid move (not 1-9)\n"
 	error_move_taken: .asciiz "Invalid move (that cell is taken)\n"
 	bot_chosen_move: .asciiz "Bot chose move: "
-	result: .asciiz "Result: "
+	result: .asciiz "Score: "
 	dash: .asciiz "-"
 	victory_states:
 		# horizontal
@@ -82,6 +82,7 @@ game_loop:
 	li $v0, 4
 	la $a0, newline
 	syscall
+	jal print_result
 	# round logic
 	li $v0, 4
 	la $a0, input_move
@@ -240,11 +241,10 @@ next_cell:
 	blt $t5, $t7, draw_loop
 
 	jr $ra
-end:
+print_result:
 	li $v0, 4 
 	la $a0, result
 	syscall
-	
 	li $v0, 1
 	li $t7, 7 # 0b111
 	and $a0, $t9, $t7
@@ -258,3 +258,6 @@ end:
 	li $v0 ,4
 	la $a0, newline
 	syscall
+	jr $ra
+end:
+	jal print_result
