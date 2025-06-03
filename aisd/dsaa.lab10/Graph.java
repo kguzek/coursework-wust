@@ -42,17 +42,20 @@ public class Graph {
         }
     }
 
-    private void recurseNodesBfs(StringBuilder bob, Queue<String> queue, String name) {
-        int idx = name2Int.get(name);
-        Document doc = arrDoc[idx].getValue();
-        for (Link link : doc.link.values()) {
-            bob.append(", ").append(link.ref);
-            queue.add(link.ref);
+    public String bfs(String start) {
+        StringBuilder bob = new StringBuilder();
+        bob.append(start);
+        Queue<String> queue = new PriorityQueue<>();
+        queue.add(start);
+        while (!queue.isEmpty()) {
+            int idx = name2Int.get(queue.remove());
+            Document doc = arrDoc[idx].getValue();
+            for (Link link : doc.link.values()) {
+                bob.append(", ").append(link.ref);
+                queue.add(link.ref);
+            }
         }
-        if (queue.isEmpty()) {
-            return;
-        }
-        recurseNodesBfs(bob, queue, queue.remove());
+        return bob.toString();
     }
 
     private void recurseNodesDfs(StringBuilder bob, String name) {
@@ -63,14 +66,6 @@ public class Graph {
             bob.append(", ");
             recurseNodesDfs(bob, link.ref);
         }
-    }
-
-    public String bfs(String start) {
-        StringBuilder bob = new StringBuilder();
-        bob.append(start);
-        Queue<String> queue = new PriorityQueue<>();
-        recurseNodesBfs(bob, queue, start);
-        return bob.toString();
     }
 
     public String dfs(String start) {
