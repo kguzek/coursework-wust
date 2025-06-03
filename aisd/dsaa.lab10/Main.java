@@ -5,6 +5,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 
+@SuppressWarnings({"DuplicatedCode", "ReplaceNullCheck"})
 public class Main {
 
     static Scanner scan; // for input stream
@@ -12,12 +13,12 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("START");
         scan = new Scanner(System.in);
-        SortedMap<String, Document> sortedMap = new TreeMap<String, Document>();
+        SortedMap<String, Document> sortedMap = new TreeMap<>();
         Document currentDoc = null;
         boolean halt = false;
         while (!halt) {
             String line = scan.nextLine();
-            // empty line and comment line - read next line
+            // empty line and comment line - read the next line
             if (line.isEmpty() || line.charAt(0) == '#') continue;
             // copy line to output (it is easier to find a place of a mistake)
             System.out.println("!" + line);
@@ -48,7 +49,7 @@ public class Main {
                 continue;
             }
             // show
-            // it depends of the representation so it will be NOT in tests
+            // it depends on the representation so it will be NOT in tests
             if (word[0].equalsIgnoreCase("show") && word.length == 1) {
                 if (currentDoc != null) System.out.println(currentDoc);
                 else System.out.println("no current document");

@@ -5,8 +5,7 @@ public class Link implements Comparable<Link> {
     public int weight;
 
     public Link(String ref) {
-        this.ref = ref;
-        weight = 1;
+        this(ref, 1);
     }
 
     public Link(String ref, int weight) {
@@ -14,9 +13,19 @@ public class Link implements Comparable<Link> {
         this.weight = weight;
     }
 
+    public boolean equals(Link other) {
+        return ref.equalsIgnoreCase(other.ref);
+    }
+
     @Override
     public boolean equals(Object obj) {
-        return ((Link) obj).ref.equalsIgnoreCase(ref);
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Link)) {
+            return false;
+        }
+        return equals((Link) obj);
     }
 
     @Override

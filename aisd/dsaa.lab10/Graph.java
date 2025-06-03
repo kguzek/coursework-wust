@@ -1,39 +1,85 @@
 package dsaa.lab10;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.SortedMap;
 
 public class Graph {
     int[][] arr;
-    //TODO? Collection to map Document to index of vertex
-    // You can change it
+    // Collection to map Document to index of vertex
     HashMap<String, Integer> name2Int;
-    @SuppressWarnings("unchecked")
-    //TODO? Collection to map index of vertex to Document
-    // You can change it
-    Entry<String, Document>[] arrDoc = (Map.Entry<String, Document>[]) new Map.Entry[0];
+    // Collection to map index of vertex to Document
+    Entry<String, Document>[] arrDoc;
+    DisjointSetForest forest;
 
-    // The argument type depend on a selected collection in the Main class
+    // The argument type depends on a selected collection in the Main class
+    @SuppressWarnings("unchecked")
     public Graph(SortedMap<String, Document> internet) {
         int size = internet.size();
         arr = new int[size][size];
-        // TODO
+        name2Int = new HashMap<>();
+        arrDoc = (Entry<String, Document>[]) new Entry[size];
+        forest = new DisjointSetForest(size);
+        Set<Entry<String, Document>> entries = internet.entrySet();
+        Iterator<Entry<String, Document>> it = entries.iterator();
+        for (int i = 0; it.hasNext(); i++) {
+            Entry<String, Document> entry = it.next();
+            arrDoc[i] = entry;
+            name2Int.put(entry.getKey(), i);
+            forest.makeSet(i);
+            for (int j = 0; j < arr.length; j++) {
+                arr[j][i] = -1;
+            }
+        }
+        it = entries.iterator();
+        for (int i = 0; it.hasNext(); i++) {
+            Entry<String, Document> entry = it.next();
+            Document doc = entry.getValue();
+            for (Link link : doc.link.values()) {
+                int index = name2Int.get(link.ref);
+                arr[index][i] = link.weight;
+                forest.union(i, index);
+            }
+        }
+    }
+
+    private void recurseNodesBfs(StringBuilder bob, Queue<String> queue, String name) {
+        int idx = name2Int.get(name);
+        Document doc = arrDoc[idx].getValue();
+        for (Link link : doc.link.values()) {
+            bob.append(", ").append(link.ref);
+            queue.add(link.ref);
+        }
+        if (queue.isEmpty()) {
+            return;
+        }
+        recurseNodesBfs(bob, queue, queue.remove());
+    }
+
+    private void recurseNodesDfs(StringBuilder bob, String name) {
+        int idx = name2Int.get(name);
+        Document doc = arrDoc[idx].getValue();
+        bob.append(name);
+        for (Link link : doc.link.values()) {
+            bob.append(", ");
+            recurseNodesDfs(bob, link.ref);
+        }
     }
 
     public String bfs(String start) {
-        // TODO
-        return null;
+        StringBuilder bob = new StringBuilder();
+        bob.append(start);
+        Queue<String> queue = new PriorityQueue<>();
+        recurseNodesBfs(bob, queue, start);
+        return bob.toString();
     }
 
     public String dfs(String start) {
-        // TODO
-        return null;
+        StringBuilder bob = new StringBuilder();
+        recurseNodesDfs(bob, start);
+        return bob.toString();
     }
 
     public int connectedComponents() {
-        // TODO
-        return -1;
+        return forest.countSets();
     }
 }
