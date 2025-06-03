@@ -5,30 +5,55 @@ public class DisjointSetForest implements DisjointSetDataStructure {
     Element[] arr;
 
     public DisjointSetForest(int size) {
-        //TODO
+        arr = new Element[size];
     }
 
     @Override
     public void makeSet(int item) {
-        //TODO
+        Element e = new Element();
+        e.rank = 0;
+        e.parent = item;
+        arr[item] = e;
     }
 
     @Override
     public int findSet(int item) {
-        //TODO
-        return -1;
+        int parent = arr[item].parent;
+        if (parent == item) {
+            return item;
+        }
+        parent = findSet(parent);
+        arr[item].parent = parent;
+        return parent;
     }
 
     @Override
     public boolean union(int itemA, int itemB) {
-        //TODO
-        return false;
+        int parentA = findSet(itemA);
+        int parentB = findSet(itemB);
+        if (parentA == parentB) {
+            return false;
+        }
+        if (arr[parentA].rank <= arr[parentB].rank) {
+            int temp = parentB;
+            parentB = parentA;
+            parentA = temp;
+        }
+        if (arr[parentA].rank == arr[parentB].rank) {
+            arr[parentA].rank++;
+        }
+        arr[parentB].parent = parentA;
+        return true;
     }
 
     @Override
     public String toString() {
-        //TODO
-        return null;
+        StringBuilder bob = new StringBuilder();
+        bob.append("Disjoint sets as forest:");
+        for (int i = 0; i < arr.length; i++) {
+            bob.append("\n").append(i).append(" -> ").append(arr[i].parent);
+        }
+        return bob.toString();
     }
 
     private class Element {
