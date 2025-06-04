@@ -1,0 +1,20 @@
+START
+!ld alpha
+!ld beta
+!ld gamma
+!ld isolated1
+!ld isolated2
+!ld group2_a
+!ld group2_b
+!bfs alpha
+alpha, beta, gamma
+!dfs alpha
+alpha, beta, gamma
+!bfs isolated1
+isolated1
+!dfs isolated2
+isolated2
+!cc
+4
+!ha
+END OF EXECUTION

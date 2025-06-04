@@ -1,0 +1,12 @@
+START
+!ld doc1
+!ld doc2
+!ld doc3
+!bfs doc1
+doc1, doc2, doc3
+!dfs doc1
+doc1, doc2, doc3
+!cc
+1
+!ha
+END OF EXECUTION

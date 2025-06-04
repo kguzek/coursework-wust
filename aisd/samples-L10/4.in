@@ -1,0 +1,22 @@
+#Test 3 - Cyclic graph with lexicographic ordering
+ld zebra
+link=alpha link=beta
+eod
+ld alpha
+link=charlie link=delta
+eod
+ld beta
+link=echo
+eod
+ld charlie
+link=zebra
+eod
+ld delta
+eod
+ld echo
+link=alpha
+eod
+bfs zebra
+dfs zebra
+cc
+ha

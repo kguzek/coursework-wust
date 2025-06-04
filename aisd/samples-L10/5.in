@@ -1,0 +1,15 @@
+#Test 4 - Self-loops and edge cases
+ld self
+link=self link=other
+eod
+ld other
+eod
+ld empty
+eod
+bfs self
+dfs self
+bfs empty
+bfs nonexistent
+dfs nonexistent
+cc
+ha

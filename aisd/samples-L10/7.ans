@@ -1,0 +1,25 @@
+START
+!ld a1
+!ld a2
+!ld a3
+!ld a4
+!ld b1
+!ld b2
+!ld b3
+!ld c1
+!ld c2
+!ld c3
+!bfs a1
+a1, a2, a3, a4
+!dfs a1
+a1, a2, a4, a3
+!bfs b1
+b1, b2, b3
+!dfs b1
+b1, b2, b3
+!bfs c1
+c1
+!cc
+5
+!ha
+END OF EXECUTION

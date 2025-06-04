@@ -1,0 +1,15 @@
+START
+!ld zebra
+!ld alpha
+!ld beta
+!ld charlie
+!ld delta
+!ld echo
+!bfs zebra
+zebra, alpha, beta, charlie, delta, echo
+!dfs zebra
+zebra, alpha, charlie, delta, beta, echo
+!cc
+1
+!ha
+END OF EXECUTION

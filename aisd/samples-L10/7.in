@@ -1,0 +1,34 @@
+#Test 6 - Large disconnected graph
+ld a1
+link=a2 link=a3
+eod
+ld a2
+link=a4
+eod
+ld a3
+link=a4
+eod
+ld a4
+eod
+ld b1
+link=b2
+eod
+ld b2
+link=b3
+eod
+ld b3
+link=b1
+eod
+ld c1
+eod
+ld c2
+eod
+ld c3
+eod
+bfs a1
+dfs a1
+bfs b1
+dfs b1
+bfs c1
+cc
+ha

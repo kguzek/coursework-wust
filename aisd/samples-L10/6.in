@@ -1,0 +1,31 @@
+#Test 5 - Complex graph with document operations
+ld main
+link=page1 link=page2(10) link=page3
+eod
+ld page1
+link=subpage1 link=subpage2
+eod
+ld page2
+link=page3 link=external
+eod
+ld page3
+eod
+ld subpage1
+eod
+ld subpage2
+link=main
+eod
+ld external
+eod
+getdoc main
+add newlink(7)
+get page1
+bfs main
+dfs main
+getdoc page1
+clear
+bfs main
+dfs main
+cc
+size
+ha

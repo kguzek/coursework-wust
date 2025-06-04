@@ -1,0 +1,24 @@
+#Test 2 - Multiple disconnected components
+ld alpha
+link=beta
+eod
+ld beta
+link=gamma
+eod
+ld gamma
+eod
+ld isolated1
+eod
+ld isolated2
+eod
+ld group2_a
+link=group2_b
+eod
+ld group2_b
+eod
+bfs alpha
+dfs alpha
+bfs isolated1
+dfs isolated2
+cc
+ha

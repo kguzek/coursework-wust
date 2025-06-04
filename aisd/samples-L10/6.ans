@@ -1,0 +1,29 @@
+START
+!ld main
+!ld page1
+!ld page2
+!ld page3
+!ld subpage1
+!ld subpage2
+!ld external
+!getdoc main
+!add newlink(7)
+true
+!get page1
+page1(1)
+!bfs main
+error
+!dfs main
+error
+!getdoc page1
+!clear
+!bfs main
+error
+!dfs main
+error
+!cc
+2
+!size
+0
+!ha
+END OF EXECUTION

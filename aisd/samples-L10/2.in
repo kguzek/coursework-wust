@@ -1,0 +1,12 @@
+ld doc1
+link=doc2 link=doc3(5)
+eod
+ld doc2
+link=doc3
+eod
+ld doc3
+eod
+bfs doc1
+dfs doc1
+cc
+ha

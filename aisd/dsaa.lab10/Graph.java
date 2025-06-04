@@ -35,7 +35,10 @@ public class Graph {
             Entry<String, Document> entry = it.next();
             Document doc = entry.getValue();
             for (Link link : doc.link.values()) {
-                int index = name2Int.get(link.ref);
+                Integer index = name2Int.get(link.ref);
+                if (index == null) {
+                    continue;
+                }
                 arr[index][i] = link.weight;
                 forest.union(i, index);
             }
@@ -46,31 +49,50 @@ public class Graph {
         StringBuilder bob = new StringBuilder();
         bob.append(start);
         Queue<String> queue = new PriorityQueue<>();
+        Set<String> seenNames = new HashSet<>();
+        seenNames.add(start);
         queue.add(start);
         while (!queue.isEmpty()) {
-            int idx = name2Int.get(queue.remove());
+            String name = queue.remove();
+            Integer idx = name2Int.get(name);
+            if (idx == null) {
+                return null;
+            }
             Document doc = arrDoc[idx].getValue();
             for (Link link : doc.link.values()) {
-                bob.append(", ").append(link.ref);
-                queue.add(link.ref);
+                if (seenNames.add(link.ref)) {
+                    bob.append(", ").append(link.ref);
+                    queue.add(link.ref);
+                }
             }
         }
         return bob.toString();
     }
 
-    private void recurseNodesDfs(StringBuilder bob, String name) {
-        int idx = name2Int.get(name);
+    private void recurseNodesDfs(StringBuilder bob, Set<String> seenNames, String name) throws NoSuchElementException {
+        Integer idx = name2Int.get(name);
+        if (idx == null) {
+            throw new NoSuchElementException(name);
+        }
         Document doc = arrDoc[idx].getValue();
         bob.append(name);
         for (Link link : doc.link.values()) {
-            bob.append(", ");
-            recurseNodesDfs(bob, link.ref);
+            if (seenNames.add(link.ref)) {
+                bob.append(", ");
+                recurseNodesDfs(bob, seenNames, link.ref);
+            }
         }
     }
 
     public String dfs(String start) {
         StringBuilder bob = new StringBuilder();
-        recurseNodesDfs(bob, start);
+        Set<String> seenNames = new HashSet<>();
+        seenNames.add(start);
+        try {
+            recurseNodesDfs(bob, seenNames, start);
+        } catch (NoSuchElementException e) {
+            return null;
+        }
         return bob.toString();
     }
 

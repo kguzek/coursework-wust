@@ -1,0 +1,18 @@
+START
+!ld self
+!ld other
+!ld empty
+!bfs self
+self, other
+!dfs self
+self, other
+!bfs empty
+empty
+!bfs nonexistent
+error
+!dfs nonexistent
+error
+!cc
+2
+!ha
+END OF EXECUTION
