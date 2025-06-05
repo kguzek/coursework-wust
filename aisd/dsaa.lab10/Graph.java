@@ -4,12 +4,12 @@ import java.util.*;
 import java.util.Map.Entry;
 
 public class Graph {
+    private static final int INFINITY = -1;
     int[][] arr;
     // Collection to map Document to index of vertex
     HashMap<String, Integer> name2Int;
     // Collection to map index of vertex to Document
     Entry<String, Document>[] arrDoc;
-    DisjointSetForest forest;
 
     // The argument type depends on a selected collection in the Main class
     @SuppressWarnings("unchecked")
@@ -18,16 +18,14 @@ public class Graph {
         arr = new int[size][size];
         name2Int = new HashMap<>();
         arrDoc = (Entry<String, Document>[]) new Entry[size];
-        forest = new DisjointSetForest(size);
         Set<Entry<String, Document>> entries = internet.entrySet();
         Iterator<Entry<String, Document>> it = entries.iterator();
         for (int i = 0; it.hasNext(); i++) {
             Entry<String, Document> entry = it.next();
             arrDoc[i] = entry;
             name2Int.put(entry.getKey(), i);
-            forest.makeSet(i);
             for (int j = 0; j < arr.length; j++) {
-                arr[j][i] = -1;
+                arr[j][i] = INFINITY;
             }
         }
         it = entries.iterator();
@@ -40,7 +38,6 @@ public class Graph {
                     continue;
                 }
                 arr[index][i] = link.weight;
-                forest.union(i, index);
             }
         }
     }
@@ -97,6 +94,17 @@ public class Graph {
     }
 
     public int connectedComponents() {
+        DisjointSetForest forest = new DisjointSetForest(arr.length);
+        for (int i = 0; i < arr.length; i++) {
+            forest.makeSet(i);
+        }
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                if (arr[i][j] != INFINITY) {
+                    forest.union(i, j);
+                }
+            }
+        }
         return forest.countSets();
     }
 }
