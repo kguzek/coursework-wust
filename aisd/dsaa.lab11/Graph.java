@@ -109,8 +109,80 @@ public class Graph {
         return forest.countSets();
     }
 
+    private void updateDistance(int vertex, int lastVertex, int[] distances, int[] lastVertexes) {
+        if (vertex == lastVertex) {
+            return;
+        }
+        int weight = arr[vertex][lastVertex];
+        if (weight == INFINITY) {
+            return;
+        }
+        int currentDistance = distances[vertex];
+        int distanceToLast = distances[lastVertex];
+        int newDistance = distanceToLast == INFINITY ? weight : distanceToLast + weight;
+        if (currentDistance == INFINITY || newDistance < currentDistance) {
+            distances[vertex] = newDistance;
+            lastVertexes[vertex] = lastVertex;
+        }
+    }
+
+    private void measureNeighbors(int vertex, int[] distances, boolean[] seenVertexes, int[] lastVertexes) {
+        boolean allSeen = true;
+        for (int i = 0; i < arr.length; i++) {
+            updateDistance(i, vertex, distances, lastVertexes);
+            allSeen = false;
+        }
+        seenVertexes[vertex] = true;
+        if (allSeen) {
+            return;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            if (i != vertex && arr[i][vertex] != INFINITY && !seenVertexes[i]) {
+                measureNeighbors(i, distances, seenVertexes, lastVertexes);
+            }
+        }
+    }
+
+    private String stringifyDistances(int startVertex, String startVertexStr, int[] distances, int[] lastVertexes) {
+        StringBuilder bob = new StringBuilder();
+        Stack<String> stack = new Stack<>();
+        for (int i = 0; i < arr.length; i++) {
+            int distance = distances[i];
+            if (distance == INFINITY) {
+                String targetStr = arrDoc[i].getKey();
+                bob.append("no path to ").append(targetStr).append('\n');
+                continue;
+            }
+            int lastVertex = i;
+            while (lastVertex != startVertex) {
+                String label = arrDoc[lastVertex].getKey();
+                stack.push(label);
+                lastVertex = lastVertexes[lastVertex];
+            }
+            bob.append(startVertexStr);
+            while (!stack.isEmpty()) {
+                String label = stack.pop();
+                bob.append("->").append(label);
+            }
+            bob.append("=").append(distance).append('\n');
+        }
+        return bob.toString();
+    }
+
     public String DijkstraSSSP(String startVertexStr) {
-        // TODO: implement this
-        return null;
+        Integer startVertex = name2Int.get(startVertexStr);
+        if (startVertex == null) {
+            return null;
+        }
+        boolean[] seenVertexes = new boolean[arr.length];
+        int[] distances = new int[arr.length];
+        int[] lastVertexes = new int[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            distances[i] = INFINITY;
+            lastVertexes[i] = INFINITY;
+        }
+        distances[startVertex] = 0;
+        measureNeighbors(startVertex, distances, seenVertexes, lastVertexes);
+        return stringifyDistances(startVertex, startVertexStr, distances, lastVertexes);
     }
 }
