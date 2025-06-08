@@ -20,6 +20,7 @@
       <sourceFolder url="file://$MODULE_DIR$/dsaa.lab08" isTestSource="false" packagePrefix="dsaa.lab08" />
       <sourceFolder url="file://$MODULE_DIR$/dsaa.lab09" isTestSource="false" packagePrefix="dsaa.lab09" />
       <sourceFolder url="file://$MODULE_DIR$/dsaa.lab10" isTestSource="false" packagePrefix="dsaa.lab10" />
+      <sourceFolder url="file://$MODULE_DIR$/dsaa.lab11" isTestSource="false" packagePrefix="dsaa.lab11" />
       <excludeFolder url="file://$MODULE_DIR$/out" />
     </content>
     <orderEntry type="inheritedJdk" />
