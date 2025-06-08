@@ -1,0 +1,14 @@
+#Disconnected test
+ld a
+link=b(3)
+eod
+ld b
+eod
+ld x
+link=y
+eod
+ld y
+eod
+sssp a
+sssp x
+ha

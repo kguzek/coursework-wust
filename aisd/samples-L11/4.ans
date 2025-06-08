@@ -1,0 +1,10 @@
+START
+!ld a
+!ld b
+!ld c
+!sssp a
+a=0
+a->b=1
+a->b->c=3
+!ha
+END OF EXECUTION

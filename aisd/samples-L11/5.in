@@ -1,0 +1,15 @@
+#Multiple paths test
+ld a
+link=b(2)
+link=c(5)
+eod
+ld b
+link=d(2)
+eod
+ld c
+link=d(1)
+eod
+ld d
+eod
+sssp a
+ha

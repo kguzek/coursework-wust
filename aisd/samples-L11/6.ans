@@ -1,0 +1,10 @@
+START
+!ld p
+!ld q
+!sssp p
+p=0
+p->q=3
+!sssp z
+error
+!ha
+END OF EXECUTION

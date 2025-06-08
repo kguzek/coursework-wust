@@ -1,0 +1,9 @@
+#Invalid query test
+ld p
+link=q(3)
+eod
+ld q
+eod
+sssp p
+sssp z
+ha

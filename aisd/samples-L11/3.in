@@ -1,0 +1,5 @@
+#Single node test
+ld z
+eod
+sssp z
+ha

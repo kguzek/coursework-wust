@@ -1,0 +1,12 @@
+#Cycle test
+ld a
+link=b(1)
+eod
+ld b
+link=c(2)
+eod
+ld c
+link=a(3)
+eod
+sssp a
+ha

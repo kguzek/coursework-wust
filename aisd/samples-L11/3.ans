@@ -1,0 +1,6 @@
+START
+!ld z
+!sssp z
+z=0
+!ha
+END OF EXECUTION

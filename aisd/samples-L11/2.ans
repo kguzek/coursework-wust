@@ -1,0 +1,17 @@
+START
+!ld a
+!ld b
+!ld x
+!ld y
+!sssp a
+a=0
+a->b=3
+no path to x
+no path to y
+!sssp x
+no path to a
+no path to b
+x=0
+x->y=1
+!ha
+END OF EXECUTION
