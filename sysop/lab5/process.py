@@ -5,7 +5,7 @@ class Process:
     def __init__(self, load_burden: int, arrival_time: int, burst_time: int):
         self.load_burden: int = load_burden
         self.arrival_time: int = arrival_time
-        self.burst_time: int = 0
+        self.burst_time: int = burst_time
         self.completed = False
 
     def is_running(self) -> bool:

@@ -5,18 +5,17 @@ from lab5.generation import generate_processor_count, generate_processor
 from lab5.visualizer import display_results
 
 
-# noinspection PyPep8Naming
 def main():
     p: int = 80  # Load ceiling for passively accepting queued processes
-    r: int = 50  # Load ceiling for actively handling other processes
-    z: int = 5
-    N: int | None = None
+    r: int = 60  # Load ceiling for actively handling other processes
+    z: int = 10  # Maximum number of random processor selections per tick
+    n: int | None = None  # Number of processors
 
-    if N is None:
+    if n is None:
         # `None` losuje ilość procesorów w przedziale [50,100]
-        N = generate_processor_count()
+        n = generate_processor_count()
 
-    processors = [generate_processor() for _ in range(N)]
+    processors = [generate_processor() for _ in range(n)]
 
     algorithms = [
         Algorithm1(processors, processor_load_threshold=p, max_delegation_attempts=z),
@@ -24,7 +23,7 @@ def main():
         Algorithm3(processors, processor_load_threshold=p, processor_balancing_threshold=r),
     ]
 
-    print("Running simulation with", N, "processors:")
+    print("Running simulation with", n, "processors:")
 
     for algorithm in algorithms:
         print("Running", algorithm, "...")

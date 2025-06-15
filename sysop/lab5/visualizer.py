@@ -26,7 +26,17 @@ def display_results(algorithm: ConcurrentProcessScheduler) -> None:
     line_width = 1.5
 
     # Plot 1: Load Average
-    axs[0].plot(load_averages, color='blue', linewidth=line_width)
+    # axs[0].plot(load_averages, color='blue', linewidth=line_width)
+    axs[0].errorbar(
+        x=range(len(load_averages)),
+        y=load_averages,
+        yerr=load_standard_deviations,
+        color='blue',
+        ecolor='lightblue',  # colour of error bars
+        elinewidth=0.5,  # thickness of error bars
+        capsize=1,  # length of error bar caps
+        linewidth=line_width  # line width of the average line
+    )
     axs[0].set_ylabel('Load Average (%)')
     axs[0].grid(True)
 
