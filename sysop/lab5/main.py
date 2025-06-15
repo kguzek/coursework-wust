@@ -28,6 +28,10 @@ def main():
     for algorithm in algorithms:
         print("Running", algorithm, "...")
         algorithm.run()
+        _, stats = algorithm.statistics[-1]
+        print("Total load queries:", stats.total_load_queries)
+        print("Total delegated processes:", stats.total_delegated_processes)
+        print()
 
     print("Rendering results!")
 
