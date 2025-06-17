@@ -6,8 +6,8 @@ public class KMP implements IStringMatcher {
 
     @Override
     public LinkedList<Integer> validShifts(String pattern, String text) {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO: Implement KMP
+        return new Automaton().validShifts(pattern, text);
     }
 
 }
