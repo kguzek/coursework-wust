@@ -52,10 +52,10 @@ if ! javac -d "$OUTPUT_DIR" "$EXERCISE_DIR"/*.java; then
   exit 1
 fi
 
-declare -i FAILED_TESTS=0
 
 TEST_FILES=("./$SAMPLES_DIR"/*.in)
 TOTAL_TESTS=${#TEST_FILES[@]}
+declare -i PASSED_TESTS=$TOTAL_TESTS
 QUIET_MODE=false
 OUTPUT_ON_ERROR=false
 for arg in "$@"; do
@@ -80,7 +80,7 @@ for input_file in "${TEST_FILES[@]}"; do
       echo "❌  program finished with exit code $APP_EXIT_CODE"
       echo "🐞 Application execution stopped at:"
       echo "$output"
-      FAILED_TESTS+=1
+      PASSED_TESTS+=-1
       continue
     fi
     EXPECTED_OUTPUT_FILE="$FILE_WITHOUT_EXTENSION.ans"
@@ -88,7 +88,7 @@ for input_file in "${TEST_FILES[@]}"; do
       echo "✔️"
       continue
     fi
-    FAILED_TESTS+=1
+    PASSED_TESTS+=-1
     MESSAGE="❌  program output"
     if [ -z "$output" ]; then
         echo "$MESSAGE was empty"
@@ -110,17 +110,9 @@ for input_file in "${TEST_FILES[@]}"; do
     echo "$MESSAGE written to $OUTPUT_FILE"
 done
 
-pluralise() {
-  if [ "$1" = "1" ]; then
-    echo "$1 $2"
-  else
-    echo "$1 $2s"
-  fi
-}
-
-if [ $FAILED_TESTS -eq 0 ]; then
+if [ $PASSED_TESTS -eq "$TOTAL_TESTS" ]; then
   echo "✔️ All tests passed"
 else
-  echo "❌  $FAILED_TESTS/$(pluralise "$TOTAL_TESTS" "test") failed"
+  echo "❌  $PASSED_TESTS/${TOTAL_TESTS} tests passed"
   exit 1
 fi
