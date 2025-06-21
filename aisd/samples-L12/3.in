@@ -1,0 +1,76 @@
+# Simple match
+automaton 1 1
+abc
+abcabcabc
+
+# Pattern not in text
+automaton 1 1
+xyz
+abcabcabc
+
+# Pattern is longer than text
+automaton 1 1
+abcdef
+abc
+
+# Pattern and text are identical
+automaton 1 1
+matchme
+matchme
+
+# Multiple matches with overlap
+automaton 1 1
+ana
+bananana
+
+# Match at the start
+automaton 1 1
+start
+startsomethinghere
+
+# Match at the end
+automaton 1 1
+end
+thisistheend
+
+# No match, single character difference
+automaton 1 1
+abcd
+abce
+
+# Repeating single character pattern
+automaton 1 1
+aaa
+aaaaaaaaaa
+
+# Empty pattern
+automaton 1 1
+
+nonemptytext
+
+# Empty text
+automaton 1 1
+nonemptypattern
+
+# Both pattern and text are empty
+automaton 1 1
+
+d
+# Pattern in multiline form
+automaton 2 2
+multi
+line
+thisismultiline
+textwithmultilinepattern
+
+# Text with repeated characters, pattern not present
+automaton 1 1
+ababab
+aaaaaaaaaaaaaaa
+
+# Very long match
+automaton 1 1
+averyveryverylongpatternindeed
+thisisjustsomefilleraveryveryverylongpatternindeedandthenmoretext
+
+ha
