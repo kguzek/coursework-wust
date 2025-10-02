@@ -14,3 +14,7 @@ Technology.
 
 - [Algorithms and Data Structures](aisd)
 - [Operating Systems](sysop)
+
+### Semester 3
+
+- [Effective Programming Techniques](tep)
