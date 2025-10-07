@@ -18,3 +18,4 @@ Technology.
 ### Semester 3
 
 - [Effective Programming Techniques](tep)
+- [Probability Theory and Statistics](rpis)
