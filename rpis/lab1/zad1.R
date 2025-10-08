@@ -27,4 +27,6 @@ print(a + c)
 print(a + 10)
 print(b[26])
 print(f[6:10])
-print(b[b > 50])
+b2 <- b[b > 50]
+print(b2)
+print(length(b2))
