@@ -1,6 +1,5 @@
 # Computer Architecture
 
-Polish: *Architektura Komputerów*
+## *Architektura Komputerów*
 
-This directory contains mainly programs written in MIPS Assembly language.
-
+This directory contains programs written in MIPS Assembly language as part of AK coursework, which aims to teach the mechanisms linking software and physical electrical signals through memory and registers.

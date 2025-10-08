@@ -1,13 +1,15 @@
 # Algorithms and Data Structures
 
-A test suite and solutions repository for my A&DS/DSAA (Polish: AiSD) list exercise & laboratory coursework.
+## *Algorytmy i Struktury Danych*
+
+A test suite and solutions repository for my A&DS/DSAA list exercise & laboratory coursework. This directory contains programs written in Java used to learn various data structures and algorithms, with a particular focus on time-complexity efficiency.
 
 ## Directory structure
 
 ### List exercises
 
 - `/dsaa.list<list number>/` – folder containing the exercises for the given list
-    - `ex<exercise number>/*.java` - source code and tests for the given list exercise
+  - `ex<exercise number>/*.java` - source code and tests for the given list exercise
 
 ### Lab exercises
 
