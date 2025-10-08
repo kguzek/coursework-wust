@@ -1,0 +1,13 @@
+(A <- matrix(c(3, 4, 1, 5, 2, 3), nrow = 2))
+(B <- cbind(c(-1, 3, -5), c(2, -4, 6)))
+(C <- rbind(c(7, 3), c(2, 1)))
+(D <- rbind(c(1, 2, 4), c(3, 5, 7), c(5, 7, 11)))
+
+(AplusB <- A + B)
+print(t(AplusB))
+print(A %*% B)
+print(A * A)
+(D_solved <- solve(D))
+print(D %*% D_solved)
+print(solve(C, A))
+print(A %*% solve(D))
