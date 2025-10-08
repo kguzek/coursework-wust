@@ -13,9 +13,12 @@ Technology.
 ### Semester 2
 
 - [Algorithms and Data Structures](aisd)
+- [Computer Architecture](ak)
+- [Mathematical Analysis 2](am2)
 - [Operating Systems](sysop)
 
 ### Semester 3
 
 - [Effective Programming Techniques](tep)
+- [Programming Paradigms](pp)
 - [Probability Theory and Statistics](rpis)
