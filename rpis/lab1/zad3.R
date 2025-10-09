@@ -2,7 +2,8 @@
 (b <- c("one", "two", "three", "four", 5))
 (c <- c("one", "two", "three", "four", "5"))
 (d <- rep(c(3, 1, 6), 4))
-(e <- c(rep(3, 4), rep(1, 4), rep(6, 4)))
+# (e <- c(rep(3, 4), rep(1, 4), rep(6, 4)))
+(e <- rep(c(3, 1, 6), each = 4))
 (f <- c(5, 1, 4, 7))
 
 vectors <- list(a, b, c, d, e, f)
@@ -29,6 +30,9 @@ for (i in seq_along(vectors)) {
 iloczyn_wektorowy <- function(a, b) {
   if (length(a) != length(b)) {
     stop("Wektory muszą mieć tę samą długość")
+  }
+  if (length(a) > 3) {
+    #stop("Iloczyn wektorowy nie jest zdefiniowany dla wektorów o długości powyżej 3.")
   }
   result <- numeric(length(a))
   for (i in seq_along(a)) {

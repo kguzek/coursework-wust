@@ -1,9 +1,10 @@
-a <- c(1, 4, 6, 13, -10, 8)
-b <- seq(1, 101, 2)
-c <- c(rep(4, 3), rep(7, 3), rep(9, 3))
-d <- c("czy", "to", "jest", "wektor", NA)
-e <- c("czy", "to", "jest", "wektor", "NA")
-f <- c(rep(c(4, 7, 9), 6))
+(a <- c(1, 4, 6, 13, -10, 8))
+(b <- seq(1, 101, 2))
+# (c <- c(rep(4, 3), rep(7, 3), rep(9, 3)))
+(c <- rep(c(4, 7, 9), each = 3))
+(d <- c("czy", "to", "jest", "wektor", NA))
+(e <- c("czy", "to", "jest", "wektor", "NA"))
+(f <- rep(c(4, 7, 9), 6))
 
 vectors <- list(a, b, c, d, e, f)
 
