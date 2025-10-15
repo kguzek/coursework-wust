@@ -23,4 +23,3 @@ Technology.
 - [Japanese A1](jp)
 - [Programming Paradigms](pp)
 - [Probability Theory and Statistics](rpis)
-
