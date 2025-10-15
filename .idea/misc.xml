@@ -3,6 +3,12 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.13 (coursework-wust)" />
   </component>
+  <component name="CMakePythonSetting">
+    <option name="pythonIntegrationState" value="YES" />
+  </component>
+  <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$/tep">
+    <contentRoot DIR="$PROJECT_DIR$" />
+  </component>
   <component name="ComposerSettings">
     <execution />
   </component>
@@ -19,7 +25,5 @@
       </set>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="21" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/out" />
-  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="21" project-jdk-type="JavaSDK" />
 </project>
