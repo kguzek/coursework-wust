@@ -1,4 +1,5 @@
 #include <iostream>
+#include "zad3.h"
 
 bool alloc_2d_array(int*** array, int cols, int rows)
 {
@@ -43,10 +44,7 @@ void alloc_and_print_2d_array(const int cols, const int rows)
     int** array;
     alloc_2d_array(&array, cols, rows);
     print_2d_array(&array, cols, rows);
-    for (int i = 0; i < rows; i++)
-    {
-        delete[] array[i];
-    }
+    dealloc_2d_array(&array, cols, rows);
 }
 
 int main()

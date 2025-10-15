@@ -10,4 +10,6 @@ add_executable(TEP-Lab1-Zad1
 
 add_executable(TEP-Lab1-Zad2
         lab1/zad2.cpp
+        lab1/zad3.cpp
+        lab1/zad3.h
 )
