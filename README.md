@@ -20,5 +20,7 @@ Technology.
 ### Semester 3
 
 - [Effective Programming Techniques](tep)
+- [Japanese A1](jp)
 - [Programming Paradigms](pp)
 - [Probability Theory and Statistics](rpis)
+
