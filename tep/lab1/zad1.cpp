@@ -1,20 +1,8 @@
 #include <iostream>
+#include "../common/io.h"
 
 static const int ARRAY_FILL_VALUE = 34;
 
-void print_array(const int array[], const int size)
-{
-    std::cout << "[";
-    if (size > 0)
-    {
-        std::cout << array[0];
-        for (int i = 1; i < size; i++)
-        {
-            std::cout << ", " << array[i];
-        }
-    }
-    std::cout << "]" << std::endl;
-}
 
 void alloc_array_fill_34(const int size)
 {

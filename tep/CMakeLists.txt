@@ -6,10 +6,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(TEP-Lab1-Zad1
         lab1/zad1.cpp
+        common/io.cpp
+        common/io.h
 )
 
 add_executable(TEP-Lab1-Zad2
         lab1/zad2.cpp
         lab1/zad3.cpp
         lab1/zad3.h
+        common/io.cpp
+        common/io.h
+)
+
+add_executable(TEP-Lab1-Zad4
+        lab1/zad4.cpp
+        common/io.cpp
+        common/io.h
 )

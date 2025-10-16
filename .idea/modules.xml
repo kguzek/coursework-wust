@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-    <component name="ProjectModuleManager">
-        <modules>
-            <module fileurl="file://$PROJECT_DIR$/aisd/aisd.iml" filepath="$PROJECT_DIR$/aisd/aisd.iml"/>
-            <module fileurl="file://$PROJECT_DIR$/am2/am2.iml" filepath="$PROJECT_DIR$/am2/am2.iml"/>
-            <module fileurl="file://$PROJECT_DIR$/logic/logic.iml" filepath="$PROJECT_DIR$/logic/logic.iml"/>
-            <module fileurl="file://$PROJECT_DIR$/psio/psio.iml" filepath="$PROJECT_DIR$/psio/psio.iml"/>
-            <module fileurl="file://$PROJECT_DIR$/sysop/sysop.iml" filepath="$PROJECT_DIR$/sysop/sysop.iml"/>
-            <module fileurl="file://$PROJECT_DIR$/tep/tep.iml" filepath="$PROJECT_DIR$/tep/tep.iml"/>
-        </modules>
-    </component>
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/aisd/aisd.iml" filepath="$PROJECT_DIR$/aisd/aisd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/am2/am2.iml" filepath="$PROJECT_DIR$/am2/am2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/logic/logic.iml" filepath="$PROJECT_DIR$/logic/logic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/psio/psio.iml" filepath="$PROJECT_DIR$/psio/psio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sysop/sysop.iml" filepath="$PROJECT_DIR$/sysop/sysop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tep/tep.iml" filepath="$PROJECT_DIR$/tep/tep.iml" />
+    </modules>
+  </component>
 </project>
