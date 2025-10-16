@@ -1,9 +1,15 @@
+# Java
 *.class
 out
 
+# Python
 __pycache__
 sysop/sysop_*.zip
 
+# Scala
+.bsp
+.scala-build
+
+# Course-specific files
 samples-L*/*.result
 sysop/Zad3
-
