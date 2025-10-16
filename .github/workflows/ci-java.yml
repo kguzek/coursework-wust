@@ -1,4 +1,4 @@
-name: (CI) [AISD] unit tests
+name: (CI) [AISD]
 
 permissions:
   contents: read
@@ -6,16 +6,16 @@ permissions:
 
 on:
   push:
-    branches: ["main"]
   workflow_dispatch:
 
 jobs:
-  test:
+  unit-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-          
+
       - name: Download Dependencies
         run: |
           eval `ssh-agent -s`
@@ -41,7 +41,7 @@ jobs:
           mkdir -p out
           javac -cp "dependencies/junit/*" -d out $(find aisd -name "*.java")
         if: always()
-          
+
       - name: Run exercise tests
         run: |
           java -jar dependencies/junit/junit-platform-console-standalone-1.9.3.jar \

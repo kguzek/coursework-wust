@@ -21,7 +21,7 @@ void alloc_and_print_2d_array(const int cols, const int rows)
     int** array;
     alloc_2d_array(&array, cols, rows);
     print_2d_array(&array, cols, rows);
-    dealloc_2d_array(&array, cols, rows);
+    dealloc_2d_array(array, cols, rows);
 }
 
 int main()
