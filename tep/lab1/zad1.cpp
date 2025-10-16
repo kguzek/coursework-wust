@@ -1,12 +1,12 @@
+#include "zad1.h"
+
 #include <iostream>
 #include "../common/io.h"
-
-static const int ARRAY_FILL_VALUE = 34;
 
 
 void alloc_array_fill_34(const int size)
 {
-    if (size < 0)
+    if (size < 1)
     {
         std::cerr << "Invalid size: " << size << std::endl;
         return;

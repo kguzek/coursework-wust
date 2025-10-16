@@ -4,7 +4,7 @@
 
 bool alloc_2d_array(int*** array, int cols, int rows)
 {
-    if (cols < 0 || rows < 0)
+    if (cols < 1 || rows < 1)
     {
         return false;
     }
