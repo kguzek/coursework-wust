@@ -1,7 +1,7 @@
 1. Korewa nandes ka?                # Q: What is this?
 Sorewa ranpu des.                   # A: That (close) is a lamp.
-2. Korewa desukudes ka?             # Q: Is this a desk?  
-Iie, sorewa Te-burudes.             # A: No, that (close) is a table.
+2. Korewa tsukuedes ka?             # Q: Is this a desk?  
+Hai, sorewa tsukuedes.              # A: No, that (close) is a table.
 3. Sorewa nandes ka?                # Q: What is that (close)?
 Korewa watashino keitaides.         # A: This is my phone.
 4. Sorewa kanojono kabandes ka?     # Q: Is that (close) her bag?
