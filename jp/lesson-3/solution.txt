@@ -1,0 +1,14 @@
+1. Korewa nandes ka?                # Q: What is this?
+Sorewa ranpu des.                   # A: That (close) is a lamp.
+2. Korewa desukudes ka?             # Q: Is this a desk?  
+Iie, sorewa Te-burudes.             # A: No, that (close) is a table.
+3. Sorewa nandes ka?                # Q: What is that (close)?
+Korewa watashino keitaides.         # A: This is my phone.
+4. Sorewa kanojono kabandes ka?     # Q: Is that (close) her bag?
+Hai, sorewa kanojono kabandes.      # A: Yes, that (close) is her bag.
+5. Arewa tokeides ka?               # Q: Is that (far) a clock?
+Hai, arewa tokeides.                # A: Yes, that (far) is a clock.
+6. Korewa isudes ka?                # Q: Is this a chair?
+Hai, sorewa isudes.                 # A: Yes, that (close) is a chair.
+7. Arewa madodes ka?                # Q: Is that (far) a window?
+Iie, arewa kabedes.                 # A: No, that (far) is a wall.
