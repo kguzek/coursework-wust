@@ -7,7 +7,7 @@
 | Japanese    | English                                |
 | ----------- | -------------------------------------- |
 | Mizu        | Water                                  |
-| Saifudes    | Wallet                                 |
+| Saifu       | Wallet                                 |
 | Okane       | Money                                  |
 | Tsukue      | Table (general)                        |
 | Te-buru     | Table                                  |

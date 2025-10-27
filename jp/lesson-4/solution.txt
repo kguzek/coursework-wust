@@ -12,5 +12,5 @@ Hai, watashi wa supein no hitodes.
 Iie, Kare wa po-randojin des.
 7. Kanojora wa dochirano kuni no katades ka?
 Kanojora wa igirisu no katades.
-8. Karera wa po-rando no hitodes ka?
-Hai, karera wa po-rando no katades.
+8. Karera wa po-randojindes ka?
+Hai, karera wa po-randojindes.
