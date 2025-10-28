@@ -6,6 +6,8 @@ let rec podziel numbers =
       match h mod 2 with
         | 0 -> (h::evens, odds)
         | 1 -> (evens, h::odds)
+        | _ -> ([], [])
+  ;;
 
 podziel [3;6;8;9;13];;
 podziel [1;2;3;4;5;6];;
