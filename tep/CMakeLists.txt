@@ -40,7 +40,7 @@ add_executable(TEP-Lab1-Modyfikacja
 
 add_executable(TEP-Lab2
         lab2/Number.cpp
-        lab2/Number.h
+        lab2/zad1.cpp
 )
 
 #endregion
