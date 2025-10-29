@@ -4,6 +4,8 @@ project(coursework_wust_tep)
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#region lab 1
+
 add_executable(TEP-Lab1-Zad1
         lab1/zad1.cpp
         lab1/zad1.h
@@ -31,3 +33,14 @@ add_executable(TEP-Lab1-Modyfikacja
         lab1/modyfikacja.cpp
         lab1/modyfikacja.h
 )
+
+#endregion
+
+#region lab 2
+
+add_executable(TEP-Lab2
+        lab2/Number.cpp
+        lab2/Number.h
+)
+
+#endregion

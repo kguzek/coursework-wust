@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="TEP-Lab1-Modyfikacja" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="coursework_wust_tep" TARGET_NAME="TEP-Lab1-Modyfikacja" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="coursework_wust_tep" RUN_TARGET_NAME="TEP-Lab1-Modyfikacja">
+    <method v="2">
+      <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+    </method>
+  </configuration>
+</component>
