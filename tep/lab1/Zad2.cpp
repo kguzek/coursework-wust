@@ -1,5 +1,5 @@
 #include <iostream>
-#include "zad3.h"
+#include "Zad3.h"
 #include "../common/io.h"
 
 bool alloc_2d_array(int*** array, int cols, int rows)

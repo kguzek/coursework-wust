@@ -1,4 +1,4 @@
-#include "zad1.h"
+#include "Zad1.h"
 
 #include <iostream>
 #include "../common/io.h"

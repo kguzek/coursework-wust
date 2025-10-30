@@ -1,5 +1,5 @@
 
-#include "modyfikacja.h"
+#include "Modyfikacja.h"
 
 Data::Data()
 {
