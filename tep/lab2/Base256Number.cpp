@@ -209,6 +209,19 @@ std::string Base256Number::to_string() const
     return string_stream.str();
 }
 
+std::string Base256Number::to_hex_string() const
+{
+    std::string result = "0x";
+    for (int i = _length - 1; i >= 0; i--)
+    {
+        const unsigned int left = _value[i] / 16;
+        const unsigned int right = _value[i] - left * 16;
+        result += HEX_DIGITS[left];
+        result += HEX_DIGITS[right];
+    }
+    return result;
+}
+
 Base256Number& Base256Number::operator=(const Base256Number& number)
 {
     if (this != &number)
@@ -316,6 +329,7 @@ bool Base256Number::_is_zero() const
 }
 
 const Base256Number Base256Number::infinity = _create_infinity();
+const std::string Base256Number::HEX_DIGITS = "0123456789ABCDEF";
 
 Base256Number Base256Number::_create_infinity()
 {

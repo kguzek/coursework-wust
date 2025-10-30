@@ -26,6 +26,7 @@ public:
     Base256Number divide(int divisor) const;
     Base256Number modulo(int divisor) const;
     std::string to_string() const;
+    std::string to_hex_string() const;
     inline int get_length() const { return _length; }
     inline bool is_negative() const { return _is_negative; }
     inline bool is_infinity() const { return _is_infinity; }
@@ -44,6 +45,7 @@ public:
     inline Base256Number operator%(const int number) const { return modulo(number); }
 
     static const Base256Number infinity;
+    static const std::string HEX_DIGITS;
 
 private:
     unsigned char* _value;
