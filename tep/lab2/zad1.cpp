@@ -3,7 +3,7 @@
 #include "Number.h"
 
 
-void test_operations(int first, int second)
+void test_operations(const int first, const int second)
 {
     Number first_number;
     Number second_number;
@@ -11,8 +11,8 @@ void test_operations(int first, int second)
     second_number = second;
 
     // test operator=
-    // std::cout << "number = " << first << ": " << first_number << std::endl;
-    // std::cout << "number = " << second << ": " << second_number << std::endl;
+    // std::cout << first_number << " = " << first << std::endl;
+    // std::cout << second_number << " = " << second << std::endl;
 
     // test operator+
     // std::cout << first << " + " << second << " = " << first_number + second_number << std::endl;

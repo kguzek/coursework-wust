@@ -8,13 +8,15 @@ Number::Number()
 {
     _is_negative = false;
     _length = NUMBER_DEFAULT_LENGTH;
+    _value = new int[_length];
     _init_value();
 }
 
-Number::Number(int length)
+Number::Number(const int length)
 {
     _is_negative = false;
     this->_length = length;
+    _value = new int[_length];
     _init_value();
 }
 
@@ -29,7 +31,7 @@ Number::Number(const Number& other)
     }
 }
 
-void Number::set(int new_value)
+void Number::set(const int new_value)
 {
     delete[] _value;
     _is_negative = new_value < 0;
@@ -56,7 +58,7 @@ void Number::set(const Number& new_value)
     }
 }
 
-Number Number::add(Number& number)
+Number Number::add(const Number& number) const
 {
     if (_is_negative != number._is_negative)
     {
@@ -72,7 +74,7 @@ Number Number::add(Number& number)
     return result;
 }
 
-Number Number::subtract(Number& number)
+Number Number::subtract(const Number& number) const
 {
     if (_is_negative)
     {
@@ -95,26 +97,26 @@ Number Number::subtract(Number& number)
     return _subtract_abs(number);
 }
 
-Number Number::multiply(Number& multiplier)
+Number Number::multiply(const Number& multiplier) const
 {
     if (multiplier._length > _length)
     {
         return multiplier.multiply(*this);
     }
-    int result_length = _length + multiplier._length;
+    const int result_length = _length + multiplier._length;
     Number result(result_length);
 
     for (int i = 0; i < multiplier._length; i++)
     {
         int carry = 0;
-        int row_length = _length + i + 1;
+        const int row_length = _length + i + 1;
         Number row(row_length);
         for (int j = 0; j < _length; j++)
         {
             int digit = _value[j] * multiplier._value[i] + carry;
             carry = digit / 10;
-            const int remainder = digit - carry * 10;
-            row._value[i + j] = remainder;
+            digit -= carry * 10;
+            row._value[i + j] = digit;
         }
         row._value[i + _length] = carry;
         const Number sum = result + row;
@@ -131,33 +133,33 @@ Number Number::multiply(Number& multiplier)
     return result;
 }
 
-Number Number::divide(Number& divisor)
+Number Number::divide(const Number& divisor) const
 {
     return *new Number();
 }
 
-Number Number::add(int number)
+Number Number::add(const int number) const
 {
     Number number_object;
     number_object = number;
     return add(number_object);
 }
 
-Number Number::subtract(int number)
+Number Number::subtract(const int number) const
 {
     Number number_object;
     number_object = number;
     return subtract(number_object);
 }
 
-Number Number::multiply(int multiplier)
+Number Number::multiply(const int multiplier) const
 {
     Number multiplier_object;
     multiplier_object = multiplier;
     return multiply(multiplier_object);
 }
 
-Number Number::divide(int divisor)
+Number Number::divide(const int divisor) const
 {
     Number divisor_object;
     divisor_object = divisor;
@@ -173,10 +175,12 @@ std::string Number::toString() const
 
 Number& Number::operator=(const Number& number)
 {
-    set(number);
+    if (this != &number)
+    {
+        set(number);
+    }
     return *this;
 }
-
 
 Number& Number::operator=(const int number)
 {
@@ -184,9 +188,8 @@ Number& Number::operator=(const int number)
     return *this;
 }
 
-void Number::_init_value()
+void Number::_init_value() const
 {
-    _value = new int[_length];
     for (int i = 0; i < _length; i++)
     {
         _value[i] = 0;
@@ -203,17 +206,17 @@ void Number::_normalize()
 }
 
 /* Adds the absolute value of `number` to the absolute value of `this`. */
-Number Number::_add_abs(Number& number)
+Number Number::_add_abs(const Number& number) const
 {
-    int result_length = number._length > _length ? number._length : _length;
+    const int result_length = number._length > _length ? number._length : _length;
     // add one to max length due to possible carry overflow
     Number result(result_length + 1);
 
     bool carry = false;
     for (int i = 0; i < result_length; i++)
     {
-        int left_digit = i < _length ? _value[i] : 0;
-        int right_digit = i < number._length ? number._value[i] : 0;
+        const int left_digit = i < _length ? _value[i] : 0;
+        const int right_digit = i < number._length ? number._value[i] : 0;
         int digit = left_digit + right_digit + carry;
         carry = false;
         if (digit >= 10)
@@ -235,7 +238,7 @@ Number Number::_add_abs(Number& number)
     return result;
 }
 
-Number Number::_subtract_abs(Number& number)
+Number Number::_subtract_abs(const Number& number) const
 {
     if (_length < number._length)
     {
