@@ -213,20 +213,19 @@ std::string Base256Number::to_array_string() const
 
 std::string Base256Number::to_hex_string() const
 {
-    if (_is_zero())
-    {
-        return "0x0";
-    }
     std::string result = "0x";
-    for (int i = _length - 1; i >= 0; i--)
+
+    unsigned char byte = _value[_length - 1];
+    if (byte != 0)
     {
-        if (_value[i] > 0 || i < _length - 1)
-        {
-            const unsigned int left = _value[i] / 16;
-            const unsigned int right = _value[i] - left * 16;
-            result += HEX_DIGITS[left];
-            result += HEX_DIGITS[right];
-        }
+        result += HEX_DIGITS[byte / 16];
+        result += HEX_DIGITS[byte % 16];
+    }
+    for (int i = _length - 2; i >= 0; i--)
+    {
+        byte = _value[i];
+        result += HEX_DIGITS[byte / 16];
+        result += HEX_DIGITS[byte % 16];
     }
     return result;
 }
@@ -237,26 +236,6 @@ std::string Base256Number::to_binary_string() const
     for (int i = _length - 1; i >= 0; i--)
     {
         result += std::bitset<8>(_value[i]).to_string();
-    }
-    return result;
-}
-
-
-std::string Base256Number::to_decimal_string() const
-{
-    if (_is_infinity)
-    {
-        return "INFINITY";
-    }
-    std::string result;
-    if (_is_negative)
-    {
-        result += "-";
-    }
-    for (int i = _length - 1; i >= 0; i--)
-    {
-        const int value = _value[i];
-        result += dynamic_cast<std::ostringstream&>(std::ostringstream() << std::dec << value).str();
     }
     return result;
 }
@@ -294,7 +273,7 @@ Base256Number Base256Number::operator|(const Base256Number& number) const
 {
     if (number._length > _length)
     {
-        return number & *this;
+        return number | *this;
     }
     Base256Number result(_length);
     for (int i = 0; i < _length; i++)
@@ -308,7 +287,7 @@ Base256Number Base256Number::operator^(const Base256Number& number) const
 {
     if (number._length > _length)
     {
-        return number & *this;
+        return number ^ *this;
     }
     Base256Number result(_length);
     for (int i = 0; i < _length; i++)
@@ -321,29 +300,34 @@ Base256Number Base256Number::operator^(const Base256Number& number) const
 Base256Number Base256Number::operator~() const
 {
     Base256Number result(_length);
-    for (int i = 0; i < _length; i++)
+    for (int i = 0; i < _length - 1; i++)
     {
         result._value[i] = ~_value[i];
     }
+    // don't perform the negation on the leading zeroes
+    const unsigned char msb = _value[_length - 1];
+    const unsigned char bits_to_keep = msb == 0 ? 0 : static_cast<int>(floor(log2(msb))) + 1;
+    const unsigned char inverse_mask = ((NUMERIC_BASE - 1) >> bits_to_keep) << bits_to_keep;
+    result._value[_length - 1] = ~(msb | inverse_mask);
     return result;
 }
 
 Base256Number Base256Number::operator<<(const int number) const
 {
-    Base256Number result(_length);
-    for (int i = 0; i < _length; i++)
+    Base256Number result(*this);
+    for (int i = 0; i < number; i++)
     {
-        result._value[i] = _value[i] << number;
+        result = result * 2;
     }
     return result;
 }
 
 Base256Number Base256Number::operator>>(const int number) const
 {
-    Base256Number result(_length);
-    for (int i = 0; i < _length; i++)
+    Base256Number result(*this);
+    for (int i = 0; i < number; i++)
     {
-        result._value[i] = _value[i] >> number;
+        result = result / 2;
     }
     return result;
 }

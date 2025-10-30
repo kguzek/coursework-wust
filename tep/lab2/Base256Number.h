@@ -28,7 +28,6 @@ public:
     std::string to_array_string() const;
     std::string to_hex_string() const;
     std::string to_binary_string() const;
-    std::string to_decimal_string() const;
     inline int get_length() const { return _length; }
     inline bool is_negative() const { return _is_negative; }
     inline bool is_infinity() const { return _is_infinity; }

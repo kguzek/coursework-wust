@@ -9,7 +9,7 @@ void flush()
 
 std::string number_to_string(const Base256Number& number)
 {
-    return number.to_decimal_string();
+    return number.to_array_string();
 }
 
 void test_operations(const int first, const int second)
