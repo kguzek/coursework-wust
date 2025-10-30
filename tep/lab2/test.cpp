@@ -27,16 +27,20 @@ void test_operations(const int first, const int second)
     // std::cout << second << " * " << first << " = " << second_number * first_number << std::endl;
 
     // test operator/
-    std::cout << first << " / " << second << " = " << first_number / second_number << std::endl;
-    std::cout << second << " / " << first << " = " << second_number / first_number << std::endl;
+    // std::cout << first << " / " << second << " = " << first_number / second_number << std::endl;
+    // std::cout << second << " / " << first << " = " << second_number / first_number << std::endl;
+
+    // test operator%
+    std::cout << first << " % " << second << " = " << first_number % second_number << std::endl;
+    std::cout << second << " % " << first << " = " << second_number % first_number << std::endl;
 }
 
 int main()
 {
-    // test_operations(1, 3);
-    // test_operations(10, 3);
-    // test_operations(5, 7);
-    // test_operations(23, 67);
-    // test_operations(0, 7);
+    test_operations(1, 3);
+    test_operations(10, 3);
+    test_operations(5, 7);
+    test_operations(23, 67);
+    test_operations(0, 7);
     test_operations(12345678, 9876);
 }

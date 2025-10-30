@@ -17,10 +17,12 @@ public:
     Number subtract(const Number& number) const;
     Number multiply(const Number& multiplier) const;
     Number divide(const Number& divisor) const;
+    Number modulo(const Number& divisor) const;
     Number add(int number) const;
     Number subtract(int number) const;
     Number multiply(int multiplier) const;
     Number divide(int divisor) const;
+    Number modulo(int divisor) const;
     std::string to_string() const;
     int get_length() const { return _length; }
     bool is_negative() const { return _is_negative; }
@@ -31,11 +33,13 @@ public:
     Number operator-(const Number& number) const { return subtract(number); }
     Number operator*(const Number& number) const { return multiply(number); }
     Number operator/(const Number& number) const { return divide(number); }
+    Number operator%(const Number& number) const { return modulo(number); }
     Number& operator=(int number);
     Number operator+(const int number) const { return add(number); }
     Number operator-(const int number) const { return subtract(number); }
     Number operator*(const int number) const { return multiply(number); }
     Number operator/(const int number) const { return divide(number); }
+    Number operator%(const int number) const { return modulo(number); }
 
     static const Number infinity;
 

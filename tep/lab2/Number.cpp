@@ -66,7 +66,7 @@ Number Number::add(const Number& number) const
 {
     if (_is_negative != number._is_negative)
     {
-        return _is_negative ? number.subtract(*this) : subtract(number);
+        return _is_negative ? number._subtract_abs(*this) : _subtract_abs(number);
     }
     Number result = _add_abs(number);
 
@@ -150,8 +150,7 @@ Number Number::divide(const Number& divisor) const
 
     while (remainder._is_negative == divisor._is_negative)
     {
-        const Number new_remainder = remainder - divisor;
-        remainder = new_remainder;
+        remainder = remainder - divisor;
         result = result + 1;
     }
     result = result - 1;
@@ -161,6 +160,11 @@ Number Number::divide(const Number& divisor) const
         result._is_negative = true;
     }
     return result;
+}
+
+Number Number::modulo(const Number& divisor) const
+{
+    return *this - *this / divisor * divisor;
 }
 
 Number Number::add(const int number) const
@@ -189,6 +193,13 @@ Number Number::divide(const int divisor) const
     Number divisor_object;
     divisor_object = divisor;
     return divide(divisor_object);
+}
+
+Number Number::modulo(const int divisor) const
+{
+    Number divisor_object;
+    divisor_object = divisor;
+    return modulo(divisor_object);
 }
 
 std::string Number::to_string() const
@@ -234,7 +245,7 @@ void Number::_init_value() const
 
 void Number::_normalize()
 {
-    if (_length > 1 && _value[_length - 1] == 0)
+    while (_length > 1 && _value[_length - 1] == 0)
     {
         // remove leading 0
         _length--;
