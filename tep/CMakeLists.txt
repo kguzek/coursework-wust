@@ -53,4 +53,9 @@ add_executable(TEP-Lab2-LiveCoding
         lab2/modyfikacja.cpp
 )
 
+add_executable(TEP-Lab2-LiveCoding-Tester
+        lab2/Base256Number.cpp
+        lab2/tester.cpp
+)
+
 #endregion

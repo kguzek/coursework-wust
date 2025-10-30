@@ -1,8 +1,10 @@
 #include "Base256Number.h"
 
 #include <algorithm>
+#include <bitset>
 #include <cmath>
 #include <sstream>
+#include <string>
 
 Base256Number::Base256Number()
 {
@@ -202,7 +204,7 @@ Base256Number Base256Number::modulo(const int divisor) const
     return modulo(divisor_object);
 }
 
-std::string Base256Number::to_string() const
+std::string Base256Number::to_array_string() const
 {
     std::ostringstream string_stream;
     string_stream << *this;
@@ -222,6 +224,36 @@ std::string Base256Number::to_hex_string() const
     return result;
 }
 
+std::string Base256Number::to_binary_string() const
+{
+    std::string result = "0b";
+    for (int i = _length - 1; i >= 0; i--)
+    {
+        result += std::bitset<8>(_value[i]).to_string();
+    }
+    return result;
+}
+
+
+std::string Base256Number::to_decimal_string() const
+{
+    if (_is_infinity)
+    {
+        return "INFINITY";
+    }
+    std::string result;
+    if (_is_negative)
+    {
+        result += "-";
+    }
+    for (int i = _length - 1; i >= 0; i--)
+    {
+        const int value = _value[i];
+        result += dynamic_cast<std::ostringstream&>(std::ostringstream() << std::dec << value).str();
+    }
+    return result;
+}
+
 Base256Number& Base256Number::operator=(const Base256Number& number)
 {
     if (this != &number)
@@ -235,6 +267,78 @@ Base256Number& Base256Number::operator=(const int number)
 {
     set(number);
     return *this;
+}
+
+Base256Number Base256Number::operator&(const Base256Number& number) const
+{
+    if (number._length > _length)
+    {
+        return number & *this;
+    }
+    Base256Number result(_length);
+    for (int i = 0; i < _length; i++)
+    {
+        result._value[i] = _value[i] & number._value[i];
+    }
+    return result;
+}
+
+Base256Number Base256Number::operator|(const Base256Number& number) const
+{
+    if (number._length > _length)
+    {
+        return number & *this;
+    }
+    Base256Number result(_length);
+    for (int i = 0; i < _length; i++)
+    {
+        result._value[i] = _value[i] | number._value[i];
+    }
+    return result;
+}
+
+Base256Number Base256Number::operator^(const Base256Number& number) const
+{
+    if (number._length > _length)
+    {
+        return number & *this;
+    }
+    Base256Number result(_length);
+    for (int i = 0; i < _length; i++)
+    {
+        result._value[i] = _value[i] ^ number._value[i];
+    }
+    return result;
+}
+
+Base256Number Base256Number::operator~() const
+{
+    Base256Number result(_length);
+    for (int i = 0; i < _length; i++)
+    {
+        result._value[i] = ~_value[i];
+    }
+    return result;
+}
+
+Base256Number Base256Number::operator<<(const int number) const
+{
+    Base256Number result(_length);
+    for (int i = 0; i < _length; i++)
+    {
+        result._value[i] = _value[i] << number;
+    }
+    return result;
+}
+
+Base256Number Base256Number::operator>>(const int number) const
+{
+    Base256Number result(_length);
+    for (int i = 0; i < _length; i++)
+    {
+        result._value[i] = _value[i] >> number;
+    }
+    return result;
 }
 
 void Base256Number::_init_value() const
