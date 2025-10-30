@@ -8,14 +8,14 @@ Number::Number()
 {
     _is_negative = false;
     _length = NUMBER_DEFAULT_LENGTH;
-    _value = new int[_length];
+    _init_value();
 }
 
 Number::Number(int length)
 {
     _is_negative = false;
     this->_length = length;
-    _value = new int[length];
+    _init_value();
 }
 
 Number::Number(const Number& other)
@@ -34,7 +34,7 @@ void Number::set(int new_value)
     delete[] _value;
     _is_negative = new_value < 0;
     int new_value_abs = std::abs(new_value);
-    _length = static_cast<int>(std::floor(std::log10(new_value_abs))) + 1;
+    _length = new_value_abs == 0 ? 1 : static_cast<int>(std::floor(std::log10(new_value_abs))) + 1;
     _value = new int[_length];
 
     // stores the digits in reverse order
@@ -45,10 +45,11 @@ void Number::set(int new_value)
     }
 }
 
-void Number::set(Number& new_value)
+void Number::set(const Number& new_value)
 {
     delete[] _value;
     _length = new_value._length;
+    _value = new int[_length];
     for (int i = 0; i < _length; i++)
     {
         _value[i] = new_value._value[i];
@@ -61,7 +62,7 @@ Number Number::add(Number& number)
     {
         return _is_negative ? number.subtract(*this) : subtract(number);
     }
-    Number result = add_abs(number);
+    Number result = _add_abs(number);
 
     if (_is_negative) // number.is_negative is then implied
     {
@@ -78,7 +79,7 @@ Number Number::subtract(Number& number)
         if (number._is_negative)
         {
             // (-a) - (-b) <=> b - a
-            return number.subtract_abs(*this);
+            return number._subtract_abs(*this);
         }
         // (-a) - b <=> -(a + b)
         Number result = add(number);
@@ -91,12 +92,43 @@ Number Number::subtract(Number& number)
         return add(number);
     }
     // a - b, where a and b are positive
-    return subtract_abs(number);
+    return _subtract_abs(number);
 }
 
 Number Number::multiply(Number& multiplier)
 {
-    return *new Number();
+    if (multiplier._length > _length)
+    {
+        return multiplier.multiply(*this);
+    }
+    int result_length = _length + multiplier._length;
+    Number result(result_length);
+
+    for (int i = 0; i < multiplier._length; i++)
+    {
+        int carry = 0;
+        int row_length = _length + i + 1;
+        Number row(row_length);
+        for (int j = 0; j < _length; j++)
+        {
+            int digit = _value[j] * multiplier._value[i] + carry;
+            carry = digit / 10;
+            const int remainder = digit - carry * 10;
+            row._value[i + j] = remainder;
+        }
+        row._value[i + _length] = carry;
+        const Number sum = result + row;
+        result = sum;
+    }
+
+    if (_is_negative != multiplier._is_negative)
+    {
+        result._is_negative = true;
+    }
+
+    result._normalize();
+
+    return result;
 }
 
 Number Number::divide(Number& divisor)
@@ -132,8 +164,46 @@ Number Number::divide(int divisor)
     return divide(divisor_object);
 }
 
+std::string Number::toString() const
+{
+    std::ostringstream string_stream;
+    string_stream << *this;
+    return string_stream.str();
+}
+
+Number& Number::operator=(const Number& number)
+{
+    set(number);
+    return *this;
+}
+
+
+Number& Number::operator=(const int number)
+{
+    set(number);
+    return *this;
+}
+
+void Number::_init_value()
+{
+    _value = new int[_length];
+    for (int i = 0; i < _length; i++)
+    {
+        _value[i] = 0;
+    }
+}
+
+void Number::_normalize()
+{
+    if (_length > 1 && _value[_length - 1] == 0)
+    {
+        // remove leading 0
+        _length--;
+    }
+}
+
 /* Adds the absolute value of `number` to the absolute value of `this`. */
-Number Number::add_abs(Number& number)
+Number Number::_add_abs(Number& number)
 {
     int result_length = number._length > _length ? number._length : _length;
     // add one to max length due to possible carry overflow
@@ -165,7 +235,7 @@ Number Number::add_abs(Number& number)
     return result;
 }
 
-Number Number::subtract_abs(Number& number)
+Number Number::_subtract_abs(Number& number)
 {
     if (_length < number._length)
     {
@@ -191,33 +261,14 @@ Number Number::subtract_abs(Number& number)
         result._value[i] = digit;
     }
 
-    int most_significant_digit = result._value[_length - 1];
     if (was_carry)
     {
         result._is_negative = true;
-        result._value[_length - 1] = 10 - most_significant_digit;
+        result._value[_length - 1] = 10 - result._value[_length - 1];
     }
-    if (most_significant_digit == 0)
-    {
-        // remove leading 0
-        result._length--;
-    }
+    result._normalize();
 
     return result;
-}
-
-
-std::string Number::toString() const
-{
-    std::ostringstream string_stream;
-    string_stream << *this;
-    return string_stream.str();
-}
-
-Number& Number::operator=(const int number)
-{
-    set(number);
-    return *this;
 }
 
 

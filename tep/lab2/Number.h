@@ -12,7 +12,7 @@ public:
     Number(const Number& other);
     ~Number() { delete[] _value; }
     void set(int new_value);
-    void set(Number& new_value);
+    void set(const Number& new_value);
     Number add(Number& number);
     Number subtract(Number& number);
     Number multiply(Number& multiplier);
@@ -25,11 +25,12 @@ public:
     int get_length() const { return _length; }
     bool is_negative() const { return _is_negative; }
     int* get_value() const { return _value; }
-    Number& operator=(int number);
+    Number& operator=(const Number& number);
     Number operator+(Number& number) { return add(number); }
     Number operator-(Number& number) { return subtract(number); }
     Number operator*(Number& number) { return multiply(number); }
     Number operator/(Number& number) { return divide(number); }
+    Number& operator=(int number);
     Number operator+(int number) { return add(number); }
     Number operator-(int number) { return subtract(number); }
     Number operator*(int number) { return multiply(number); }
@@ -39,8 +40,10 @@ private:
     int* _value;
     int _length;
     bool _is_negative;
-    Number add_abs(Number& number);
-    Number subtract_abs(Number& number);
+    void _init_value();
+    void _normalize();
+    Number _add_abs(Number& number);
+    Number _subtract_abs(Number& number);
 };
 
 std::ostream& operator<<(std::ostream& outs, const Number& number);
