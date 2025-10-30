@@ -141,7 +141,7 @@ Number Number::divide(const Number& divisor) const
 {
     Number result;
     result = 0;
-    Number remainder = *this;
+    Number remainder(*this);
 
     if (divisor._is_zero())
     {
@@ -198,6 +198,17 @@ std::string Number::to_string() const
     return string_stream.str();
 }
 
+// zad1 implementation
+// Number& Number::operator=(const Number& number)
+// {
+//     _value = number._value;
+//     _length = number._length;
+//     // wywala:
+//     // free(): double free detected in tcache 2
+//     return *this;
+// }
+
+// my implementation
 Number& Number::operator=(const Number& number)
 {
     if (this != &number)

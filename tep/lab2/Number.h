@@ -1,7 +1,7 @@
 #ifndef COURSEWORK_WUST_NUMBER_H
 #define COURSEWORK_WUST_NUMBER_H
 
-#define NUMBER_DEFAULT_LENGTH 10
+#define NUMBER_DEFAULT_LENGTH 1
 #include <string>
 
 class Number

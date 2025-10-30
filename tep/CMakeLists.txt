@@ -38,9 +38,14 @@ add_executable(TEP-Lab1-Modyfikacja
 
 #region lab 2
 
-add_executable(TEP-Lab2
+add_executable(TEP-Lab2-Zad1
         lab2/Number.cpp
         lab2/zad1.cpp
+)
+
+add_executable(TEP-Lab2-Test
+        lab2/Number.cpp
+        lab2/test.cpp
 )
 
 #endregion
