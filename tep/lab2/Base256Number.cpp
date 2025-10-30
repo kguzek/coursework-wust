@@ -213,13 +213,20 @@ std::string Base256Number::to_array_string() const
 
 std::string Base256Number::to_hex_string() const
 {
+    if (_is_zero())
+    {
+        return "0x0";
+    }
     std::string result = "0x";
     for (int i = _length - 1; i >= 0; i--)
     {
-        const unsigned int left = _value[i] / 16;
-        const unsigned int right = _value[i] - left * 16;
-        result += HEX_DIGITS[left];
-        result += HEX_DIGITS[right];
+        if (_value[i] > 0 || i < _length - 1)
+        {
+            const unsigned int left = _value[i] / 16;
+            const unsigned int right = _value[i] - left * 16;
+            result += HEX_DIGITS[left];
+            result += HEX_DIGITS[right];
+        }
     }
     return result;
 }
@@ -429,7 +436,14 @@ Base256Number Base256Number::_subtract_abs(const Base256Number& number) const
 
 bool Base256Number::_is_zero() const
 {
-    return _length == 1 && _value[0] == 0;
+    for (int i = 0; i < _length; i++)
+    {
+        if (_value[i] != 0)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 const Base256Number Base256Number::infinity = _create_infinity();
