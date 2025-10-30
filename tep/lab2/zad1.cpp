@@ -23,8 +23,12 @@ void test_operations(const int first, const int second)
     // std::cout << second << " - " << first << " = " << second_number - first_number << std::endl;
 
     // test operator*
-    std::cout << first << " * " << second << " = " << first_number * second_number << std::endl;
-    std::cout << second << " * " << first << " = " << second_number * first_number << std::endl;
+    // std::cout << first << " * " << second << " = " << first_number * second_number << std::endl;
+    // std::cout << second << " * " << first << " = " << second_number * first_number << std::endl;
+
+    // test operator/
+    std::cout << first << " / " << second << " = " << first_number / second_number << std::endl;
+    std::cout << second << " / " << first << " = " << second_number / first_number << std::endl;
 }
 
 int main()

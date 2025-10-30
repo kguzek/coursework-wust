@@ -21,9 +21,10 @@ public:
     Number subtract(int number) const;
     Number multiply(int multiplier) const;
     Number divide(int divisor) const;
-    std::string toString() const;
+    std::string to_string() const;
     int get_length() const { return _length; }
     bool is_negative() const { return _is_negative; }
+    bool is_infinity() const { return _is_infinity; }
     int* get_value() const { return _value; }
     Number& operator=(const Number& number);
     Number operator+(const Number& number) const { return add(number); }
@@ -36,14 +37,19 @@ public:
     Number operator*(const int number) const { return multiply(number); }
     Number operator/(const int number) const { return divide(number); }
 
+    static const Number infinity;
+
 private:
     int* _value;
     int _length;
     bool _is_negative;
+    bool _is_infinity;
     void _init_value() const;
     void _normalize();
     Number _add_abs(const Number& number) const;
     Number _subtract_abs(const Number& number) const;
+    bool _is_zero() const;
+    static Number _create_infinity();
 };
 
 std::ostream& operator<<(std::ostream& outs, const Number& number);

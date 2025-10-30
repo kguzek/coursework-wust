@@ -7,6 +7,7 @@
 Number::Number()
 {
     _is_negative = false;
+    _is_infinity = false;
     _length = NUMBER_DEFAULT_LENGTH;
     _value = new int[_length];
     _init_value();
@@ -15,6 +16,7 @@ Number::Number()
 Number::Number(const int length)
 {
     _is_negative = false;
+    _is_infinity = false;
     this->_length = length;
     _value = new int[_length];
     _init_value();
@@ -23,6 +25,7 @@ Number::Number(const int length)
 Number::Number(const Number& other)
 {
     _is_negative = other._is_negative;
+    _is_infinity = other._is_infinity;
     _length = other._length;
     _value = new int[_length];
     for (int i = 0; i < _length; i++)
@@ -50,6 +53,7 @@ void Number::set(const int new_value)
 void Number::set(const Number& new_value)
 {
     delete[] _value;
+    _is_negative = new_value._is_negative;
     _length = new_value._length;
     _value = new int[_length];
     for (int i = 0; i < _length; i++)
@@ -135,7 +139,28 @@ Number Number::multiply(const Number& multiplier) const
 
 Number Number::divide(const Number& divisor) const
 {
-    return *new Number();
+    Number result;
+    result = 0;
+    Number remainder = *this;
+
+    if (divisor._is_zero())
+    {
+        return infinity;
+    }
+
+    while (remainder._is_negative == divisor._is_negative)
+    {
+        const Number new_remainder = remainder - divisor;
+        remainder = new_remainder;
+        result = result + 1;
+    }
+    result = result - 1;
+
+    if (_is_negative != divisor._is_negative)
+    {
+        result._is_negative = true;
+    }
+    return result;
 }
 
 Number Number::add(const int number) const
@@ -166,7 +191,7 @@ Number Number::divide(const int divisor) const
     return divide(divisor_object);
 }
 
-std::string Number::toString() const
+std::string Number::to_string() const
 {
     std::ostringstream string_stream;
     string_stream << *this;
@@ -274,9 +299,28 @@ Number Number::_subtract_abs(const Number& number) const
     return result;
 }
 
+bool Number::_is_zero() const
+{
+    return _length == 1 && _value[0] == 0;
+}
+
+const Number Number::infinity = _create_infinity();
+
+Number Number::_create_infinity()
+{
+    Number inf;
+    inf = 0;
+    inf._is_infinity = true;
+    return inf;
+}
 
 std::ostream& operator<<(std::ostream& outs, const Number& number)
 {
+    if (number.is_infinity())
+    {
+        outs << "INFINITY";
+        return outs;
+    }
     if (number.is_negative())
     {
         outs << '-';
