@@ -14,7 +14,7 @@
 | Kyoku         | Government office              |
 | Yuubin Kyoku  | Post office                    |
 | Keisatsu      | Police                         |
-| Keisatsu sho  | Police station                 |
+| Keisatsusho   | Police station                 |
 | Eiga          | Movie                          |
 | Eiga kan      | Cinema                         |
 | Tosho         | Text                           |
