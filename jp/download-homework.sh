@@ -8,15 +8,19 @@
 set -e
 
 FILE_URL='https://www.dropbox.com/scl/fi/fyorx8qh7cp9e0svv6gdw/Homework_A1_60b.txt?rlkey=wvhyxk587glavvvgrvjx9fxzh'
+SOLUTION_FILENAME="solution.txt"
 
 for lesson in ./lesson-*; do
   pushd "$lesson" >/dev/null
   if [ ! -f "homework.txt" ]; then
     echo -n "⬇️  Downloading homework for $(basename "$lesson")... "
-    curl -fsSLo homework.txt "$FILE_URL" && echo "Done!" && exit 0
+    curl -fsSLo homework.txt "$FILE_URL" 
+    touch "$SOLUTION_FILENAME" 
+    echo "Done!" 
+    exit 0
   fi
   popd >/dev/null
 done
 
-echo "❌ No lesson directories found to download homework into."
+echo "❌ No existing lesson directories found which do not already contain homework file."
 exit 1

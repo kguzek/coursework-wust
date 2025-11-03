@@ -1,0 +1,18 @@
+1. Anata no gakkou wa doko des ka?
+Watasi no gakkou wa Wrocław Kouka Daigaku.
+2. Kanojo no kaisha wa doko des ka?
+Kanojo no kaisha wa asoko des.
+3. Karera wa dochirano ginkou no hito des ka?
+Karera wa mBank no kata des.
+4. Gekijou wa doko des ka?
+Gekijou wa G des.
+5. A wa kyoukai des ka?
+Iie, A wa kouen des.
+6. Keisatsushi wa doko des ka?
+Keisatsusho wa J des.
+7. Hakubutsukan wa G des ka?
+Iie, Hakubutsukan wa B des.
+8. Eigakan wa doko des ka?
+Eigakan wa F des.
+9. Toshokan wa doko des ka?
+Toshokan wa E des.
