@@ -33,6 +33,8 @@
 
 ## New grammar
 
+### New grammar – examples
+
 | Japanese                                        | English                      |
 | ----------------------------------------------- | ---------------------------- |
 | Anatawa dochirano kunino katades ka?            | Where are you from?          |

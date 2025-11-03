@@ -4,25 +4,30 @@
 
 ## New vocabulary
 
-| Japanese              | English      |
-| --------------------- | ------------ |
-| Berugi-               | Belgium      |
-| Ukuraina              | Ukraine      |
-| Girisha               | Greece       |
-| Oranda                | Netherlands  |
-| Toruko                | Turkey       |
-| Rosia                 | Russia       |
-| Indo                  | India        |
-| Machi                 | City         |
-| Vurotsuwafu           | Wrocław      |
-| Warushaua             | Warsaw       |
-| Mura                  | Village      |
-| Daigaku               | University   |
-| Kouka                 | Science/Tech |
-| Wrocław Kouka Daigaku | WUST         |
-| Kaisha                | Company      |
-| Sports                | Sport/PE     |
-| Gakkou (Ga..ko-)      | School       |
+| Japanese         | English      |
+| ---------------- | ------------ |
+| Berugi-          | Belgium      |
+| Ukuraina         | Ukraine      |
+| Girisha          | Greece       |
+| Oranda           | Netherlands  |
+| Toruko           | Turkey       |
+| Rosia            | Russia       |
+| Indo             | India        |
+| Machi            | City         |
+| Vurotsuwafu      | Wrocław      |
+| Warushaua        | Warsaw       |
+| Mura             | Village      |
+| Daigaku          | University   |
+| Kouka            | Science/Tech |
+| Kaisha           | Company      |
+| Sports           | Sport/PE     |
+| Gakkou (Ga..ko-) | School       |
+
+### New vocabulary – examples
+
+| Japanese              | English |
+| --------------------- | ------- |
+| Wrocław Kouka Daigaku | WUST    |
 
 ## New grammar
 

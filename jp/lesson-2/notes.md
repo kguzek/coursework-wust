@@ -27,7 +27,7 @@
 1. `no` - glue between adjectives and nouns
 2. `nan` - missing value; "what"
 
-### Examples
+### New grammar – examples
 
 | Japanese                   | English            |
 | -------------------------- | ------------------ |

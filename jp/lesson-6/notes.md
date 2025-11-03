@@ -29,10 +29,12 @@
 
 ## New grammar
 
+1. `Nan` is for missing objects, whereas `doko` is for missing location or institution names.
+2. `Koko` is for locations around me; I don't have to be touching them. `Soko` is for things you can see. `Asoko` is for things you cannot see.
+
+### New grammar – examples
+
 | Japanese                                     | English                              |
 | -------------------------------------------- | ------------------------------------ |
 | Anata no daigaku wa **doko** des ka?         | What is your university?             |
 | Anata no daigaku no namae wa **nan** des ka? | What is the name of your university? |
-
-1. `Nan` is for missing objects, whereas `doko` is for missing location or institution names.
-2. `Koko` is for locations around me; I don't have to be touching them. `Soko` is for things you can see. `Asoko` is for things you cannot see.

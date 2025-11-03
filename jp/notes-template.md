@@ -8,7 +8,15 @@
 | -------- | ------- |
 |          |         |
 
+### New vocabulary – examples
+
+| Japanese | English |
+| -------- | ------- |
+|          |         |
+
 ## New grammar
+
+### New grammar – examples
 
 | Japanese | English |
 | -------- | ------- |
