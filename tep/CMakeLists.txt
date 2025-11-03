@@ -40,6 +40,11 @@ add_executable(TEP-Lab2-Sandbox
         lab2/NumberSandbox.cpp
 )
 
+add_executable(TEP-Lab2-Tests
+        lab2/Number.cpp
+        lab2/NumberTests.cpp
+)
+
 add_executable(TEP-Lab2-LiveCoding-Sandbox
         lab2/Base256Number.cpp
         lab2/Base256NumberSandbox.cpp
