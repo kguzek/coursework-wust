@@ -1,0 +1,42 @@
+Homework A1 60b
+Last update: 03.11.2025
+
+translate and answer the questions in Japanese, using the picture from the lesson (https://www.dropbox.com/s/xb2wysoce5ykvib/map-Wro%2BJPv2.pdf?dl=0):
+1. Mt. Fuji is which one? (1, 2, 3 or 4)*
+2. Park is J?
+3. 2 is Kyoto?
+4. Hokkaido is where?
+5. Tokyo is which one (of 10 numbers on the map)*?
+6. Library is which one (of all the alphabets on the map)*?
+7. Fukushima is 3?
+8. Hiroshima is which one? (9 or 10)*
+9. H is which one (of the locations next to the map)*?
+10. E is which one? (eigakan or toshokan)*
+
+* The choice option is inside ( ). Use it to choose correct translation for “which one."
+
+vocabulary:
+A = e-
+B = bi-
+C = shi-
+D = di-
+E = i-
+F = efu
+G = ji-
+H = eichi
+I = ai
+J = jey
+***
+1 = ichi
+2 = ni
+3 = san
+4 = yon
+5 = go
+6 = roku
+7 = nana
+8 = hachi
+9 = kyuu
+10 = juu
+***
+dore = which one (when there are 3 choices or more)
+dochira = which one (when there are only 2 choices)

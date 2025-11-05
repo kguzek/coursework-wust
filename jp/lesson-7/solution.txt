@@ -1,0 +1,20 @@
+1. Fujisan wa dore des ka?
+Fujisan wa 4 des.
+2. Kouen wa J des ka?
+Iie, kouen wa A des.
+3. Ni wa Kyoto des ka?
+Iie, ni wa Toukyou des.
+4. Hokkaido wa dore des ka?
+Hokkaido wa roku des.
+5. Toukyou wa dore des ka?
+Toukyou wa ni des.
+6. Toshokan wa dore des ka?
+Toshokan wa E des.
+7. Fukushima wa san des ka?
+Iie, Fukushima wa ichi des.
+8. Hiroshima wa dore des ka?
+Hiroshima wa juu des.
+9. H wa dore des ka?
+H wa ginkou des.
+10. E wa dochira des ka?
+E wa toshokan des.
