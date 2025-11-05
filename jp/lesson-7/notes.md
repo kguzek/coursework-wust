@@ -25,7 +25,7 @@
 | 2     | Ni         | Two          |
 | 3     | San        | Three        |
 | 4     | Yon/Si     | Four         |
-| 5     | Gu         | Five         |
+| 5     | Go         | Five         |
 | 6     | Roku       | Six          |
 | 7     | Nana/Sichi | Seven        |
 | 8     | Hachi      | Eight        |
