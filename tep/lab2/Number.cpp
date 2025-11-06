@@ -45,8 +45,8 @@ void Number::set(const int new_value)
     // stores the digits in reverse order
     for (int i = 0; i < _length; i++)
     {
-        _value[i] = new_value_abs % 10;
-        new_value_abs /= 10;
+        _value[i] = new_value_abs % NUMERIC_BASE;
+        new_value_abs /= NUMERIC_BASE;
     }
 }
 
@@ -125,8 +125,8 @@ Number Number::multiply(const Number& multiplier) const
         for (int j = 0; j < _length; j++)
         {
             int digit = _value[j] * multiplier._value[i] + carry;
-            carry = digit / 10;
-            digit -= carry * 10;
+            carry = digit / NUMERIC_BASE;
+            digit -= carry * NUMERIC_BASE;
             row._value[i + j] = digit;
         }
         row._value[i + _length] = carry;
@@ -165,12 +165,12 @@ Number Number::divide(const Number& divisor) const
         Number multiple;
         multiple = 1;
 
-        Number next = temp * 10;
+        Number next = temp * NUMERIC_BASE;
         while (remainder.is_magnitude_greater_or_equal(next))
         {
             temp = next;
-            next = temp * 10;
-            multiple = multiple * 10;
+            next = temp * NUMERIC_BASE;
+            multiple = multiple * NUMERIC_BASE;
         }
 
         remainder = remainder - temp;
@@ -225,13 +225,6 @@ Number Number::modulo(const int divisor) const
     return modulo(divisor_object);
 }
 
-std::string Number::to_string() const
-{
-    std::ostringstream string_stream;
-    string_stream << *this;
-    return string_stream.str();
-}
-
 bool Number::is_magnitude_greater_or_equal(const Number& target) const
 {
     if (_length != target._length)
@@ -246,6 +239,13 @@ bool Number::is_magnitude_greater_or_equal(const Number& target) const
         }
     }
     return true;
+}
+
+std::string Number::to_string() const
+{
+    std::ostringstream string_stream;
+    string_stream << *this;
+    return string_stream.str();
 }
 
 // zad1 implementation
@@ -305,10 +305,10 @@ Number Number::_add_abs(const Number& number) const
         const int right_digit = i < number._length ? number._value[i] : 0;
         int digit = left_digit + right_digit + carry;
         carry = false;
-        if (digit >= 10)
+        if (digit >= NUMERIC_BASE)
         {
             carry = true;
-            digit -= 10;
+            digit -= NUMERIC_BASE;
         }
         result._value[i] = digit;
     }
@@ -343,7 +343,7 @@ Number Number::_subtract_abs(const Number& number) const
         was_carry = false;
         if (digit < 0)
         {
-            digit += 10;
+            digit += NUMERIC_BASE;
             _value[i + 1] -= 1;
             was_carry = true;
         }
@@ -353,7 +353,7 @@ Number Number::_subtract_abs(const Number& number) const
     if (was_carry)
     {
         result._is_negative = true;
-        result._value[_length - 1] = 10 - result._value[_length - 1];
+        result._value[_length - 1] = NUMERIC_BASE - result._value[_length - 1];
     }
     result._normalize();
 

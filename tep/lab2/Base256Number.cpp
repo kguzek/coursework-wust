@@ -90,17 +90,24 @@ Base256Number Base256Number::subtract(const Base256Number& number) const
             return number._subtract_abs(*this);
         }
         // (-a) - b <=> -(a + b)
-        Base256Number result = add(number);
+        Base256Number result = _add_abs(number);
         result._is_negative = true;
         return result;
     }
     if (number._is_negative)
     {
         // a - (-b) <=> a + b
-        return add(number);
+        return _add_abs(number);
     }
-    // a - b, where a and b are positive
-    return _subtract_abs(number);
+    if (is_magnitude_greater_or_equal(number))
+    {
+        // a - b, where a and b are positive
+        return _subtract_abs(number);
+    }
+    // a - b = - (b - a)
+    Base256Number result = number._subtract_abs(*this);
+    result._is_negative = true;
+    return result;
 }
 
 Base256Number Base256Number::multiply(const Base256Number& multiplier) const
@@ -139,28 +146,45 @@ Base256Number Base256Number::multiply(const Base256Number& multiplier) const
     return result;
 }
 
+
 Base256Number Base256Number::divide(const Base256Number& divisor) const
 {
-    Base256Number result;
-    result = 0;
-    Base256Number remainder(*this);
-
     if (divisor._is_zero())
     {
         return infinity;
     }
 
-    while (remainder._is_negative == divisor._is_negative)
+    Base256Number result;
+    result = 0;
+
+    Base256Number remainder(*this);
+    remainder._is_negative = false;
+    Base256Number divisor_abs(divisor);
+    divisor_abs._is_negative = false;
+
+    while (remainder.is_magnitude_greater_or_equal(divisor_abs))
     {
-        remainder = remainder - divisor;
-        result = result + 1;
+        Base256Number temp = divisor_abs;
+        Base256Number multiple;
+        multiple = 1;
+
+        Base256Number next = temp * NUMERIC_BASE;
+        while (remainder.is_magnitude_greater_or_equal(next))
+        {
+            temp = next;
+            next = temp * NUMERIC_BASE;
+            multiple = multiple * NUMERIC_BASE;
+        }
+
+        remainder = remainder - temp;
+        result = result + multiple;
     }
-    result = result - 1;
 
     if (_is_negative != divisor._is_negative)
     {
         result._is_negative = true;
     }
+
     return result;
 }
 
@@ -202,6 +226,22 @@ Base256Number Base256Number::modulo(const int divisor) const
     Base256Number divisor_object;
     divisor_object = divisor;
     return modulo(divisor_object);
+}
+
+bool Base256Number::is_magnitude_greater_or_equal(const Base256Number& target) const
+{
+    if (_length != target._length)
+    {
+        return _length > target._length;
+    }
+    for (int i = _length - 1; i >= 0; i--)
+    {
+        if (_value[i] != target._value[i])
+        {
+            return _value[i] > target._value[i];
+        }
+    }
+    return true;
 }
 
 std::string Base256Number::to_array_string() const

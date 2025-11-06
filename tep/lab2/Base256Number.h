@@ -12,7 +12,7 @@ public:
     Base256Number();
     explicit Base256Number(int length);
     Base256Number(const Base256Number& other);
-    inline ~Base256Number() { delete[] _value; }
+    ~Base256Number() { delete[] _value; }
     void set(int new_value);
     void set(const Base256Number& new_value);
     Base256Number add(const Base256Number& number) const;
@@ -25,25 +25,26 @@ public:
     Base256Number multiply(int multiplier) const;
     Base256Number divide(int divisor) const;
     Base256Number modulo(int divisor) const;
+    bool is_magnitude_greater_or_equal(const Base256Number& target) const;
     std::string to_array_string() const;
     std::string to_hex_string() const;
     std::string to_binary_string() const;
-    inline int get_length() const { return _length; }
-    inline bool is_negative() const { return _is_negative; }
-    inline bool is_infinity() const { return _is_infinity; }
-    inline unsigned char* get_value() const { return _value; }
+    int get_length() const { return _length; }
+    bool is_negative() const { return _is_negative; }
+    bool is_infinity() const { return _is_infinity; }
+    unsigned char* get_value() const { return _value; }
     Base256Number& operator=(const Base256Number& number);
-    inline Base256Number operator+(const Base256Number& number) const { return add(number); }
-    inline Base256Number operator-(const Base256Number& number) const { return subtract(number); }
-    inline Base256Number operator*(const Base256Number& number) const { return multiply(number); }
-    inline Base256Number operator/(const Base256Number& number) const { return divide(number); }
-    inline Base256Number operator%(const Base256Number& number) const { return modulo(number); }
+    Base256Number operator+(const Base256Number& number) const { return add(number); }
+    Base256Number operator-(const Base256Number& number) const { return subtract(number); }
+    Base256Number operator*(const Base256Number& number) const { return multiply(number); }
+    Base256Number operator/(const Base256Number& number) const { return divide(number); }
+    Base256Number operator%(const Base256Number& number) const { return modulo(number); }
     Base256Number& operator=(int number);
-    inline Base256Number operator+(const int number) const { return add(number); }
-    inline Base256Number operator-(const int number) const { return subtract(number); }
-    inline Base256Number operator*(const int number) const { return multiply(number); }
-    inline Base256Number operator/(const int number) const { return divide(number); }
-    inline Base256Number operator%(const int number) const { return modulo(number); }
+    Base256Number operator+(const int number) const { return add(number); }
+    Base256Number operator-(const int number) const { return subtract(number); }
+    Base256Number operator*(const int number) const { return multiply(number); }
+    Base256Number operator/(const int number) const { return divide(number); }
+    Base256Number operator%(const int number) const { return modulo(number); }
     Base256Number operator&(const Base256Number& number) const;
     Base256Number operator|(const Base256Number& number) const;
     Base256Number operator^(const Base256Number& number) const;

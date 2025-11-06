@@ -2,6 +2,8 @@
 #define COURSEWORK_WUST_NUMBER_H
 
 #define NUMBER_DEFAULT_LENGTH 1
+#define NUMERIC_BASE 10
+
 #include <string>
 
 class Number
@@ -23,12 +25,12 @@ public:
     Number multiply(int multiplier) const;
     Number divide(int divisor) const;
     Number modulo(int divisor) const;
+    bool is_magnitude_greater_or_equal(const Number& target) const;
     std::string to_string() const;
     int get_length() const { return _length; }
     bool is_negative() const { return _is_negative; }
     bool is_infinity() const { return _is_infinity; }
     int* get_value() const { return _value; }
-    bool is_magnitude_greater_or_equal(const Number& target) const;
     Number& operator=(const Number& number);
     Number operator+(const Number& number) const { return add(number); }
     Number operator-(const Number& number) const { return subtract(number); }
