@@ -88,17 +88,24 @@ Number Number::subtract(const Number& number) const
             return number._subtract_abs(*this);
         }
         // (-a) - b <=> -(a + b)
-        Number result = add(number);
+        Number result = _add_abs(number);
         result._is_negative = true;
         return result;
     }
     if (number._is_negative)
     {
         // a - (-b) <=> a + b
-        return add(number);
+        return _add_abs(number);
     }
-    // a - b, where a and b are positive
-    return _subtract_abs(number);
+    if (is_magnitude_greater_or_equal(number))
+    {
+        // a - b, where a and b are positive
+        return _subtract_abs(number);
+    }
+    // a - b = - (b - a)
+    Number result = number._subtract_abs(*this);
+    result._is_negative = true;
+    return result;
 }
 
 Number Number::multiply(const Number& multiplier) const
@@ -139,26 +146,42 @@ Number Number::multiply(const Number& multiplier) const
 
 Number Number::divide(const Number& divisor) const
 {
-    Number result;
-    result = 0;
-    Number remainder(*this);
-
     if (divisor._is_zero())
     {
         return infinity;
     }
 
-    while (remainder._is_negative == divisor._is_negative)
+    Number result;
+    result = 0;
+
+    Number remainder(*this);
+    remainder._is_negative = false;
+    Number divisor_abs(divisor);
+    divisor_abs._is_negative = false;
+
+    while (remainder.is_magnitude_greater_or_equal(divisor_abs))
     {
-        remainder = remainder - divisor;
-        result = result + 1;
+        Number temp = divisor_abs;
+        Number multiple;
+        multiple = 1;
+
+        Number next = temp * 10;
+        while (remainder.is_magnitude_greater_or_equal(next))
+        {
+            temp = next;
+            next = temp * 10;
+            multiple = multiple * 10;
+        }
+
+        remainder = remainder - temp;
+        result = result + multiple;
     }
-    result = result - 1;
 
     if (_is_negative != divisor._is_negative)
     {
         result._is_negative = true;
     }
+
     return result;
 }
 
@@ -207,6 +230,22 @@ std::string Number::to_string() const
     std::ostringstream string_stream;
     string_stream << *this;
     return string_stream.str();
+}
+
+bool Number::is_magnitude_greater_or_equal(const Number& target) const
+{
+    if (_length != target._length)
+    {
+        return _length > target._length;
+    }
+    for (int i = _length - 1; i >= 0; i--)
+    {
+        if (_value[i] != target._value[i])
+        {
+            return _value[i] > target._value[i];
+        }
+    }
+    return true;
 }
 
 // zad1 implementation

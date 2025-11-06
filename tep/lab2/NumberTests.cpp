@@ -109,7 +109,8 @@ int main()
     }
 
     // Test 8: (a - b - c) / e
-    result = (a - b - c) / e;
+    Number a_minus_b = a - b;
+    result = (a_minus_b - c) / e;
     resultStr = (result.*toStringPtr)();
     if (resultStr == "-1")
     {

@@ -28,6 +28,7 @@ public:
     bool is_negative() const { return _is_negative; }
     bool is_infinity() const { return _is_infinity; }
     int* get_value() const { return _value; }
+    bool is_magnitude_greater_or_equal(const Number& target) const;
     Number& operator=(const Number& number);
     Number operator+(const Number& number) const { return add(number); }
     Number operator-(const Number& number) const { return subtract(number); }
