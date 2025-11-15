@@ -56,3 +56,8 @@ add_executable(TEP-Lab2-LiveCoding-Tests
 )
 
 #endregion
+add_executable(TEP-Lab3
+        lab3/ExpressionNode.cpp
+        lab3/ExpressionTree.cpp
+        lab3/ExpressionParser.cpp
+)
