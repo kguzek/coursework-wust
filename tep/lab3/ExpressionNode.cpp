@@ -1,8 +1,11 @@
 #include <cstdlib>
-#include <string>
 #include <sstream>
 
 #include "ExpressionNode.h"
+
+#include <cmath>
+#include <iostream>
+
 #include "Operation.h"
 
 bool is_integer(const std::string& value)
@@ -11,8 +14,7 @@ bool is_integer(const std::string& value)
     {
         return false;
     }
-    const size_t value_size = value.size();
-    for (size_t i = 0; i < value_size; ++i)
+    for (std::string::size_type i = 0; i < value.size(); ++i)
     {
         if (!std::isdigit(value[i]))
         {
@@ -21,6 +23,29 @@ bool is_integer(const std::string& value)
     }
     return true;
 }
+
+std::string extract_alphanumeric(const std::string& input)
+{
+    std::string result;
+    bool has_alphanumeric_characters = false;
+    for (std::string::size_type i = 0; i < input.size(); ++i)
+    {
+        if (std::isalnum(static_cast<unsigned char>(input[i])))
+        {
+            result += input[i];
+            has_alphanumeric_characters = true;
+        }
+    }
+    return has_alphanumeric_characters ? result : "";
+}
+
+std::string int_to_string(const int value)
+{
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+
 
 ExpressionNode::ExpressionNode(std::string& input) : _children_count(0), _type(Constant), _data()
 {
@@ -46,6 +71,7 @@ ExpressionNode::ExpressionNode(std::string& input) : _children_count(0), _type(C
         switch (token_length)
         {
         case 0:
+            std::cerr << "uzupełniono brakującą wartość stałą: " << DEFAULT_CONSTANT_VALUE << std::endl;
             break;
         case 1:
             switch (input[token_start])
@@ -71,8 +97,7 @@ ExpressionNode::ExpressionNode(std::string& input) : _children_count(0), _type(C
                 _children_count = 2;
                 break;
             default:
-                _type = Variable;
-                _name = token;
+                _init_variable(token);
                 break;
             }
             break;
@@ -91,15 +116,16 @@ ExpressionNode::ExpressionNode(std::string& input) : _children_count(0), _type(C
                 _children_count = 1;
                 break;
             }
+            _init_variable(token);
+            break;
         default:
-            _type = Variable;
-            _name = token;
+            _init_variable(token);
             break;
         }
     }
     _children = new ExpressionNode*[_children_count];
     input = input.substr(token_end);
-    for (int i = 0; i < _children_count; i++)
+    for (int i = 0; i < _children_count; ++i)
     {
         _children[i] = new ExpressionNode(input);
     }
@@ -108,7 +134,7 @@ ExpressionNode::ExpressionNode(std::string& input) : _children_count(0), _type(C
 ExpressionNode::ExpressionNode(const ExpressionNode& other)
     : _children_count(other._children_count),
       _type(other._type),
-      _name(other._name),
+      _variable_name(other._variable_name),
       _data()
 {
     switch (other._type)
@@ -123,7 +149,7 @@ ExpressionNode::ExpressionNode(const ExpressionNode& other)
         break;
     }
     _children = new ExpressionNode*[_children_count];
-    for (int i = 0; i < _children_count; i++)
+    for (int i = 0; i < _children_count; ++i)
     {
         _children[i] = new ExpressionNode(*other._children[i]);
     }
@@ -131,54 +157,135 @@ ExpressionNode::ExpressionNode(const ExpressionNode& other)
 
 ExpressionNode::~ExpressionNode()
 {
-    for (int i = 0; i < _children_count; i++)
+    for (int i = 0; i < _children_count; ++i)
     {
         delete _children[i];
     }
     delete[] _children;
 }
 
-std::ostream& operator<<(std::ostream& outs, const ExpressionNode& node)
+void ExpressionNode::print_variable_children(std::ostream& os, std::set<std::string>& seen_variables) const
 {
-    switch (node.get_type())
+    if (_type == Variable && seen_variables.find(_variable_name) == seen_variables.end())
     {
+        os << _variable_name << ' ';
+        seen_variables.insert(_variable_name);
+    }
+    for (size_t i = 0; i < _children_count; ++i)
+    {
+        _children[i]->print_variable_children(os, seen_variables);
+    }
+}
+
+double ExpressionNode::calculate_value(std::map<std::string, int>& variable_values) const
+{
+    switch (_type)
+    {
+    case Variable:
+        return variable_values[_variable_name];
+    case Constant:
+        return _data.constant;
     case Operator:
-        switch (node.get_operation())
+        switch (_data.operation)
         {
         case Add:
-            outs << '+';
-            break;
+            {
+                const double first = _children[0]->calculate_value(variable_values);
+                const double second = _children[1]->calculate_value(variable_values);
+                return first + second;
+            }
         case Subtract:
-            outs << '-';
-            break;
+            {
+                const double first = _children[0]->calculate_value(variable_values);
+                const double second = _children[1]->calculate_value(variable_values);
+                return first - second;
+            }
         case Multiply:
-            outs << '*';
-            break;
+            {
+                const double first = _children[0]->calculate_value(variable_values);
+                const double second = _children[1]->calculate_value(variable_values);
+                return first * second;
+            }
         case Divide:
-            outs << '/';
-            break;
+            {
+                const double first = _children[0]->calculate_value(variable_values);
+                const double second = _children[1]->calculate_value(variable_values);
+                return first / second;
+            }
         case Sine:
-            outs << "sin";
-            break;
+            {
+                const double operand = _children[0]->calculate_value(variable_values);
+                return std::sin(operand);
+            }
         case Cosine:
-            outs << "cos";
-            break;
+            {
+                const double operand = _children[0]->calculate_value(variable_values);
+                return std::cos(operand);
+            }
         default:
-            break;
+            return DEFAULT_CONSTANT_VALUE;
         }
-        break;
-    case Constant:
-        outs << node.get_constant();
-        break;
-    case Variable:
-        outs << node.get_name();
-        break;
     default:
-        break;
+        return DEFAULT_CONSTANT_VALUE;
     }
+}
+
+std::string ExpressionNode::to_string() const
+{
+    switch (_type)
+    {
+    case Variable:
+        return _variable_name;
+    case Operator:
+        switch (_data.operation)
+        {
+        case Add:
+            return "+";
+        case Subtract:
+            return "-";
+        case Multiply:
+            return "*";
+        case Divide:
+            return "/";
+        case Sine:
+            return "sin";
+        case Cosine:
+            return "cos";
+        default:
+            return "";
+        }
+    case Constant:
+        return int_to_string(_data.constant);
+    default:
+        return "";
+    }
+}
+
+void ExpressionNode::_init_variable(const std::string& token)
+{
+    const std::string extracted_token = extract_alphanumeric(token);
+    if (extracted_token.empty())
+    {
+        _type = Constant;
+        _data.constant = DEFAULT_CONSTANT_VALUE;
+        std::cerr <<
+            "niepoprawną nazwę zmiennej '" << token << "' zmieniono na stałą: " << DEFAULT_CONSTANT_VALUE << std::endl;
+        return;
+    }
+    if (extracted_token.size() != token.size())
+    {
+        std::cerr << "zignorowano niedozwolone znaki zmiennej; wczytano: " << extracted_token << std::endl;
+    }
+    _type = Variable;
+    _variable_name = extracted_token;
+}
+
+std::ostream& operator<<(std::ostream& outs, const ExpressionNode& node)
+{
+    outs << node.to_string();
     const ExpressionNode* const* children = node.get_children();
     const int children_count = node.get_children_count();
-    for (size_t i = 0; i < children_count; i++)
+    for (size_t i = 0; i < children_count; ++i)
     {
         const ExpressionNode* child = children[i];
         outs << ' ' << *child;
