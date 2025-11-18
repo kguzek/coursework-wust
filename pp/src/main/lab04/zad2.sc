@@ -2,7 +2,7 @@ import scala.annotation.tailrec
 
 @tailrec
 def polacz_ogon(first: List[Any], second: List[Any]): List[Any] =
-  second match  {
+  second match {
     case List() => first
     case head::tail => polacz_ogon(first:+head, tail)
   }
