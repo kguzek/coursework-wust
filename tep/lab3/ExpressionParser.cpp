@@ -19,24 +19,6 @@ void output_help()
         "7. help             \t wyświetla tą wiadomość" << std::endl;
 }
 
-
-std::vector<std::string> split(std::stringstream& value)
-{
-    std::vector<std::string> tokens;
-    std::string token;
-    while (value >> token)
-    {
-        tokens.push_back(token);
-    }
-    return tokens;
-}
-
-std::vector<std::string> split(const std::string& value)
-{
-    std::stringstream ss(value);
-    return split(ss);
-}
-
 int main()
 {
     ExpressionTree* tree;
@@ -94,31 +76,50 @@ int main()
                 std::set<std::string> seen_variables;
                 tree->get_root()->print_variable_children(variable_names, seen_variables);
 
-                std::vector<std::string> key_tokens = split(variable_names);
-                std::vector<std::string> value_tokens = split(argument);
+                int key_count = 0;
+                int value_count = 0;
+                std::string temp;
 
-                if (key_tokens.size() == value_tokens.size())
+                std::stringstream key_counter(variable_names.str());
+                while (key_counter >> temp)
+                {
+                    ++key_count;
+                }
+
+                std::istringstream value_counter(argument);
+                while (value_counter >> temp)
+                {
+                    ++value_count;
+                }
+
+                if (key_count == value_count)
                 {
                     std::map<std::string, int> variables_map;
-                    for (size_t i = 0; i < key_tokens.size(); ++i)
+                    std::stringstream key_stream(variable_names.str());
+                    std::istringstream value_stream(argument);
+
+                    std::string key;
+                    std::string value_str;
+                    while (key_stream >> key && value_stream >> value_str)
                     {
-                        std::istringstream iss(value_tokens[i]);
+                        std::istringstream iss(value_str);
                         int value;
                         if (!(iss >> value))
                         {
                             value = DEFAULT_CONSTANT_VALUE;
                             std::cerr <<
-                                "niepoprawna wartość zmiennej: " << value_tokens[i] << std::endl <<
+                                "niepoprawna wartość zmiennej: " << value_str << std::endl <<
                                 "użyto domyślnej wartości:     " << value << std::endl;
                         }
-                        variables_map[key_tokens[i]] = value;
+                        variables_map[key] = value;
                     }
                     std::cout << tree->get_root()->calculate_value(variables_map) << std::endl;
                 }
                 else
                 {
-                    std::cerr << "niepoprawna ilość wartości zmiennych: oczekiwano " <<
-                        key_tokens.size() << "; otrzymano " << value_tokens.size() << std::endl;
+                    std::cerr <<
+                        "niepoprawna ilość wartości zmiennych: oczekiwano " <<
+                        key_count << "; otrzymano " << value_count << std::endl;
                 }
             }
             else
