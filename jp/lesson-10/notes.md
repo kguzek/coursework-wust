@@ -42,4 +42,3 @@
 | Pen wa tsukue ni arimas.                                                                  | The pen is on the table.                                                                                      |
 | No-to wa kaban ni arimas.                                                                 | The notebook is in the bag.                                                                                   |
 | Ie no doko ni arimas ka?                                                                  | Where at home?                                                                                                |
-|                                                                                           |                                                                                                               |
