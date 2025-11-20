@@ -15,8 +15,10 @@ void output_help()
         "3. print            \t wypisuje stan drzewa w notacji polskiej" << std::endl <<
         "4. comp <wartości>  \t oblicza wyrażenie wstawiając pod zmienne podane wartości" << std::endl <<
         "5. join <wyrażenie> \t tworzy nowe drzewo i łączy je do poprzedniego" << std::endl <<
-        "6. quit             \t kończy działanie programu" << std::endl <<
-        "7. help             \t wyświetla tą wiadomość" << std::endl;
+        "6. equals <drzewo>  \t porównuje podane wyrażenie ze stanem wgranego drzewa" << std::endl <<
+        "7. quit             \t kończy działanie programu" << std::endl <<
+        "8. help             \t wyświetla tą wiadomość" << std::endl << std::endl <<
+        "wiersze zaczynające się znakiem '#' będą ignorowane." << std::endl;
 }
 
 int main()
@@ -32,7 +34,7 @@ int main()
         }
         std::string command = line.substr(0, first_word_end);
         std::string argument = line.substr(first_word_end);
-        if (command.empty())
+        if (command.empty() || command[0] == '#')
         {
         }
         else if (command == "enter")
@@ -137,6 +139,19 @@ int main()
             else
             {
                 std::cerr << "nie można dołączyć do drzewa przed wprowadzeniem wyrażenia" << std::endl;
+            }
+        }
+        else if (command == "equals")
+        {
+            if (tree_initialized)
+            {
+                const ExpressionTree target_tree(argument);
+                bool equal = *tree == target_tree;
+                std::cout << (equal ? "true" : "false") << std::endl;
+            }
+            else
+            {
+                std::cerr << "nie można porównać do drzewa przed jego wprowadzeniem" << std::endl;
             }
         }
         else if (command == "help")

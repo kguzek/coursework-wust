@@ -3,6 +3,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <vector>
 
 #include "ExpressionNodeType.h"
 #include "Operation.h"
@@ -30,6 +31,11 @@ public:
     void print_variable_children(std::ostream& os, std::set<std::string>& seen_variables) const;
     double calculate_value(std::map<std::string, int>& variable_values) const;
     std::string to_string() const;
+    bool equals(const ExpressionNode& other,
+                std::map<std::string, int>& left_indices,
+                std::map<std::string, int>& right_indices,
+                std::vector<int>& left_vars,
+                std::vector<int>& right_vars) const;
 
 private:
     int _children_count;

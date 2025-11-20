@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <vector>
 
 #include "Operation.h"
 
@@ -259,6 +260,55 @@ std::string ExpressionNode::to_string() const
     default:
         return "";
     }
+}
+
+bool ExpressionNode::equals(const ExpressionNode& other,
+                            std::map<std::string, int>& left_indices,
+                            std::map<std::string, int>& right_indices,
+                            std::vector<int>& left_vars,
+                            std::vector<int>& right_vars) const
+{
+    if (this == &other)
+    {
+        return true;
+    }
+    if (_children_count != other._children_count)
+    {
+        return false;
+    }
+    if (_type != other._type)
+    {
+        return false;
+    }
+    switch (_type)
+    {
+    case Constant:
+        if (_data.constant != other._data.constant)
+        {
+            return false;
+        }
+        break;
+    case Operator:
+        if (_data.operation != other._data.operation)
+        {
+            return false;
+        }
+        break;
+    case Variable:
+        left_vars.push_back(left_indices[_variable_name]);
+        right_vars.push_back(right_indices[other._variable_name]);
+        break;
+    default:
+        return false;
+    }
+    for (int i = 0; i < _children_count; ++i)
+    {
+        if (!_children[i]->equals(*other._children[i], left_indices, right_indices, left_vars, right_vars))
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 void ExpressionNode::_init_variable(const std::string& token)
