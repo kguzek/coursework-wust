@@ -26,7 +26,7 @@ b_i <- function() {
   }
 }
 
-n <- 200
+n <- 2000
 x <- numeric(n)
 for (i in 1:n) {
   x[i] <- b_i()
