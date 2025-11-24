@@ -1,6 +1,6 @@
 1. Anata no kutsu wa heya no yuka ni arimas.
 2. Shawa- wa furoba ni arimas.
-3. Entotsu wa ie no yane ni arimas.
+3. Entotsu wa ano ie no yane ni arimas.
 4. Anata no beddo wa anata no ie no doko ni arimas ka?
 Watasi no beddo wa watasi no ie no watasi no heya ni arimas.
 5. Denshi renji wa ie no doko ni arimas ka?
@@ -9,7 +9,9 @@ Denshi renji wa ie no daidokoro ni arimas.
 Iie, taoru wa furoba ni arimas.
 7. Terebi wa ie no doko ni arimas ka?
 Terebi wa ie no ribing ru-mu ni arimas.
-8. Nagashi wa ie no doko ni arimas ka?
+8. Ofuro wa doko ni arimas?
+Ofuro wa furoba ni arimas.
+9. Nagashi wa ie no doko ni arimas ka?
 Nagashi wa ie no furoba ni arimas.
-9. Anatano jitensha wa niwa ni arimas ka? Soretomo anata no heya ni arimas ka?
+10. Anatano jitensha wa niwa ni arimas ka? Soretomo anata no heya ni arimas ka?
 Watasi no jitensha wa niwa ni arimas.
