@@ -39,7 +39,7 @@
 2. When combining sentences, you can skip repeats of the topic.
 3. `Kore` can be used in relation to the speaker's body parts even if not physically touching them, since Japanese speakers consider them connected to the speaker.
 4. `Sore` may be used with objects making physical contact with the speaker, even e.g. in the bloodstream, if the speaker does not want to admit the connection.
-5. `Nani` is the full version of `nan`. You must use `nan` with questions like `x wa nan des ka?`. 
+5. `Nani` is the full version of `nan`. You must use `nan` with questions like `x wa nan des ka?`.
 
 ### New grammar – examples
 

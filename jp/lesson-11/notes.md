@@ -7,7 +7,7 @@
 | Japanese     | English         |
 | ------------ | --------------- |
 | Niwa         | Tree            |
-| Heya         | Romo            |
+| Heya         | Room            |
 | Ki-chin      | Kitchen         |
 | Furoba       | Shower room     |
 | Senmenjo     | Sink & mirror   |
