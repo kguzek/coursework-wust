@@ -26,9 +26,9 @@
 | Supein               | Spain                |
 | Kankoku              | South Korea          |
 | Anatatachi           | You (plural)         |
-| We                   | Watasitachi          |
-| They (oni)           | Karera               |
-| They (one)           | Kanojora             |
+| Watashitachi         | We                   |
+| Karera               | They (oni)           |
+| Kanojora             | They (one)           |
 | Po-randojin          | Polish (nationality) |
 
 ## New grammar

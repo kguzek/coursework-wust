@@ -16,11 +16,11 @@
 
 ### New vocabulary – examples
 
-| Japanese                                | English                  |
-| --------------------------------------- | ------------------------ |
-| Prusa no go no ichi                     | Ul. Prusa 5/1, Ołbin     |
-| Watasi no pen wa kono tsukue ni arimas. | My pen is on this table. |
-| Iriguchi wa doko ni arimas ka?          | Where is the entrance?   |
+| Japanese                                 | English                  |
+| ---------------------------------------- | ------------------------ |
+| Prusa no go no ichi                      | Ul. Prusa 5/1, Ołbin     |
+| Watashi no pen wa kono tsukue ni arimas. | My pen is on this table. |
+| Iriguchi wa doko ni arimas ka?           | Where is the entrance?   |
 
 ## New grammar
 
@@ -33,12 +33,12 @@
 
 ### New grammar – examples
 
-| Japanese                                                                                  | English                                                                                                       |
-| ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Anatano ie wa Yo-roppa no Porando no **doko** no Ołbin no Prusa ni arimas ka?             | You live on Prusa in Ołbin, in **which city** in Poland, Europe?                                              |
-| Anatano ie wa Yo-roppa no Porando no **dochira no machi** no Ołbin no Prusa ni arimas ka? | You live on Prusa in Ołbin, in **which city** in Poland, Europe?                                              |
-| Anatano ie wa **doko** no Porando no **doko** no **doko** no **doko** ni arimas ka?       | You live on **which street** in **which neighbourhood**, in **which city** in Poland, in **which continent**? |
-| Anatano ie wa **dochira no machi** no Rynek ni arimas ka?                                 | In **which city**'s Rynek do you live?                                                                        |
-| Pen wa tsukue ni arimas.                                                                  | The pen is on the table.                                                                                      |
-| No-to wa kaban ni arimas.                                                                 | The notebook is in the bag.                                                                                   |
-| Ie no doko ni arimas ka?                                                                  | Where at home?                                                                                                |
+| Japanese                                                                                    | English                                                                                                       |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Anata no ie wa Yo-roppa no Po-rando no **doko** no Ołbin no Prusa ni arimas ka?             | You live on Prusa in Ołbin, in **which city** in Poland, Europe?                                              |
+| Anata no ie wa Yo-roppa no Po-rando no **dochira no machi** no Ołbin no Prusa ni arimas ka? | You live on Prusa in Ołbin, in **which city** in Poland, Europe?                                              |
+| Anata no ie wa **doko** no Po-rando no **doko** no **doko** no **doko** ni arimas ka?       | You live on **which street** in **which neighbourhood**, in **which city** in Poland, in **which continent**? |
+| Anata no ie wa **dochira no machi** no Rynek ni arimas ka?                                  | In **which city**'s Rynek do you live?                                                                        |
+| Pen wa tsukue ni arimas.                                                                    | The pen is on the table.                                                                                      |
+| No-to wa kaban ni arimas.                                                                   | The notebook is in the bag.                                                                                   |
+| Ie no doko ni arimas ka?                                                                    | Where at home?                                                                                                |

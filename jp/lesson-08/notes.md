@@ -20,10 +20,10 @@
 | Te       | Hand      |
 | Mune     | Chest     |
 | Onaka    | Stomach   |
-| Asi      | Leg       |
-| Kosi     | Waist     |
+| Ashi     | Leg       |
+| Koshi    | Waist     |
 | Senaka   | Back      |
-| Osiri    | Bottom    |
+| Oshiri   | Bottom    |
 | Nani     | What      |
 | Dare     | Who       |
 

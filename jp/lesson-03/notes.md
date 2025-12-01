@@ -28,7 +28,7 @@
 | Gomi        | Trash (sth intended to be thrown away) |
 | Hako        | Box                                    |
 | Fudebako    | Pencase                                |
-| Bousi       | Hat                                    |
+| Boushi      | Hat                                    |
 | Kami        | Paper                                  |
 | Origami     | Folding paper                          |
 | Megane      | Glasses                                |
@@ -43,7 +43,7 @@
    - Pa-sonaru Konpyu-ta- --> PasoKon
    - Maikro Kontrora- --> MaiKon
 2. Solo universe: `sore` and `are` mean *that*, but `are` is "far far away" (further than `sore`). `Kore` refers to things you can touch from wherever you are located, **without moving**. `Sore` refers to things that you could touch were you to move 3-4 movements from wherever you are located (e.g. get up, and walk 2 steps). `Are` is for things situated further away.
-3. Dual universe: `anata`'s `sore` space becomes `watasi`'s and `anata`'s shared `sore` space. `Kore` space is *only* for things you have physical contact with – it is no longer sufficient to be able to do so without moving. The speaker has to be touching it using a pointer (hands or legs) while speaking to be able to use `kore`. `Are` refers to things out of reach for both `watasi` and `anata`.
+3. Dual universe: `anata`'s `sore` space becomes `watashi`'s and `anata`'s shared `sore` space. `Kore` space is *only* for things you have physical contact with – it is no longer sufficient to be able to do so without moving. The speaker has to be touching it using a pointer (hands or legs) while speaking to be able to use `kore`. `Are` refers to things out of reach for both `watashi` and `anata`.
 
 ## Other concepts
 

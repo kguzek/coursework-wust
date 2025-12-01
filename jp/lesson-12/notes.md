@@ -9,9 +9,9 @@
 | Migi     | Right       |
 | Ue       | Up          |
 | Hidari   | Left        |
-| Sita     | Down        |
+| Shita    | Down        |
 | Mae      | In front of |
-| Usiro    | Behind      |
+| Ushiro   | Behind      |
 | Naka     | Inside      |
 | Soto     | Outside     |
 | Yoko     | Next to     |
@@ -31,9 +31,9 @@
 
 ### New grammar – examples
 
-| Japanese                                                        | English                                                         |
-| --------------------------------------------------------------- | --------------------------------------------------------------- |
-| Ie no doko ni furoba wa arimas ka?                              | Where in the house is the bathroom?                             |
-| Furoba wa toire no migi ni arimas.                              | The bathroom is to the right of the toilet.                     |
-| Kitchen wa living no hidari ni arimas.                          | The kitchen is to the left of the living room.                  |
-| Kitchen wa toire no hidari no watasi no heya no sita ni arimas. | The kitchen is left from the toilet, through my room, and down. |
+| Japanese                                                          | English                                                         |
+| ----------------------------------------------------------------- | --------------------------------------------------------------- |
+| Ie no doko ni furoba wa arimas ka?                                | Where in the house is the bathroom?                             |
+| Furoba wa toire no migi ni arimas.                                | The bathroom is to the right of the toilet.                     |
+| Kitchen wa living no hidari ni arimas.                            | The kitchen is to the left of the living room.                  |
+| Kitchen wa toire no hidari no watashi no heya no shita ni arimas. | The kitchen is left from the toilet, through my room, and down. |

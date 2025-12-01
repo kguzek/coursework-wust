@@ -11,7 +11,7 @@
 | Ki-chin      | Kitchen         |
 | Furoba       | Shower room     |
 | Senmenjo     | Sink & mirror   |
-| Nagasi       | Sink            |
+| Nagashi      | Sink            |
 | Kagami       | Mirror          |
 | Taoru        | Towel           |
 | Ofuro        | Bathtub/bath    |
@@ -34,7 +34,7 @@
 
 ### New vocabulary – examples
 
-| Japanese                          | English                        |
-| --------------------------------- | ------------------------------ |
-| Beddo wa ie no doko ni arimas ka? | Where in the house is the bed? |
-| Beddo wa watasi no heya ni arimas | The bed is in my room          |
+| Japanese                           | English                        |
+| ---------------------------------- | ------------------------------ |
+| Beddo wa ie no doko ni arimas ka?  | Where in the house is the bed? |
+| Beddo wa watashi no heya ni arimas | The bed is in my room          |

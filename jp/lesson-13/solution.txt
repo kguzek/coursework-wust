@@ -1,7 +1,7 @@
-1. Tokei wa mado no migi ni arimas.
-2. Denwa wa inu no migi ni arimas.
+1. Tokei wa mado no mao ni arimas.
+2. Denwa wa inu no ushiro ni arimas.
 3. Nagashi wa fuku no shita no terebi no migi no tsukue no ushiro ni arimas.
-4. Koppu wa nagashi no mae no terebi no migi no tsukue no ue ni arimas.
+4. Koppu wa nagashi no mae no terebi no mae no tsukue no ue ni arimas.
 5. Denwa wa inu no migi ni arimas.
 6. Tegami no migi ni no-to wa arimas.
 7. O-bun wa neko no shita no reizouko no hidari ni arimas.
@@ -14,4 +14,3 @@ Iie, zasshi wa tsukue no shita ni arimas.
 Reizouko wa tokei no yoko ni arimas.
 12. Nagashi wa nan no migi ni arimas ka?
 Nagashi wa mado no migi ni arimas.
-

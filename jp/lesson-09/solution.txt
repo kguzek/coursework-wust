@@ -8,12 +8,12 @@ Kanojo wa Peppa Pig des.
 7. Kare wa Itaria no hito des ka?
 Iie, kare wa Itaria no hito dewa arimasen.
 8. Sore wa dare no kaban des ka?
-Kore wa watasi no kaban des.
+Kore wa watashi no kaban des.
 9. Wrocław Kouka Daigaku wa otera des ka?
 Iie, Wrocław Kouka Daigaku wa daigaku des.
 10. Anata no namae wa Jurek des ka?
-Iie, watasi no namae wa Jurek dewa arimasen.
-11. Anatano ie wa doko ni arimas ka?
-Watasi no ie wa Wrocław ni arimas.
+Iie, watashi no namae wa Jurek dewa arimasen.
+11. Anata no ie wa doko ni arimas ka?
+Watashi no ie wa Wrocław ni arimas.
 12. Wrocław Kouka Daigaku wa Wrocław ni arimas.
 13. Yuubinkyoku wa Wrocław no Rynek ni arimas.

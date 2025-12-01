@@ -14,7 +14,7 @@
 | Kuukou   | Airport         |
 | Toire    | Toilet          |
 | Otera    | Temple          |
-| Osiro    | Castle          |
+| Oshiro   | Castle          |
 | Dore     | Which one       |
 
 ### Numbers

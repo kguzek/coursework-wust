@@ -7,13 +7,13 @@
 | Japanese      | English                    |
 | ------------- | -------------------------- |
 | No-to         | Notebook                   |
-| Watasi        | I/Me/My                    |
+| Watashi       | I/Me/My                    |
 | Anata         | You/Your/Yours             |
 | Kare          | He                         |
 | Kanojo        | She                        |
 | Bi-ru         | Beer                       |
 | Namae         | Name                       |
-| Hajimemasite  | Greetings/Nice to meet you |
+| Hajimemashite | Greetings/Nice to meet you |
 | Botoru        | Bottle                     |
 | Ude           | Arm                        |
 | Tokei         | Clock                      |
@@ -29,8 +29,8 @@
 
 ### New grammar – examples
 
-| Japanese                   | English            |
-| -------------------------- | ------------------ |
-| Watasino pendes            | My pen             |
-| Anatano pendes             | Your pen           |
-| Anatano namaewa nandes ka? | What is your name? |
+| Japanese                      | English            |
+| ----------------------------- | ------------------ |
+| Watashi no pen des            | My pen             |
+| Anata no pen des              | Your pen           |
+| Anata no namae wa nan des ka? | What is your name? |

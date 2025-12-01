@@ -1,11 +1,11 @@
 1. Anata wa dochira no machi no kata des ka?
-Watasi wa Gliwice no machi no hito des.
+Watashi wa Gliwice no machi no hito des.
 2. Kare no kaisha wa Toyota des ka?
 Iie, kare no kaisha wa Mitsubishi des.
 3. Kanojo wa dochira no kaisha no kata des ka?
 Kanojo wa Inpost no kata des.
 4. Anata wa dochira no daigaku no kata des ka?
-Watasi wa Wrocław Kouka Daigaku no hito des.
+Watashi wa Wrocław Kouka Daigaku no hito des.
 5. Karera wa Nokia no hito des ka?
 Iie, karera wa Toyota no kata des.
 6. Kanojora no daigaku wa Wrocław Kouka Daigaku des ka?
@@ -13,4 +13,4 @@ Hai, kanojora no daigaku wa Wrocław Kouka Daigaku des.
 7. Wrocław wa mura des ka?
 Iie, Wrocław wa machi des.
 8. Wrocław Kouka Daigaku wa anata no gakkou des ka?
-Hai, Wrocław Kouka Daigaku wa watasi no gakkou des.
+Hai, Wrocław Kouka Daigaku wa watashi no gakkou des.

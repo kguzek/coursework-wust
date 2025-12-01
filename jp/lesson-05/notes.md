@@ -11,7 +11,7 @@
 | Girisha          | Greece       |
 | Oranda           | Netherlands  |
 | Toruko           | Turkey       |
-| Rosia            | Russia       |
+| Roshia           | Russia       |
 | Indo             | India        |
 | Machi            | City         |
 | Vurotsuwafu      | Wrocław      |
