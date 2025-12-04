@@ -11,7 +11,7 @@ p0 <- 0.35
 
 cat("\n=== Zadanie 1.1: Test proporcji ===\n")
 cat("H0: p = 0.35 (35% studentów ma IQ > 115)\n")
-cat("H1: p ≠ 0.35 (proporcja różni się od 35%)\n\n")
+cat("H1: p != 0.35 (proporcja różni się od 35%)\n\n")
 
 # a) i)
 
@@ -107,7 +107,7 @@ mu0 <- 115
 
 cat("\n=== Zadanie 1.5: Test hipotezy dla średniego IQ ===\n")
 cat("H0: μ = 115 (średnie IQ studentów wynosi 115)\n")
-cat("H1: μ ≠ 115 (średnie IQ różni się od 115)\n\n")
+cat("H1: μ != 115 (średnie IQ różni się od 115)\n\n")
 
 # e) i)
 

@@ -11,7 +11,7 @@ cat("Liczba mężczyzn > 180cm:", n_wysokich, "\n")
 cat("Proporcja w próbie:", round(p_wysokich, 4), "\n\n")
 
 cat("H0: p = 0.25 (25% studentów (mężczyzn) jest wyższych niż 180 cm)\n")
-cat("H1: p ≠ 0.25 (proporcja różni się od 25%)\n\n")
+cat("H1: p != 0.25 (proporcja różni się od 25%)\n\n")
 
 test_6 <- prop.test(n_wysokich, n_mezczyzni, p = 0.25, correct = FALSE)
 print(test_6)

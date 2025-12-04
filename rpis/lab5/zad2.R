@@ -1,8 +1,6 @@
 path <- "~/Documents/coding/coursework-wust/rpis/lab2/waga1.csv"
 dane <- read.csv2(path)
 
-dane
-
 str(dane)
 head(dane)
 

@@ -4,8 +4,8 @@ dane <- read.csv2(path)
 wzrost_kobiety <- dane$Wzrost[dane$plec == 1]
 cat("Liczba studentek:", length(wzrost_kobiety), "\n\n")
 
-cat("H0: μ = 160 (średni wzrost studentek wynosi 160 cm)\n")
-cat("H1: μ ≠ 160 (średni wzrost studentek różni się od 160 cm)\n\n")
+cat("H0: średni wzrost studentek wynosi 160 cm\n")
+cat("H1: średni wzrost studentek różni się od 160 cm\n\n")
 
 test_4 <- t.test(wzrost_kobiety, mu = 160)
 print(test_4)
