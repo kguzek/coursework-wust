@@ -76,7 +76,6 @@ add_executable(TEP-Lab4-Zad3
 )
 add_executable(TEP-Lab4-Zad4
         lab4/Error.cpp
-        lab4/ResultWriter.cpp
         lab4/ExpressionNode.cpp
         lab4/ExpressionTree.cpp
         lab4/zad4.cpp

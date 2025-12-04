@@ -6,6 +6,6 @@
 int main()
 {
     std::string input = "+ 1 2";
-    Result<ExpressionTree*, Error> result = ExpressionTree::parse(input);
-    ResultWriter<ExpressionTree*, Error>::write("test.txt", result);
+    const Result<ExpressionTree*, Error> result = ExpressionTree::parse(input);
+    ResultWriter<ExpressionTree*>::write("test.txt", result);
 }
