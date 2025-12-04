@@ -80,3 +80,6 @@ add_executable(TEP-Lab4-Zad4
         lab4/ExpressionTree.cpp
         lab4/zad4.cpp
 )
+add_executable(TEP-Lab4-LiveCoding
+        lab4/livecoding.cpp
+)
