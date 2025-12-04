@@ -1,9 +1,12 @@
-dane <- read.csv("waga1.csv")
+path <- "~/Documents/coding/coursework-wust/rpis/lab2/waga1.csv"
+dane <- read.csv2(path)
+
+dane
 
 str(dane)
 head(dane)
 
-test_2 <- t.test(dane$wzrost, mu = 170)
+test_2 <- t.test(dane$Wzrost, mu = 170)
 print(test_2)
 
 cat("\n*** WNIOSEK ***\n")

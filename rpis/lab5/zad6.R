@@ -1,6 +1,7 @@
-dane <- read.csv("waga1.csv")
+path <- "~/Documents/coding/coursework-wust/rpis/lab2/waga1.csv"
+dane <- read.csv2(path)
 
-wzrost_mezczyzni <- dane$wzrost[dane$plec == 0]
+wzrost_mezczyzni <- dane$Wzrost[dane$plec == 0]
 n_mezczyzni <- length(wzrost_mezczyzni)
 n_wysokich <- sum(wzrost_mezczyzni > 180)
 p_wysokich <- n_wysokich / n_mezczyzni

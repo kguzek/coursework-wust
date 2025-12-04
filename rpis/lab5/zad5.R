@@ -1,4 +1,7 @@
-dane <- read.csv("waga1.csv")
+path <- "~/Documents/coding/coursework-wust/rpis/lab2/waga1.csv"
+dane <- read.csv2(path)
+
+wzrost_kobiety <- dane$Wzrost[dane$plec == 1]
 
 ci_5 <- t.test(wzrost_kobiety, conf.level = 0.98)
 cat(

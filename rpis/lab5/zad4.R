@@ -1,6 +1,7 @@
-dane <- read.csv("waga1.csv")
+path <- "~/Documents/coding/coursework-wust/rpis/lab2/waga1.csv"
+dane <- read.csv2(path)
 
-wzrost_kobiety <- dane$wzrost[dane$plec == 1]
+wzrost_kobiety <- dane$Wzrost[dane$plec == 1]
 cat("Liczba studentek:", length(wzrost_kobiety), "\n\n")
 
 cat("H0: μ = 160 (średni wzrost studentek wynosi 160 cm)\n")
