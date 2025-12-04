@@ -63,10 +63,14 @@ add_executable(TEP-Lab3
         lab3/ExpressionParser.cpp
 )
 
-add_executable(TEP-Lab4
-        lab4/Result.cpp
-        lab4/Result.h
+add_executable(TEP-Lab4-Zad2
         lab4/Error.cpp
-        lab4/Error.h
         lab4/zad2.cpp
+)
+
+add_executable(TEP-Lab4-Zad3
+        lab4/Error.cpp
+        lab4/ExpressionNode.cpp
+        lab4/ExpressionTree.cpp
+        lab4/ExpressionParser.cpp
 )

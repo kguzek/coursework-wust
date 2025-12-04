@@ -8,11 +8,11 @@ class Error
 public:
     Error();
     explicit Error(const std::string& message);
-    std::string get_message();
+    Error(const Error& other);
+    std::string get_message() const;
 
 private:
     std::string _message;
 };
-
 
 #endif //COURSEWORK_WUST_ERROR_H

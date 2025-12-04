@@ -71,7 +71,7 @@ ExpressionNode::ExpressionNode(std::string& input) : _children_count(0), _type(C
         switch (token_length)
         {
         case 0:
-            std::cerr << "uzupełniono brakującą wartość stałą: " << DEFAULT_CONSTANT_VALUE << std::endl;
+            _type = new Error("niewystarczająca ilość argumentów dla operacji");
             break;
         case 1:
             switch (input[token_start])
@@ -123,11 +123,17 @@ ExpressionNode::ExpressionNode(std::string& input) : _children_count(0), _type(C
             break;
         }
     }
-    _children = new ExpressionNode*[_children_count];
     input = input.substr(token_end);
+    _children = new ExpressionNode*[_children_count];
     for (int i = 0; i < _children_count; ++i)
     {
-        _children[i] = new ExpressionNode(input);
+        ExpressionNode* child = new ExpressionNode(input);
+        _children[i] = child;
+        if (!child->_type.is_success())
+        {
+            // propagate errors to parent
+            _type = new Error(*child->_type.get_errors().front());
+        }
     }
 }
 
@@ -137,16 +143,19 @@ ExpressionNode::ExpressionNode(const ExpressionNode& other)
       _variable_name(other._variable_name),
       _data()
 {
-    switch (other._type)
+    if (other._type.is_success())
     {
-    case Constant:
-        _data.constant = other._data.constant;
-        break;
-    case Operator:
-        _data.operation = other._data.operation;
-        break;
-    default:
-        break;
+        switch (other._type.get_value())
+        {
+        case Constant:
+            _data.constant = other._data.constant;
+            break;
+        case Operator:
+            _data.operation = other._data.operation;
+            break;
+        default:
+            break;
+        }
     }
     _children = new ExpressionNode*[_children_count];
     for (int i = 0; i < _children_count; ++i)
@@ -166,7 +175,11 @@ ExpressionNode::~ExpressionNode()
 
 void ExpressionNode::print_variable_children(std::ostream& os, std::set<std::string>& seen_variables) const
 {
-    if (_type == Variable && seen_variables.find(_variable_name) == seen_variables.end())
+    if (
+        _type.is_success()
+        && _type.get_value() == Variable
+        && seen_variables.find(_variable_name) == seen_variables.end()
+    )
     {
         os << _variable_name << ' ';
         seen_variables.insert(_variable_name);
@@ -179,7 +192,11 @@ void ExpressionNode::print_variable_children(std::ostream& os, std::set<std::str
 
 double ExpressionNode::calculate_value(std::map<std::string, int>& variable_values) const
 {
-    switch (_type)
+    if (!_type.is_success())
+    {
+        return DEFAULT_CONSTANT_VALUE;
+    }
+    switch (_type.get_value())
     {
     case Variable:
         return variable_values[_variable_name];
@@ -232,7 +249,11 @@ double ExpressionNode::calculate_value(std::map<std::string, int>& variable_valu
 
 std::string ExpressionNode::to_string() const
 {
-    switch (_type)
+    if (!_type.is_success())
+    {
+        return "<error>";
+    }
+    switch (_type.get_value())
     {
     case Variable:
         return _variable_name;
@@ -275,11 +296,14 @@ bool ExpressionNode::equals(const ExpressionNode& other,
     {
         return false;
     }
-    if (_type != other._type)
+    if (
+        !_type.is_success() || !other._type.is_success() ||
+        _type.get_value() != other._type.get_value()
+    )
     {
         return false;
     }
-    switch (_type)
+    switch (_type.get_value())
     {
     case Constant:
         if (_data.constant != other._data.constant)
@@ -313,17 +337,10 @@ bool ExpressionNode::equals(const ExpressionNode& other,
 void ExpressionNode::_init_variable(const std::string& token)
 {
     const std::string extracted_token = extract_alphanumeric(token);
-    if (extracted_token.empty())
+    if (extracted_token.empty() || extracted_token.size() != token.size())
     {
-        _type = Constant;
-        _data.constant = DEFAULT_CONSTANT_VALUE;
-        std::cerr <<
-            "niepoprawną nazwę zmiennej '" << token << "' zmieniono na stałą: " << DEFAULT_CONSTANT_VALUE << std::endl;
+        _type = new Error("niewłaściwa nazwa zmiennej: '" + token + "'");
         return;
-    }
-    if (extracted_token.size() != token.size())
-    {
-        std::cerr << "zignorowano niedozwolone znaki zmiennej; wczytano: " << extracted_token << std::endl;
     }
     _type = Variable;
     _variable_name = extracted_token;

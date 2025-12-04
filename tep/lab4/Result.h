@@ -10,9 +10,9 @@ template <typename T, typename E>
 class Result
 {
 public:
-    explicit Result(const T& value);
-    explicit Result(E* error);
-    explicit Result(std::vector<E*>& errors);
+    Result(const T& value);
+    Result(E* error);
+    Result(std::vector<E*>& errors);
     Result(const Result<T, E>& other);
     ~Result();
     static Result<T, E> ok(const T& value);
@@ -27,6 +27,7 @@ private:
     T* _value;
     std::vector<E*> _errors;
     void _copy_from(const Result& other);
+    void _delete_errors();
 };
 
 template <typename T, typename E>
@@ -55,6 +56,7 @@ template <typename T, typename E>
 Result<T, E>::~Result()
 {
     delete _value;
+    _delete_errors();
 }
 
 template <typename T, typename E>
@@ -82,6 +84,7 @@ Result<T, E>& Result<T, E>::operator=(const Result<T, E>& other)
     if (&other != this)
     {
         delete _value;
+        _delete_errors();
         _copy_from(other);
     }
     return *this;
@@ -109,7 +112,21 @@ template <typename T, typename E>
 void Result<T, E>::_copy_from(const Result& other)
 {
     _value = other.is_success() ? new T(*other._value) : DEFAULT_FAIL_VALUE;
-    _errors = other._errors;
+    for (typename std::vector<E*>::const_iterator it = other._errors.begin();
+         it != other._errors.end(); ++it)
+    {
+        _errors.push_back(new E(**it));
+    }
+}
+
+template <typename T, typename E>
+void Result<T, E>::_delete_errors()
+{
+    for (typename std::vector<E*>::iterator it = _errors.begin(); it != _errors.end(); ++it)
+    {
+        delete *it;
+    }
+    _errors.clear();
 }
 
 template <typename E>
@@ -130,6 +147,7 @@ public:
 
 private:
     std::vector<E*> _errors;
+    void _delete_errors();
 };
 
 template <typename E>
@@ -156,6 +174,7 @@ Result<void, E>::Result(const Result<void, E>& other) : _errors(other._errors)
 template <typename E>
 Result<void, E>::~Result()
 {
+    _delete_errors();
 }
 
 template <typename E>
@@ -193,5 +212,14 @@ template <typename E>
 std::vector<E*>& Result<void, E>::get_errors()
 {
     return _errors;
+}
+
+template <typename E>
+void Result<void, E>::_delete_errors()
+{
+    for (typename std::vector<E*>::iterator it = _errors.begin(); it != _errors.end(); ++it)
+    {
+        delete *it;
+    }
 }
 #endif //COURSEWORK_WUST_RESULT_H

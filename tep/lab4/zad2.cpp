@@ -4,13 +4,13 @@
 #include "Error.h"
 #include "Result.h"
 
-Result<double, Error> divide(double dividend, double divisor)
+Result<double, Error> divide(const double dividend, const double divisor)
 {
     if (divisor == 0)
     {
-        return Result<double, Error>::fail(new Error("cannot divide by zero"));
+        return new Error("cannot divide by zero");
     }
-    return Result<double, Error>::ok(dividend / divisor);
+    return dividend / divisor;
 }
 
 void test_divide(const double dividend, const double divisor)

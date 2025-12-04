@@ -20,11 +20,15 @@ void output_help()
         "wiersze zaczynające się znakiem '#' będą ignorowane." << std::endl;
 }
 
+std::string get_first_error_message(const std::vector<Error*>& errors)
+{
+    return errors.front()->get_message();
+}
+
 int main()
 {
-    ExpressionTree* tree;
+    Result<ExpressionTree*, Error> tree = new Error("nie wprowadzono drzewa");
     std::string line;
-    bool tree_initialized = false;
     while (std::getline(std::cin, line) && line != "quit")
     {
         int first_word_end;
@@ -38,44 +42,48 @@ int main()
         }
         else if (command == "enter")
         {
-            if (tree_initialized)
+            if (tree.is_success())
             {
-                delete tree;
+                delete tree.get_value();
             }
-            tree = new ExpressionTree(argument);
-            tree_initialized = true;
+            tree = ExpressionTree::parse(argument);
+            if (!tree.is_success())
+            {
+                std::cerr << get_first_error_message(tree.get_errors()) << std::endl;
+                tree = new Error("poprzednio wpisane drzewo zawierało błędy");
+            }
         }
         else if (command == "vars")
         {
-            if (tree_initialized)
+            if (tree.is_success())
             {
                 std::set<std::string> seen_variables;
-                tree->get_root()->print_variable_children(std::cout, seen_variables);
+                tree.get_value()->get_root()->print_variable_children(std::cout, seen_variables);
                 std::cout << std::endl;
             }
             else
             {
-                std::cerr << "nie można wypisać zmiennych przed wprowadzeniem wyrażenia" << std::endl;
+                std::cerr << get_first_error_message(tree.get_errors()) << std::endl;
             }
         }
         else if (command == "print")
         {
-            if (tree_initialized)
+            if (tree.is_success())
             {
-                std::cout << *tree << std::endl;
+                std::cout << *tree.get_value() << std::endl;
             }
             else
             {
-                std::cerr << "nie można wypisać drzewa przed wprowadzeniem wyrażenia" << std::endl;
+                std::cerr << get_first_error_message(tree.get_errors()) << std::endl;
             }
         }
         else if (command == "comp")
         {
-            if (tree_initialized)
+            if (tree.is_success())
             {
                 std::stringstream variable_names;
                 std::set<std::string> seen_variables;
-                tree->get_root()->print_variable_children(variable_names, seen_variables);
+                tree.get_value()->get_root()->print_variable_children(variable_names, seen_variables);
 
                 int key_count = 0;
                 int value_count = 0;
@@ -114,7 +122,7 @@ int main()
                         }
                         variables_map[key] = value;
                     }
-                    std::cout << tree->get_root()->calculate_value(variables_map) << std::endl;
+                    std::cout << tree.get_value()->get_root()->calculate_value(variables_map) << std::endl;
                 }
                 else
                 {
@@ -125,32 +133,48 @@ int main()
             }
             else
             {
-                std::cerr << "nie można obliczyć wartości wyrażenia przed jego wprowadzeniem" << std::endl;
+                std::cerr << get_first_error_message(tree.get_errors()) << std::endl;
             }
         }
         else if (command == "join")
         {
-            if (tree_initialized)
+            if (tree.is_success())
             {
-                const ExpressionTree joined_tree(argument);
-                *tree = *tree + joined_tree;
+                Result<ExpressionTree*, Error> joined_tree = ExpressionTree::parse(argument);
+                if (joined_tree.is_success())
+                {
+                    *tree.get_value() = *tree.get_value() + *joined_tree.get_value();
+                    delete joined_tree.get_value();
+                }
+                else
+                {
+                    std::cerr << get_first_error_message(joined_tree.get_errors()) << std::endl;
+                }
             }
             else
             {
-                std::cerr << "nie można dołączyć do drzewa przed wprowadzeniem wyrażenia" << std::endl;
+                std::cerr << get_first_error_message(tree.get_errors()) << std::endl;
             }
         }
         else if (command == "equals")
         {
-            if (tree_initialized)
+            if (tree.is_success())
             {
-                const ExpressionTree target_tree(argument);
-                bool equal = *tree == target_tree;
-                std::cout << (equal ? "true" : "false") << std::endl;
+                Result<ExpressionTree*, Error> target_tree = ExpressionTree::parse(argument);
+                if (target_tree.is_success())
+                {
+                    bool equal = *tree.get_value() == *target_tree.get_value();
+                    std::cout << (equal ? "true" : "false") << std::endl;
+                    delete target_tree.get_value();
+                }
+                else
+                {
+                    std::cerr << get_first_error_message(target_tree.get_errors()) << std::endl;
+                }
             }
             else
             {
-                std::cerr << "nie można porównać do drzewa przed jego wprowadzeniem" << std::endl;
+                std::cerr << get_first_error_message(tree.get_errors()) << std::endl;
             }
         }
         else if (command == "help")
@@ -164,5 +188,5 @@ int main()
                 "wpisz 'help', aby otrzymać listę dostępnych komend" << std::endl;
         }
     }
-    delete tree;
+    delete tree.get_value();
 }
