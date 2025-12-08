@@ -30,7 +30,7 @@
 | Kuru         | To come               |
 | Kaeru        | To go home            |
 | Kyou         | Today                 |
-| Asita        | Tomorrow              |
+| Ashita       | Tomorrow              |
 | Ima          | Now                   |
 
 ### New vocabulary – examples
