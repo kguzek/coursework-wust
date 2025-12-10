@@ -24,7 +24,7 @@
 | Sofa-        | Sofa            |
 | Rimokon      | Remote control  |
 | Reizouko     | Fridge          |
-| Densirenji   | Microwave       |
+| Denshi renji | Microwave       |
 | O-bun        | Oven            |
 | Hashi        | Chopsticks      |
 | Rajio        | Radio           |
