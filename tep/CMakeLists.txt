@@ -102,12 +102,13 @@ set_target_properties(TEP-Lab5-Tab PROPERTIES
         CXX_STANDARD_REQUIRED YES
 )
 
-add_executable(TEP-Lab5
-        lab3/ExpressionNode.cpp
-        lab3/ExpressionTree.cpp
+add_executable(TEP-Lab5-Zad4
+        lab5/Error.cpp
+        lab5/ExpressionNode.cpp
+        lab5/ExpressionTree.cpp
         lab5/zad4.cpp
 )
-set_target_properties(TEP-Lab5 PROPERTIES
+set_target_properties(TEP-Lab5-Zad4 PROPERTIES
         CXX_STANDARD 23
         CXX_STANDARD_REQUIRED YES
 )
