@@ -4,6 +4,10 @@
 
 #include <sstream>
 #include <vector>
+#include <iostream>
+
+int ExpressionTree::copy_count = 0;
+int ExpressionTree::move_count = 0;
 
 bool is_whitespace_only(const std::string& s)
 {
@@ -24,14 +28,16 @@ ExpressionTree::ExpressionTree(ExpressionNode* node) : _root(node)
 ExpressionTree::ExpressionTree(const ExpressionTree& other)
 {
     _root = new ExpressionNode(*other._root);
+    copy_count++;
 }
 
 ExpressionTree::ExpressionTree(ExpressionTree&& other) noexcept : _root(other._root)
 {
     other._root = nullptr;
+    move_count++;
 }
 
-ExpressionTree ExpressionTree::operator+(const ExpressionTree& other) const
+ExpressionTree ExpressionTree::operator+(const ExpressionTree& other) const &
 {
     ExpressionTree new_tree(*this);
     ExpressionNode* new_child = new ExpressionNode(*other._root);
@@ -51,12 +57,71 @@ ExpressionTree ExpressionTree::operator+(const ExpressionTree& other) const
     return new_tree;
 }
 
+ExpressionTree ExpressionTree::operator+(ExpressionTree&& other) const &
+{
+    ExpressionTree new_tree(*this);
+    ExpressionNode const* last_child = new_tree._root;
+    if (last_child->has_children())
+    {
+        while (last_child->has_grandchildren())
+        {
+            last_child = last_child->get_child();
+        }
+        last_child->replace_child(other._root);
+    }
+    else
+    {
+        new_tree._root = other._root;
+    }
+    other._root = nullptr;
+    return new_tree;
+}
+
+ExpressionTree ExpressionTree::operator+(const ExpressionTree& other) &&
+{
+    ExpressionNode* new_child = new ExpressionNode(*other._root);
+    ExpressionNode const* last_child = _root;
+    if (last_child->has_children())
+    {
+        while (last_child->has_grandchildren())
+        {
+            last_child = last_child->get_child();
+        }
+        last_child->replace_child(new_child);
+    }
+    else
+    {
+        _root = new_child;
+    }
+    return std::move(*this);
+}
+
+ExpressionTree ExpressionTree::operator+(ExpressionTree&& other) &&
+{
+    ExpressionNode const* last_child = _root;
+    if (last_child->has_children())
+    {
+        while (last_child->has_grandchildren())
+        {
+            last_child = last_child->get_child();
+        }
+        last_child->replace_child(other._root);
+    }
+    else
+    {
+        _root = other._root;
+    }
+    other._root = nullptr;
+    return std::move(*this);
+}
+
 ExpressionTree& ExpressionTree::operator=(const ExpressionTree& other)
 {
     if (this != &other)
     {
         delete _root;
         _root = new ExpressionNode(*other._root);
+        copy_count++;
     }
     return *this;
 }
@@ -68,6 +133,7 @@ ExpressionTree& ExpressionTree::operator=(ExpressionTree&& other) noexcept
         delete _root;
         _root = other._root;
         other._root = 0;
+        move_count++;
     }
     return *this;
 }
