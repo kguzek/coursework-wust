@@ -57,11 +57,17 @@ add_executable(TEP-Lab2-LiveCoding-Tests
 
 #endregion
 
+#region lab 3
+
 add_executable(TEP-Lab3
         lab3/ExpressionNode.cpp
         lab3/ExpressionTree.cpp
         lab3/ExpressionParser.cpp
 )
+
+#endregion
+
+#region lab 4
 
 add_executable(TEP-Lab4-Zad2
         lab4/Error.cpp
@@ -83,3 +89,24 @@ add_executable(TEP-Lab4-Zad4
 add_executable(TEP-Lab4-LiveCoding
         lab4/livecoding.cpp
 )
+
+#endregion
+
+#region lab 5
+
+add_executable(TEP-Lab5-Tab
+        lab5/Tab.cpp
+)
+set_target_properties(TEP-Lab5-Tab PROPERTIES
+        CXX_STANDARD 23
+        CXX_STANDARD_REQUIRED YES
+)
+
+add_executable(TEP-Lab5
+        lab5/zad4.cpp
+)
+set_target_properties(TEP-Lab5 PROPERTIES
+        CXX_STANDARD 23
+        CXX_STANDARD_REQUIRED YES
+)
+#endregion
