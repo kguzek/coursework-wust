@@ -1,7 +1,6 @@
 #ifndef COURSEWORK_WUST_ALT_LINK_LIST_NODE_H
 #define COURSEWORK_WUST_ALT_LINK_LIST_NODE_H
 
-
 template <typename T1, typename T2>
 class AltLinkListNode
 {
@@ -27,8 +26,12 @@ AltLinkListNode<T1, T2>::AltLinkListNode(T1 value) : _value(value), _next(NULL)
 template <typename T1, typename T2>
 AltLinkListNode<T1, T2>::AltLinkListNode(const AltLinkListNode& other) :
     _value(other._value),
-    _next(other._next)
+    _next(NULL)
 {
+    if (other._next != NULL)
+    {
+        _next = new AltLinkListNode<T2, T1>(*other._next);
+    }
 }
 
 template <typename T1, typename T2>

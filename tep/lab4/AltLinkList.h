@@ -12,6 +12,7 @@ public:
     explicit AltLinkList(T1 head);
     explicit AltLinkList(AltLinkListNode<T1, T2>* head);
     AltLinkList(const AltLinkList& other);
+    AltLinkList& operator=(const AltLinkList& other);
     ~AltLinkList();
     bool is_single_elem();
     T1 get_head() { return _head->get_value(); }
@@ -47,6 +48,27 @@ AltLinkList<T1, T2>::AltLinkList(const AltLinkList& other)
 }
 
 template <typename T1, typename T2>
+AltLinkList<T1, T2>& AltLinkList<T1, T2>::operator=(const AltLinkList& other)
+{
+    if (this != &other)
+    {
+        if (_head != NULL)
+        {
+            delete _head;
+        }
+        if (other._head != NULL)
+        {
+            _head = new AltLinkListNode<T1, T2>(*other._head);
+        }
+        else
+        {
+            _head = NULL;
+        }
+    }
+    return *this;
+}
+
+template <typename T1, typename T2>
 AltLinkList<T1, T2>::~AltLinkList()
 {
     if (_head != NULL)
@@ -65,7 +87,12 @@ template <typename T1, typename T2>
 AltLinkList<T2, T1> AltLinkList<T1, T2>::get_tail()
 {
     AltLinkListNode<T2, T1>* next = _head->get_next();
-    AltLinkList<T2, T1> list(next);
+    if (next == NULL)
+    {
+        return AltLinkList<T2, T1>();
+    }
+    AltLinkListNode<T2, T1>* next_copy = new AltLinkListNode<T2, T1>(*next);
+    AltLinkList<T2, T1> list(next_copy);
     return list;
 }
 
