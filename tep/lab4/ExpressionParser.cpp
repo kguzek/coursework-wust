@@ -188,5 +188,7 @@ int main()
                 "wpisz 'help', aby otrzymać listę dostępnych komend" << std::endl;
         }
     }
-    delete tree.get_value();
+    if (tree.is_success()) {
+        delete tree.get_value();
+    }
 }
