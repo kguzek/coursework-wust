@@ -13,3 +13,4 @@ sysop/sysop_*.zip
 # Course-specific files
 samples-L*/*.result
 sysop/Zad3
+build/

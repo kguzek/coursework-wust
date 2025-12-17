@@ -164,5 +164,7 @@ int main()
                 "wpisz 'help', aby otrzymać listę dostępnych komend" << std::endl;
         }
     }
-    delete tree;
+    if (tree_initialized) {
+        delete tree;
+    }
 }

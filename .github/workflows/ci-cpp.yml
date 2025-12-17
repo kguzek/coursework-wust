@@ -18,7 +18,7 @@ jobs:
 
       - name: Configure project (C++98)
         working-directory: ./tep
-        run: cmake -S . -B build -DCMAKE_CXX_STANDARD=98
+        run: cmake -S . -B build
 
       - name: Build all executables
         working-directory: ./tep/build
