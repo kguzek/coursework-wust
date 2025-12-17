@@ -103,6 +103,8 @@ set_target_properties(TEP-Lab5-Tab PROPERTIES
 )
 
 add_executable(TEP-Lab5
+        lab3/ExpressionNode.cpp
+        lab3/ExpressionTree.cpp
         lab5/zad4.cpp
 )
 set_target_properties(TEP-Lab5 PROPERTIES
