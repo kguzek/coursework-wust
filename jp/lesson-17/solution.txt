@@ -1,0 +1,16 @@
+1. Bus de anata wa eki ni ikimas ka? Soretomo ____ ni ikimas ka?
+Bus de watashi wa eki ni ikimas.
+2. Nani de anata wa ie ni kon ya kaerimas ka?
+Kuruma de watashi wa ie ni kon ya kaerimas.
+3. Kanojo no musume wa bus de kuukou ni ikimas ka?
+Hai, kanojo no musume wa bus de kuukou ni ikimas.
+4. Anata no kazokou wa Wrocław ni ashita kaerimas ka?
+Iie, watashi no kazokou wa Wrocław ni kyou kaerimas.
+5. Nani de anata wa Warsaw ni ikimas ka?
+Densha de watashi wa Warsaw ni ikimas.
+6. Hikouki de anata wa ima doko ni ikimas ka?
+Hikouki de watashi wa ima Igirisu ni ikimas.
+7. Anata no tomodachi no otto wa itsu Wrocław ni kaerimas ka?
+Watashi no tomodachi no otto wa ashi Wrocław ni kaerimas.
+8. Anata no ryoushin wa dochira no machi ni imas ka?
+Watashi no ryoushin wa Gliwice no machi ni imas.
