@@ -11,6 +11,8 @@ public:
     ~SmartPointer();
     T& operator*() { return *_pointer; }
     T* operator->() { return _pointer; }
+    T* get() { return _pointer; }
+    int count() const { return _counter->get(); }
     SmartPointer& operator=(const SmartPointer& other);
 
 private:

@@ -106,6 +106,7 @@ add_executable(TEP-Lab5-Zad4
         lab5/Error.cpp
         lab5/ExpressionNode.cpp
         lab5/ExpressionTree.cpp
+        lab5/SmartPointer.h
         lab5/zad4.cpp
 )
 set_target_properties(TEP-Lab5-Zad4 PROPERTIES
@@ -117,9 +118,21 @@ add_executable(TEP-Lab5-Zad5
         lab5/Error.cpp
         lab5/ExpressionNode.cpp
         lab5/ExpressionTree.cpp
+        lab5/SmartPointer.h
         lab5/zad5.cpp
 )
 set_target_properties(TEP-Lab5-Zad5 PROPERTIES
+        CXX_STANDARD 23
+        CXX_STANDARD_REQUIRED YES
+)
+
+add_executable(TEP-Lab5-LiveCoding
+        lab5/SmartPointer.h
+        lab5/SingleSmartPointer.h
+        lab5/livecoding.cpp
+        lab5/Product.h
+)
+set_target_properties(TEP-Lab5-LiveCoding PROPERTIES
         CXX_STANDARD 23
         CXX_STANDARD_REQUIRED YES
 )
