@@ -30,7 +30,7 @@ public class Zad2 {
     }
 
     private static <W, S> boolean dfs(Graf<W, S> graf, W aktualny, W cel,
-            Set<W> odwiedzone, List<S> sciezka) {
+                                      Set<W> odwiedzone, List<S> sciezka) {
         odwiedzone.add(aktualny);
 
         if (aktualny.equals(cel)) {
@@ -128,6 +128,15 @@ public class Zad2 {
         if (sciezka1 != null) {
             System.out.println(test("Etykiety ścieżki A->E: " + sciezka1, true));
         }
+
+        System.out.println(test("istniejeSciezka A->E zwraca true",
+                istniejeSciezka(graf1, "A", "E")));
+        System.out.println(test("istniejeSciezka A->D zwraca false",
+                !istniejeSciezka(graf2, "A", "D")));
+        System.out.println(test("istniejeSciezka B->B zwraca true",
+                istniejeSciezka(graf1, "B", "B")));
+        System.out.println(test("istniejeSciezka nieistniejące zwraca false",
+                !istniejeSciezka(graf1, "X", "Y")));
     }
 
     private static void demonstracja() {
@@ -141,8 +150,8 @@ public class Zad2 {
                 new Krawedz<>("PC3", "Printer", "usb")
         );
 
-        GrafNieskierowany<String, String> siec =
-                new GrafNieskierowany<>(komputery, polaczenia);
+        GrafNieskierowany<String, String> siec
+                = new GrafNieskierowany<>(komputery, polaczenia);
 
         System.out.println("Topologia sieci: " + komputery);
         System.out.println("\nWyszukiwanie ścieżek w sieci:\n");
@@ -167,8 +176,8 @@ public class Zad2 {
                 new Krawedz<>("A", "B", 1),
                 new Krawedz<>("D", "E", 2)
         );
-        GrafNieskierowany<String, Integer> sieci2 =
-                new GrafNieskierowany<>(urzadzenia, lacza);
+        GrafNieskierowany<String, Integer> sieci2
+                = new GrafNieskierowany<>(urzadzenia, lacza);
 
         System.out.println("\n5. Graf z rozłącznymi składowymi:");
         System.out.println("   Topologia: A-B, C (izolowany), D-E");
