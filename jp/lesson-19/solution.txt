@@ -1,0 +1,60 @@
+Part 1
+
+1. Today you do what?
+Q: kyou anata wa nani o shimas ka?
+A: kyou watashi wa shukudai o shimas.
+
+2. You study this evening, until morning?
+Q: kon ya anata wa benkyou o asa made shimas ka?
+A: hai, kon ya watashi wa benkyou o asa made shimas.
+
+3. You do homework now?
+Q: anata wa ima shukudai o shimas ka?
+A: hai, watashi wa ima shukudai o shimas.
+
+4. When you study?
+Q: itsu anata wa benkyou o shimas ka?
+A: ima watashi wa benkyou o shimas.
+
+5. Your father does shopping this evening?
+Q: anata no chichi wa kon ya kaimono o shimas ka?
+A: hai, watashi no chichi wa kon ya kaiomono o shimas.
+
+6. This afternoon you are going to cook. You go to a pub, after that?
+Q: kyou no hiru anata wa ryouri o shimas. sore kara anata wa pabu ni ikimas ka?
+A: hai, watashi wa sore kara pabu ni ikimas.
+
+7. After this, you play game? or study?
+Q: kore kara anata wa ge-mu o shimas ka? Soretomo benkyou o shimas ka?
+A: kore kara watashi wa benkyou o shimas.
+
+8. Your family will have a meal now?
+Q: anata no kazokou wa ima shokuji o shimas ka?
+A: hai, watashi no kazokou wa ima shokuji o shimas.
+
+9. When you will go for a walk?
+Q: itsu anata wa sanpo o shimas ka?
+A: ashita watashi wa sanpo o shimas.
+
+10. Your friend’s mother does laundry with hand? or with a washing machine?
+Q: anata no tomodachi no haha wa sentaku o te de shimas ka? Soretomo sentaku ki de shimas ka?
+A: watashi no tomodachi no haha wa sentaku ki de sentaku o shimas.
+
+
+Part 2
+
+1. This homework is not my homework.
+Kono shukudai wa watashi no shukudai dewa arimasen.
+2. This evening, my parents don’t come home.
+Kon ya, watashi no ryoushin wa ie niwa kaerimasen.
+3. I don’t do cleaning until tomorrow morning.
+Watashi wa ashita no asa made souji wa shimasen
+4. My friends don't come to Rynek tonight.
+Watashi no tomodachi wa kon ya Rynek niwa kimasen.
+5. My money is not in my bag now.
+Watashi no okane wa ima watashi no kaban niwa arimasen.
+6. I’m not at home until evening today.
+Kyou watashi wa yoru made ie niwa imasen.
+7. Children don't play game until Christmas.
+X-mas made kodomo wa ge-mu wa shimasen.
+

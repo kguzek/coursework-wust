@@ -31,14 +31,14 @@
 
 ## New grammar
 
-1. `Kore kara` means *after this*, and analogously, `sore kara` means *after that*.
-2. `O` is the object connector, used between an object and a verb.
-3. For negation sentences, the `o` is replaced with `wa` and the verb is suffixed with `-en`.
-4. There are two power relations to `wa` – weaker and stronger connectors, which dictate whether or not the connector *survives* negation.
-   1. `Ni` is *stronger* than `wa`, so its negation becomes `niwa` (Roman empire).
+1. `Kore kara` means _after this_, and analogously, `sore kara` means _after that_.
+1. `O` is the object connector, used between an object and a verb.
+1. For negation sentences, the `o` is replaced with `wa` and the verb is suffixed with `-en`.
+1. There are two power relations to `wa` – weaker and stronger connectors, which dictate whether or not the connector _survives_ negation.
+   1. `Ni` is _stronger_ than `wa`, so its negation becomes `niwa` (Roman empire).
       1. Other stronger connectors include `de`, `kara` and `made`.
-   2. `O` is *weaker* than `wa`, so its negation becomes simply `wa` (China).
-   3. `Wa` is like the Mongol empire, so when it attacks the Roman empire, both survive, but when it attacks China, China perishes.
+   1. `O` is _weaker_ than `wa`, so its negation becomes simply `wa` (China).
+   1. `Wa` is like the Mongol empire, so when it attacks the Roman empire, both survive, but when it attacks China, China perishes.
 
 ### New grammar – examples
 
