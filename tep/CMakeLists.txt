@@ -136,4 +136,16 @@ set_target_properties(TEP-Lab5-LiveCoding PROPERTIES
         CXX_STANDARD 23
         CXX_STANDARD_REQUIRED YES
 )
+
+add_executable(TEP-Lab5-TreeTest
+        lab5/ExpressionTree.cpp
+        lab5/ExpressionNode.cpp
+        lab5/Error.cpp
+        lab5/tree_test.cpp
+)
+set_target_properties(TEP-Lab5-TreeTest PROPERTIES
+        CXX_STANDARD 23
+        CXX_STANDARD_REQUIRED YES
+)
+
 #endregion

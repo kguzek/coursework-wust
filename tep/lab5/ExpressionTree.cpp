@@ -132,7 +132,7 @@ ExpressionTree& ExpressionTree::operator=(ExpressionTree&& other) noexcept
     {
         delete _root;
         _root = other._root;
-        other._root = 0;
+        other._root = nullptr;
         move_count++;
     }
     return *this;
