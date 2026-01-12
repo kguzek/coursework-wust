@@ -1,0 +1,21 @@
+1. Anata wa nan no unten o shimas ka?
+Watashi wa Skoda no unten o shimas.
+2. Anata wa nan no souji o shimas ka?
+Watashi wa watashi no heya no souji o shimas.
+3. Anata no tomodoachi wa sakka o shimas ka? Soretomo yakyuu o shimas ka?
+Watashi no tomodachi wa yakyuu o shimas.
+4. Kon ya anata wa souji ki de nani o shimas ka?
+Kon ya watashi wa souji ki de souji o shimas.
+5. Kon ya anata wa nan no ge-mu o shimas ka?
+Kon ya watashi wa Maikura o shimas.
+6. Ashita anata wa nan no benkyou o shimas ka?
+Ashita watashi wa nihongo no benkyou o shimas.
+7. Anata wa nan no shukudai o shimas ka?
+Watashi wa nihongo no shukudai o shimas.
+8. Kyou anata wa nihongo no benkyou o shimas ka? Soretomo eigo no benkyou o shimas ka?
+Kyou watashi wa nihongo no benkyou o shimas.
+9. Anata no ani wa kono sentaku ki de nan no sentaku o shimas ka?
+Watashi no ani wa kono sentaku ki de kare no fuku no sentaku o shimas.
+10. Anata wa inu no sanpo kyou o shimas ka?
+Hai, watashi wa inu no sanpo kyou o shimas.
+
