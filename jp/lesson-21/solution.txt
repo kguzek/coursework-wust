@@ -1,8 +1,8 @@
 1. Itsu anata wa Biedronka de kaimono o shimas ka?
 Ashita watashi wa Biedronka de kaimono o shimas.
-2. Kyou anata wa hitori de pabu ni ikimas ka? Soretomo tomodachi no ikimas ka?
-Kyou watashi wa tomodachi no pabu ni ikimas.
-3. Kyou anata wa doko de shukudai o shimas ka?
+2. Kyou anata wa hitori de pabu ni ikimas ka? Soretomo tomodachi to ikimas ka?
+Kyou watashi wa tomodachi to pabu ni ikimas.
+3. Kyou anata wa doko de nihongo no shukudai o shimas ka?
 Kyou watashi wa ie no heya de shukudai o shimas.
 4. Anata wa kono kouen de inu no sanpo o shimas ka?
 Hai, watashi wa kono kouen de inu no sanpo o shimas.
@@ -10,12 +10,12 @@ Hai, watashi wa kono kouen de inu no sanpo o shimas.
 Hai, ashita watashi wa hitori do shokuji o shimas.
 6. Kon ya anata wa dare to benkyou o shimas ka?
 Kon ya watashi wa tomodachi to benkyou o shimas.
-7. Ashita anata wa ie de dochirano heya no souji o shimas ka?
+7. Ashita anata wa ie de dochira no heya no souji o shimas ka?
 Ashita watashi wa ie do doubutsu no souji o shimas.
 8. Anata wa toshokan de tomodachi to shukudai o shimas ka?
 Hai, watashi wa toshokan de tomodachi to shukudai o shimas.
 9. Anata wa dare to kono basu de yama ni ikimas ka?
 Watashi wa tomodachi to kono basu de yama ni ikimas.
 10. Kyou no hiru chichi wa hitori de inu to sanpo o shimas ka?
-Iie, kyou no hiru chichi wa tomodachi to inu to sanpo o shimas.
+Hai, kyou no hiru chichi wa hitori de inu to sanpo o shimas.
 

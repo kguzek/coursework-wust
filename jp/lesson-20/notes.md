@@ -59,19 +59,19 @@
 
 ### New grammar – examples
 
-| Japanese                                | English                                 |
-| --------------------------------------- | --------------------------------------- |
-| Watashi wa kuruma no unten o shimas     | I am driving a car.                     |
-| Anata wa nan no unten o shimas ka?      | What are you driving?                   |
-| Watashi wa nihon go no benkyou o shimas | I am studying Japanese                  |
-| Anata wa nan no sentaku o shimas ka?    | What are you washing?                   |
-| Nan no shokuji o anata wa shimas ka?    | What's the occasion of the nice meal?   |
-| Nan no kaimono o anata wa shimas ka?    | What type of shopping are you doing?    |
-| Watashi wa bi-ru no kaimono o shimas    | I am shopping for beer                  |
-| Anata wa nan no ryouri o shimas ka?     | What are you going to use to cook?      |
-| Niwatori no ryouri o watashi wa shimas  | I am going to cook using chicken        |
-| Anata wa nan no ge-mu o shimas ka?      | What game are you playing?              |
-| Anata wa nan no sanpo o shimas ka?      | What are you walking?                   |
-| Anata wa dare no sanpo o shimas ka?     | Who are you walking with?               |
-| Watashi wa inu no sanpo o shimas        | I am walking my dog                     |
-| Watashi wa imouto no sanpo o shimas     | I am taking my younger sister on a walk |
+| Japanese                               | English                                 |
+| -------------------------------------- | --------------------------------------- |
+| Watashi wa kuruma no unten o shimas    | I am driving a car.                     |
+| Anata wa nan no unten o shimas ka?     | What are you driving?                   |
+| Watashi wa nihongo no benkyou o shimas | I am studying Japanese                  |
+| Anata wa nan no sentaku o shimas ka?   | What are you washing?                   |
+| Nan no shokuji o anata wa shimas ka?   | What's the occasion of the nice meal?   |
+| Nan no kaimono o anata wa shimas ka?   | What type of shopping are you doing?    |
+| Watashi wa bi-ru no kaimono o shimas   | I am shopping for beer                  |
+| Anata wa nan no ryouri o shimas ka?    | What are you going to use to cook?      |
+| Niwatori no ryouri o watashi wa shimas | I am going to cook using chicken        |
+| Anata wa nan no ge-mu o shimas ka?     | What game are you playing?              |
+| Anata wa nan no sanpo o shimas ka?     | What are you walking?                   |
+| Anata wa dare no sanpo o shimas ka?    | Who are you walking with?               |
+| Watashi wa inu no sanpo o shimas       | I am walking my dog                     |
+| Watashi wa imouto no sanpo o shimas    | I am taking my younger sister on a walk |
