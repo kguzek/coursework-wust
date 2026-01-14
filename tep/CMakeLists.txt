@@ -150,8 +150,9 @@ set_target_properties(TEP-Lab5-TreeTest PROPERTIES
 
 add_executable(TEP-Miniprojekt
         miniprojekt/Evaluator.cpp
+        miniprojekt/GeneticAlgorithm.cpp
+        miniprojekt/Individual.cpp
         miniprojekt/LcVRPContest.cpp
-        miniprojekt/Optimizer.cpp
         miniprojekt/ProblemData.cpp
         miniprojekt/ProblemLoader.cpp
 )

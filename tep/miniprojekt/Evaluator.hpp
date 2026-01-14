@@ -17,11 +17,11 @@ namespace LcVRPContest
         double Evaluate(const int* solution) const;
 
         int GetSolutionSize() const { return num_customers_; }
-        int GetLowerBound() const { return 0; }
+        static int GetLowerBound() { return 0; }
         int GetUpperBound() const { return num_groups_ - 1; }
         int GetNumGroups() const { return num_groups_; }
 
-        const ProblemData& GetProblemData() const { return problem_data_; } // only thing added in v2 :)
+        const ProblemData& GetProblemData() const { return problem_data_; }
 
     private:
         const ProblemData& problem_data_;
@@ -29,11 +29,17 @@ namespace LcVRPContest
         int num_customers_;
 
         const double WRONG_VAL = -1.0;
+        const double PENALTY_INVALID_SOLUTION = -1000000.0;
 
-        // helper methods
         double CalculateRouteCost(const vector<int>& route) const;
         bool IsValidSolution(const vector<int>& grouping) const;
         bool ValidateConstraints() const;
         void BuildRoutes(const vector<int>& grouping, vector<vector<int>>& routes) const;
+
+        bool CheckCapacityConstraint(const vector<int>& route) const;
+        bool CheckDistanceConstraint(const vector<int>& route) const;
+        double CalculateRouteDemand(const vector<int>& route) const;
+        double CalculateTotalDistance(const vector<int>& route) const;
+        bool IsValidCustomerIndex(int customer_id) const;
     };
 }
