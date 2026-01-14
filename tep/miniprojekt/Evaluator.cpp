@@ -79,7 +79,7 @@ bool Evaluator::IsValidSolution(const vector<int>& grouping) const
 bool Evaluator::ValidateConstraints() const
 {
     int depot = problem_data_.GetDepot();
-    int depot_index = depot - 1; //again, depot index in 0-based
+    int depot_index = depot - 1; //again, depot index is 0-based
     const vector<int>& demands = problem_data_.GetDemands();
     int capacity = problem_data_.GetCapacity();
 
