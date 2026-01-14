@@ -9,7 +9,7 @@ ProblemLoader::ProblemLoader(const string& folder_name, const string& instance_n
     : folder_name_(folder_name),
       instance_name_(instance_name)
 {
-    base_path_ = "data/lcvrp/" + folder_name_ + "/";
+    base_path_ = "../miniprojekt/data/lcvrp/" + folder_name_ + "/";
 }
 
 ProblemData ProblemLoader::LoadProblem()
