@@ -148,4 +148,16 @@ set_target_properties(TEP-Lab5-TreeTest PROPERTIES
         CXX_STANDARD_REQUIRED YES
 )
 
+add_executable(TEP-Miniprojekt
+        miniprojekt/Evaluator.cpp
+        miniprojekt/LcVRPContest.cpp
+        miniprojekt/Optimizer.cpp
+        miniprojekt/ProblemData.cpp
+        miniprojekt/ProblemLoader.cpp
+)
+set_target_properties(TEP-Miniprojekt PROPERTIES
+        CXX_STANDARD 23
+        CXX_STANDARD_REQUIRED YES
+)
+
 #endregion
