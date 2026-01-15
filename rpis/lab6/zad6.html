@@ -363,20 +363,21 @@ display: none;
 # H1: mężczyźni średnio przytyli się o inną wartość niż  4kg
 
 dm &lt;- d[d$plec == 0, ]
-t.test(dm$Waga_przed, dm$Waga_po, mu = 4)</code></pre>
+da &lt;- dm$Waga_po - dm$Waga_przed
+t.test(da, mu = 4)</code></pre>
 <pre><code>## 
-##  Welch Two Sample t-test
+##  One Sample t-test
 ## 
-## data:  dm$Waga_przed and dm$Waga_po
-## t = -3.1074, df = 102, p-value = 0.002445
-## alternative hypothesis: true difference in means is not equal to 4
+## data:  da
+## t = -3.0102, df = 51, p-value = 0.004053
+## alternative hypothesis: true mean is not equal to 4
 ## 95 percent confidence interval:
-##  -7.153140  1.537755
+##  2.012497 3.602887
 ## sample estimates:
-## mean of x mean of y 
-##  65.44231  68.25000</code></pre>
-<pre class="r"><code># p-value: 0.00245
-# Odrzucamy na poziomie istotności 1% (0,001&lt;p&lt;0,01): Mamy mocne dowody przeciwko H0</code></pre>
+## mean of x 
+##  2.807692</code></pre>
+<pre class="r"><code># p-value: 0.004053
+# Odrzucamy na poziomie istotności 5% (0,01&lt;p&lt;0,05): Mamy dowody przeciwko H0</code></pre>
 
 
 

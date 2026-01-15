@@ -362,20 +362,20 @@ display: none;
 # H0: studenci średnio przytyli się o 2kg
 # H1: studenci średnio przytyli się o inną wartość niż 2kg
 
-t.test(d$Waga_przed, d$Waga_po, mu = 2)</code></pre>
+t.test(d$Waga_przed, d$Waga_po, mu = 2, paired=TRUE)</code></pre>
 <pre><code>## 
-##  Welch Two Sample t-test
+##  Paired t-test
 ## 
 ## data:  d$Waga_przed and d$Waga_po
-## t = -2.7457, df = 195.56, p-value = 0.006601
-## alternative hypothesis: true difference in means is not equal to 2
+## t = -16.498, df = 98, p-value &lt; 2.2e-16
+## alternative hypothesis: true mean difference is not equal to 2
 ## 95 percent confidence interval:
-##  -6.0359610  0.6824257
+##  -3.239323 -2.114213
 ## sample estimates:
-## mean of x mean of y 
-##  61.71717  64.39394</code></pre>
+## mean difference 
+##       -2.676768</code></pre>
 <pre class="r"><code># p-value: 0.006601
-# Odrzucamy na poziomie istotności 1% (0,001&lt;p&lt;0,01): Mamy mocne dowody przeciwko H0</code></pre>
+# Odrzucamy na poziomie istotności 0,1% (p&lt;0,001): Mamy bardzo mocne dowody przeciwko H0</code></pre>
 
 
 

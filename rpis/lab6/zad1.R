@@ -11,6 +11,9 @@ proby <- c(520, 480)
 res_prop <- prop.test(sukcesy, proby, correct = FALSE)
 print(res_prop)
 
+# p-value: 0.01001
+# Odrzucamy na poziomie istotności 5% (0,01<p<0,05): Mamy dowody przeciwko H0
+
 # i)
 z_stat_a <- sqrt(res_prop$statistic)
 p_val_a <- res_prop$p.value
