@@ -13,7 +13,7 @@
 
 <meta name="date" content="2026-01-15" />
 
-<title>zad1.R</title>
+<title>zad2.R</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,7 +350,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">zad1.R</h1>
+<h1 class="title toc-ignore">zad2.R</h1>
 <h4 class="author">konrad</h4>
 <h4 class="date">2026-01-15</h4>
 
@@ -359,91 +359,23 @@ display: none;
 
 <pre class="r"><code>d &lt;- read.csv2(&quot;/home/konrad/Documents/coding/coursework-wust/rpis/lab2/waga1.csv&quot;)
 
-# a) 
-# H0: p1 = p2 (Prawdopodobieństwo ukończenia studiów nie zależy od płci)
-# H1: p1 != p2 (Prawdopodobieństwo ukończenia studiów zależy od płci)
+# H0: studenci średnio przytyli się o 2kg
+# H1: studenci średnio przytyli się o inną wartość niż 2kg
 
-sukcesy &lt;- c(220, 165)
-proby &lt;- c(520, 480)
-
-# ii) 
-res_prop &lt;- prop.test(sukcesy, proby, correct = FALSE)
-print(res_prop)</code></pre>
+t.test(d$Waga_przed, d$Waga_po, mu = 2)</code></pre>
 <pre><code>## 
-##  2-sample test for equality of proportions without continuity correction
+##  Welch Two Sample t-test
 ## 
-## data:  sukcesy out of proby
-## X-squared = 6.6336, df = 1, p-value = 0.01001
-## alternative hypothesis: two.sided
+## data:  d$Waga_przed and d$Waga_po
+## t = -2.7457, df = 195.56, p-value = 0.006601
+## alternative hypothesis: true difference in means is not equal to 2
 ## 95 percent confidence interval:
-##  0.0192560 0.1393978
+##  -6.0359610  0.6824257
 ## sample estimates:
-##    prop 1    prop 2 
-## 0.4230769 0.3437500</code></pre>
-<pre class="r"><code># i) 
-z_stat_a &lt;- sqrt(res_prop$statistic)
-p_val_a &lt;- res_prop$p.value
-cat(&quot;Statystyka Z:&quot;, z_stat_a, &quot;p-value:&quot;, p_val_a)</code></pre>
-<pre><code>## Statystyka Z: 2.57558 p-value: 0.01000722</code></pre>
-<pre class="r"><code># p-value: 0.01000722
-# Odrzucamy na poziomie istotności 5% (0,01&lt;p&lt;0,05): Mamy dowody przeciwko H0
-
-# b)
-# H0: Rozkład wykształcenia jest niezależny od płci
-# H1: Rozkład wykształcenia jest zależny od płci
-
-tablica &lt;- matrix(c(300, 220, 315, 165), nrow = 2, byrow = TRUE)
-rownames(tablica) &lt;- c(&quot;Kobieta&quot;, &quot;Mezczyzna&quot;)
-colnames(tablica) &lt;- c(&quot;0&quot;, &quot;1&quot;)
-print(tablica)</code></pre>
-<pre><code>##             0   1
-## Kobieta   300 220
-## Mezczyzna 315 165</code></pre>
-<pre class="r"><code># c)
-# H0: Wykształcenie nie zależy od płci (zmienne są niezależne)
-# H1: Wykształcenie zależy od płci (zmienne są zależne)
-
-# i) 
-res_chi &lt;- chisq.test(tablica, correct = FALSE)
-print(res_chi)</code></pre>
-<pre><code>## 
-##  Pearson&#39;s Chi-squared test
-## 
-## data:  tablica
-## X-squared = 6.6336, df = 1, p-value = 0.01001</code></pre>
-<pre class="r"><code># p-value: 0.01001
-# Odrzucamy na poziomie istotności 5% (0,01&lt;p&lt;0,05): Mamy dowody przeciwko H0
-
-# ii) 
-res_fish &lt;- fisher.test(tablica)
-print(res_fish)</code></pre>
-<pre><code>## 
-##  Fisher&#39;s Exact Test for Count Data
-## 
-## data:  tablica
-## p-value = 0.01118
-## alternative hypothesis: true odds ratio is not equal to 1
-## 95 percent confidence interval:
-##  0.5480136 0.9305949
-## sample estimates:
-## odds ratio 
-##  0.7145375</code></pre>
-<pre class="r"><code># p-value: 0.01118
-# Odrzucamy na poziomie istotności 5% (0,01&lt;p&lt;0,05): Mamy dowody przeciwko H0
-
-# d)
-# H0: mu1 = mu2 (Średni wzrost nie zależy od płci)
-# H1: mu1 != mu2 (Średni wzrost zależy od płci)
-
-n1 &lt;- 520; sr1 &lt;- 166; war1 &lt;- 100
-n2 &lt;- 480; sr2 &lt;- 174; war2 &lt;- 121
-
-z_stat_d &lt;- (sr1 - sr2) / sqrt(war1/n1 + war2/n2)
-p_val_d &lt;- 2 * (1 - pnorm(abs(z_stat_d)))
-cat(&quot;Statystyka Z:&quot;, z_stat_d, &quot;p-value:&quot;, p_val_d)</code></pre>
-<pre><code>## Statystyka Z: -12.00072 p-value: 0</code></pre>
-<pre class="r"><code># p-value &lt; 0.001. 
-# Odrzucamy na poziomie istotności 0,1% (p&lt;0,001): Mamy bardzo mocne dowody przeciwko H0</code></pre>
+## mean of x mean of y 
+##  61.71717  64.39394</code></pre>
+<pre class="r"><code># p-value: 0.006601
+# Odrzucamy na poziomie istotności 1% (0,001&lt;p&lt;0,01): Mamy mocne dowody przeciwko H0</code></pre>
 
 
 
