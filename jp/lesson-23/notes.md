@@ -21,6 +21,7 @@
    1. It is stronger than `o`, so when both are present, `mo` takes precedence.
 2. It can only be applied in exact locations, not arbitrarily like in English or Polish.
 3. `Ga` is used instead of `wa` when the subject is unclear.
+   1. It is also used in the answer to a question where the question used `ga`.
 
 ### New grammar – examples
 
