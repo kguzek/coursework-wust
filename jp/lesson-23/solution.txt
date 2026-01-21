@@ -1,0 +1,18 @@
+1. Kono densha wa Warushaua ni ikimas. Sono densha mo Warushaua ni ikimas ka?
+Hai, sono densha mo Warushaua ni ikimas.
+2. Kyou anata wa Nihongo no benkyou o shimas. Ashita anata mo nihongo no benkyou o shimas ka?
+Iie, ashita watashi wa nihongo no benkyou wa shimasen.
+3. Anata no tomodachi wa ryouri o shimas. Kare mo anata no shukudai o shimas ka?
+Iie, kare wa watashi no shukudai wa shimasen.
+4. Watashi wa kono basu de ie ni kaerimas. Anata mo kono basu de ie ni kaerimas ka?
+Hai, watashi mo kono basu de ie ni kaerimas.
+5. Ashita anata wa mise ni ikimas. Anata mo yuubinkyoku ni ikimas ka?
+Hai, watashi mo yuubinkyoku ni ikimas.
+6. Kyou watashi wa tomodachi to basuketto bo-ru o shimas. Anata mo watashitachi to basuketto bo-ru o shimas ka?
+Hai, watashi mo anatatachi to basuetto bo-ru o shimas.
+7. Dare ga anata to kaimono o shimas ka?
+Tomodachi wa watashi to kaimono o shimas.
+8. Kyou dare ga resutoran de hitori de shokuji o shimas ka?
+Kyou chichi wa resutoran de hitori de shokuji o shimas.
+9. Dare ga watashi no shukudai o shimas ka?
+Anata wa anata no shukudai o shimas.
