@@ -25,10 +25,10 @@
 ## New grammar
 
 1. `Doko` can be used when asking to repeat/specify a missing location.
-   1. You can also ask to specify a given address part, e.g. `dochirano machi` instead of `doko` for asking for the specific city.
+   1. You can also ask to specify a given address part, e.g. `dochira no machi` instead of `doko` for asking for the specific city.
 2. `x no y` means a 'map zoom level', and when used while describing a location it always means a decreasingly large 'search area' or increasingly specific location.
 3. For locating objects, we use similar grammar as for locations, but in relation to larger objects.
-4. `Kono` is used when talking about *this specific* object.
+4. `Kono` is used when talking about _this specific_ object.
 5. When asking for a location with `doko`, it is always appropriate to answer using `koko`, `soko`, or `asoko`, even if the question is asked using `ni arimas`.
 
 ### New grammar – examples

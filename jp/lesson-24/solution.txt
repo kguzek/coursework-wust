@@ -1,0 +1,21 @@
+1. Ashita dochira no tomodachi no kazokou ga Wrocław ni ikimas ka?
+Ashita Kuba no tomodachi no kazokou ga Wrocław ni ikimas.
+2. Dochira no mura ga anata no machi no yoko ni arimas ka?
+Kleszczów no mura ga watashi no machi no yoko ni arimas.
+3. Nani ga anata no reizouko no naka ni arimas ka?
+Mizu ga watashi no reizouko no naka ni arimas.
+4. Kon ya dare ga ie de ryouri o shimas ka?
+Kon ya dare mo ie de ryouri wa shimasen.
+5. Tomodachi ga kono mise no doko ni imas ka?
+Tomodachi mo kono mise no doko niwa imasen.
+6. Kore kara, anata ga tomodachi de doko ni ikimas ka?
+Kore kara, watashi mo tomodachi de doko niwa ikimasen.
+7. Anata ga toshokan de nan no benkyou o shimas ka?
+Watashi mo toshokan de nan no benkyou wa shimasen.
+8. Kyou anata ga nani o shimas ka?
+Kyou watashi mo nani wa shimasen.
+9. Ima dare ga ie ni imas ka?
+Ima dare mo ie niwa imasen.
+10. Kon ya anata no ryoushin ga dare no ie ni ikimas ka?
+Kon ya watashi no ryoushin mo dare no ie niwa ikimas.
+

@@ -35,10 +35,10 @@
 
 ### New grammar – examples
 
-| Japanese                                        | English                      |
-| ----------------------------------------------- | ---------------------------- |
-| Anatawa dochirano kunino katades ka?            | Where are you from?          |
-| Watashiwa po-randono hitodes.                   | I am from Poland.            |
-| Anata **tachi** wa dochirano kunino katades ka? | Where are you (plural) from? |
-| Watashi **tachi** wa po-randono hitodes.        | We are from Poland.          |
-| Watashino kuniwa Po-randodes.                   | My country is Poland.        |
+| Japanese                                           | English                      |
+| -------------------------------------------------- | ---------------------------- |
+| Anata wa dochira no kuni no kata des ka?           | Where are you from?          |
+| Watashi wa po-rando no hito des.                   | I am from Poland.            |
+| Anata **tachi** wa dochira no kuni no kata des ka? | Where are you (plural) from? |
+| Watashi **tachi** wa po-rando no hito des.         | We are from Poland.          |
+| Watashi no kuni wa Po-rando des.                   | My country is Poland.        |

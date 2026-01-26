@@ -1,16 +1,16 @@
-1. Anata wa dochira no kuni no katades ka?
-Watashi wa po-rando no hitodes.
-2. Anatatachi wa Berugi- no katades ka?
-Hai, watashitachi wa Berugi- no hitodes.
-3. Anata wa nihonjindes ka?
+1. Anata wa dochira no kuni no kata des ka?
+Watashi wa po-rando no hito des.
+2. Anatatachi wa Berugi- no kata des ka?
+Hai, watashitachi wa Berugi- no hito des.
+3. Anata wa nihonjin des ka?
 Iie, watashi wa chuugokujin des.
-4. Kanojo no kuni wa doitsudes ka?
-Iie, kanojo no kuni wa itariades.
-5. Anata wa supein no katades ka?
-Hai, watashi wa supein no hitodes.
-6. Kare wa doitsujindes ka?
+4. Kanojo no kuni wa doitsu des ka?
+Iie, kanojo no kuni wa itaria des.
+5. Anata wa supein no kata des ka?
+Hai, watashi wa supein no hito des.
+6. Kare wa doitsujin des ka?
 Iie, Kare wa po-randojin des.
-7. Kanojora wa dochirano kuni no katades ka?
-Kanojora wa igirisu no katades.
-8. Karera wa po-randojindes ka?
-Hai, karera wa po-randojindes.
+7. Kanojora wa dochira no kuni no kata des ka?
+Kanojora wa igirisu no kata des.
+8. Karera wa po-randojin des ka?
+Hai, karera wa po-randojin des.
