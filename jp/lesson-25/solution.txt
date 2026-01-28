@@ -4,8 +4,8 @@ Kyou watashi wa resutoran de piza o tabemas.
 Hai, kyou no hiru watashi wa ie de terebi o mimas.
 3. Kyou anata wa ie de sushi o tabemas ka? Soretomo pierogi o tabemas ka?
 Kyou watashi wa pierogi o tabemas.
-4. Kyou anata wa ryoushin to kazokou no shashin o mimas ka?
-Hai, kyou watashi wa ryoushin to kazokou no shashin o mimas.
+4. Kyou anata wa anata no ryoushin to kazokou no shashin o mimas ka?
+Hai, kyou watashi wa watashi no ryoushin to kazokou no shashin o mimas.
 5. Kon ya anata wa doko de eiga o mimas ka?
 Kon ya watashi wa tomodachi no ie de eiga o mimas.
 6. Anata no kazokou wa doko de piza o tabemas ka?
