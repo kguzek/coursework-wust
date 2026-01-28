@@ -4,20 +4,21 @@
 
 ## New vocabulary
 
-| Japanese         | English           |
-| ---------------- | ----------------- |
-| Taberu (Tabemas) | Eat               |
-| Piza             | Pizza             |
-| Ra-men           | Ramen             |
-| Kappu nu-doru    | Cup noodles       |
-| Gohan            | Rice              |
-| Sushi            | Sushi             |
-| Gyouza           | Gyoza             |
-| Miru (mimas)     | Watch             |
-| Anime            | Anime             |
-| Eiga             | Movie             |
-| E                | Picture/paintings |
-| Shashin          | Photo             |
+| Japanese         | English          |
+| ---------------- | ---------------- |
+| Taberu (Tabemas) | Eat              |
+| Piza             | Pizza            |
+| Ra-men           | Ramen            |
+| Kappu nu-doru    | Cup noodles      |
+| Gohan            | Rice             |
+| Sushi            | Sushi            |
+| Gyouza           | Gyoza            |
+| Miru (mimas)     | Watch            |
+| Anime            | Anime            |
+| Eiga             | Movie            |
+| E                | Picture/painting |
+| Shashin          | Photo            |
+| Douga            | Online video     |
 
 ### New vocabulary – examples
 

@@ -1,0 +1,19 @@
+1. Kyou anata wa resutoran de nani o tabemas ka?
+Kyou watashi wa resutoran de piza o tabemas.
+2. Kyou no hiru anata wa ie de terebi o mimas ka?
+Hai, kyou no hiru watashi wa ie de terebi o mimas.
+3. Kyou anata wa ie de sushi o tabemas ka? Soretomo pierogi o tabemas ka?
+Kyou watashi wa pierogi o tabemas.
+4. Kyou anata wa ryoushin to kazokou no shashin o mimas ka?
+Hai, kyou watashi wa ryoushin to kazokou no shashin o mimas.
+5. Kon ya anata wa doko de eiga o mimas ka?
+Kon ya watashi wa tomodachi no ie de eiga o mimas.
+6. Anata no kazokou wa doko de piza o tabemas ka?
+Watashi no kazokou wa resutoran de piza o tabemas.
+7. Anata wa pasokon de nani o mimas ka?
+Watashi wa pasokon de douga o mimas.
+8. Ashita dare ga ramen o tabemas ka?
+Ashita chichi ga ramen o tabemas.
+9. Anata wa dare to douga o mimas ka?
+Watashi wa otouto to douga o mimas.
+
