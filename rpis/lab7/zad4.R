@@ -1,18 +1,20 @@
-dane <- read.csv("~/Documents/coding/coursework-wust/rpis/lab7/mieszkania.csv")
+dane <- read.csv2("~/Documents/coding/coursework-wust/rpis/lab2/mieszkania.csv")
 
-# a) Regresja liniowa ceny względem metrażu
-model <- lm(cena ~ metraz, data = dane)
+# a)
+model <- lm(Cena ~ Metraz, data = dane)
 summary(model)
 
-# b) Wykres rozrzutu
-plot(dane$metraz, dane$cena)
+# b)
+plot(dane$Metraz, dane$Cena)
 abline(model)
 
-# c) Test normalności reszt
+# c)
 # H0: Reszty modelu regresji mają rozkład normalny
 # H1: Reszty modelu regresji nie mają rozkładu normalnego
 reszty <- residuals(model)
 shapiro.test(reszty)
 
-# d) Oszacowanie ceny dla mieszkania 80m2
-predict(model, newdata = data.frame(metraz = 80))
+# Odrzucamy na poziomie istotności 0,1% (p<0,001): Mamy bardzo mocne dowody przeciwko H0
+
+# d)
+predict(model, newdata = data.frame(Metraz = 80))
