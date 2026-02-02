@@ -15,7 +15,7 @@
 | Indo             | India        |
 | Machi            | City         |
 | Vurotsuwafu      | Wrocław      |
-| Warushaua        | Warsaw       |
+| Warushawa        | Warsaw       |
 | Mura             | Village      |
 | Daigaku          | University   |
 | Kouka            | Science/Tech |
