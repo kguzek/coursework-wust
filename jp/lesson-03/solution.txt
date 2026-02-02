@@ -1,14 +1,14 @@
-1. Korewa nandes ka?                # Q: What is this?
-Sorewa ranpu des.                   # A: That (close) is a lamp.
-2. Korewa tsukuedes ka?             # Q: Is this a desk?  
-Hai, sorewa tsukuedes.              # A: No, that (close) is a table.
-3. Sorewa nandes ka?                # Q: What is that (close)?
-Korewa watashino keitaides.         # A: This is my phone.
-4. Sorewa kanojono kabandes ka?     # Q: Is that (close) her bag?
-Hai, sorewa kanojono kabandes.      # A: Yes, that (close) is her bag.
-5. Arewa tokeides ka?               # Q: Is that (far) a clock?
-Hai, arewa tokeides.                # A: Yes, that (far) is a clock.
-6. Korewa isudes ka?                # Q: Is this a chair?
-Hai, sorewa isudes.                 # A: Yes, that (close) is a chair.
-7. Arewa madodes ka?                # Q: Is that (far) a window?
-Iie, arewa kabedes.                 # A: No, that (far) is a wall.
+1. Kore wa nan des ka?                # Q: What is this?
+Sore wa ranpu des.                    # A: That (close) is a lamp.
+2. Kore wa tsukue des ka?             # Q: Is this a table?  
+Hai, sore wa tsukue des.              # A: Yes, that (close) is a table.
+3. Sore wa nan des ka?                # Q: What is that (close)?
+Kore wa watashino keitai des.         # A: This is my phone.
+4. Sore wa kanojono kaban des ka?     # Q: Is that (close) her bag?
+Hai, sore wa kanojono kaban des.      # A: Yes, that (close) is her bag.
+5. Are wa tokei des ka?               # Q: Is that (far) a clock?
+Hai, are wa tokei des.                # A: Yes, that (far) is a clock.
+6. Kore wa isu des ka?                # Q: Is this a chair?
+Hai, sore wa isu des.                 # A: Yes, that (close) is a chair.
+7. Are wa mado des ka?                # Q: Is that (far) a window?
+Iie, are wa kabe des.                 # A: No, that (far) is a wall.
