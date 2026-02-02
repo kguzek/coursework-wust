@@ -6,7 +6,6 @@
 
 1. The `ga` connector is also used if any part of the noun phrase is unknown. This includes all question placeholders:
    - dare
-   - yoko
    - nani
    - itsu
    - dore

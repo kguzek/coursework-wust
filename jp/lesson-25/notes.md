@@ -6,14 +6,14 @@
 
 | Japanese         | English          |
 | ---------------- | ---------------- |
-| Taberu (Tabemas) | Eat              |
+| Taberu (Tabemas) | To eat           |
 | Piza             | Pizza            |
 | Ra-men           | Ramen            |
 | Kappu nu-doru    | Cup noodles      |
 | Gohan            | Rice             |
 | Sushi            | Sushi            |
 | Gyouza           | Gyoza            |
-| Miru (mimas)     | Watch            |
+| Miru (mimas)     | To watch         |
 | Anime            | Anime            |
 | Eiga             | Movie            |
 | E                | Picture/painting |
