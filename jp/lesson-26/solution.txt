@@ -5,12 +5,12 @@ Tomodachi ga watashi to bi-ru o nomimas.
 3. Anata wa basu de nani o yomimas ka?
 Watashi wa basu de hon o yomimas.
 4. Anata no ryoushin wa manga o yomimas ka?
-Hai, watashi on ryoushin wa manga o yomimas.
+Hai, watashi no ryoushin wa manga o yomimas.
 5. Ashita no asa anata wa nani o nomimas ka?
 Ashita no asa watashi wa ju-su o nomimas.
 6. Anata no chichi wa MediaMarkt de pasokon o kaimas ka? Soretomo keitai o kaimas ka? Soretomo denshi renji o kaimas ka?
 Watashi no chichi wa MediaMarkt de denshi renji o kaimas.
-7. Kyou watashi wa ko-hi o nomimas. Anata wa watashi to ko-hi mo nomimas ka?
+7. Kyou watashi wa ko-hi o nomimas. Anata mo watashi to ko-hi o nomimas ka?
 Hai, watashi wa anata to ko-hi mo nomimas.
 8. Anata wa gurasu de wain o nomimas ka? Soretomo koppu de nomimas ka?
 Watashi wa gurasu de wain o nomimas.
