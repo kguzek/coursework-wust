@@ -1,5 +1,8 @@
 name: (CI) [TEP]
 
+permissions:
+  contents: read
+
 on:
   push:
   pull_request:

@@ -1,5 +1,8 @@
 name: (CI) [SysOp|AM2]
 
+permissions:
+  contents: read
+
 on:
   push:
   pull_request:
@@ -10,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.13" ]
+        python-version: ["3.13"]
 
     steps:
       - uses: actions/checkout@v4
@@ -25,4 +28,3 @@ jobs:
           git ls-files '*requirements.txt' | xargs -I {} pip install -r {}
       - name: Analyze the code with pylint
         run: pylint $(git ls-files '*.py')
-
