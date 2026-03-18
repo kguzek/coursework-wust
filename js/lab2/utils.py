@@ -1,3 +1,4 @@
+# pylint: disable=too-many-arguments, too-many-branches, too-many-statements
 import sys
 from typing import Protocol
 
