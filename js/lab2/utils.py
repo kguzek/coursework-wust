@@ -1,6 +1,8 @@
 import sys
 from typing import Protocol
 
+PREAMBLE_MAX_LINE_COUNT: int = 10
+
 
 class ParserCallback(Protocol):
     def __call__(
@@ -10,13 +12,15 @@ class ParserCallback(Protocol):
         previous_line: str | None,
         current_sentence: str,
         previous_sentence: str | None,
+        line_counter: int,
+        sentence_counter: int,
     ) -> bool: ...
 
 
 def base_parser(
     delimiters: str = ".!?",
     wait_for_sentence: bool = False,
-    skip_preamble: bool = False,
+    skip_preamble: bool = True,
     skip_footer: bool = True,
 ):
     """Implements reading from stdin and can be used as a decorator."""
@@ -27,12 +31,13 @@ def base_parser(
         previous_line: str | None = None
         current_line: str = ""
         current_line_stripped: str = ""
+        line_counter: int = 0
 
         previous_sentence: str | None = None
         current_sentence: str = ""
         current_sentence_stripped: str = ""
+        sentence_counter: int = 0
 
-        line_counter: int = 0
         consecutive_newline_counter: int = 0
 
         should_continue: bool = True
@@ -61,6 +66,8 @@ def base_parser(
                         previous_line=previous_line,
                         current_sentence=current_sentence_stripped,
                         previous_sentence=previous_sentence,
+                        line_counter=line_counter,
+                        sentence_counter=sentence_counter,
                     )
                 break
 
@@ -79,9 +86,13 @@ def base_parser(
                         previous_line=previous_line,
                         current_sentence=current_sentence_stripped,
                         previous_sentence=previous_sentence,
+                        line_counter=line_counter,
+                        sentence_counter=sentence_counter,
                     )
                 previous_line = current_line_stripped
                 current_line = ""
+                if line_counter > PREAMBLE_MAX_LINE_COUNT:
+                    preamble_consumed = True
             else:
                 consecutive_newline_counter = 0
 
@@ -90,16 +101,23 @@ def base_parser(
             if consecutive_newline_counter >= 2:
                 is_sentence_end = True
 
-                if consecutive_newline_counter == 3:
+                if consecutive_newline_counter == 3 and not preamble_consumed:
                     preamble_consumed = True
+                    if skip_preamble:
+                        sentence_counter = 0
+                        is_sentence_end = False
 
             if is_sentence_end:
+                if current_sentence_stripped:
+                    sentence_counter += 1
                 if wait_for_sentence and not (skip_preamble and not preamble_consumed):
                     should_continue = callback(
                         current_line=current_line_stripped,
                         previous_line=previous_line,
                         current_sentence=current_sentence_stripped,
                         previous_sentence=previous_sentence,
+                        line_counter=line_counter,
+                        sentence_counter=sentence_counter,
                     )
 
                 previous_sentence = current_sentence_stripped
