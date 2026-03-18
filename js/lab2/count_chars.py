@@ -4,10 +4,10 @@ from utils import base_parser
 def main():
     count = 0
 
-    @base_parser(delimiters="\n ")
-    def count_chars(current_line: str, **_):
+    @base_parser(delimiters="\n ", wait_for_sentence=True)
+    def count_chars(current_sentence: str, **_):
         nonlocal count
-        count += len(current_line)
+        count += len(current_sentence)
         return True
 
     _ = count_chars
