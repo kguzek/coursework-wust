@@ -7,3 +7,4 @@ The following text files in this repository are included as sample literature fo
 - `brzydkie-kaczatko.txt` – Hans Christian Andersen, _Brzydkie kaczątko_; public domain. Source: https://wolnelektury.pl/katalog/lektura/brzydkie-kaczatko/
 - `o-krasnoludkach-i-sierotce-marysi.txt` – Maria Konopnicka, _O krasnoludkach i sierotce Marysi_; public domain. Source: https://wolnelektury.pl/katalog/lektura/o-krasnoludkach-i-sierotce-marysi/
 - `platon-obrona-sokratesa.txt` – Platon, _Obrona Sokratesa_; text is public domain (classical work), with editorial material under a free/open license. Source: https://wolnelektury.pl/katalog/lektura/platon-obrona-sokratesa/
+- `pan-tadeusz.txt` – Adam Mickiewicz, _Pan Tadeusz_; public domain. Source: https://wolnelektury.pl/katalog/lektura/pan-tadeusz/

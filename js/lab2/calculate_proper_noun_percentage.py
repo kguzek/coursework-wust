@@ -2,12 +2,6 @@ from utils import base_parser
 
 
 def contains_proper_noun(sentence: str) -> bool:
-    """
-    Check if the sentence contains at least one proper noun.
-    A proper noun is defined as a word starting with a capital letter,
-    not being the first word in the sentence.
-    Uses only string operations.
-    """
     if not sentence:
         return False
 
@@ -18,13 +12,11 @@ def contains_proper_noun(sentence: str) -> bool:
     for char in sentence:
         if char.isalpha():
             if not in_word:
-                # Start of a new word
                 if not is_first_word and char.isupper():
                     found_proper_noun = True
                 is_first_word = False
                 in_word = True
         else:
-            # Non-alphabetic character - end of word
             in_word = False
 
     return found_proper_noun

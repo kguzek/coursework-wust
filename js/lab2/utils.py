@@ -50,6 +50,9 @@ def base_parser(
             except KeyboardInterrupt:
                 break
 
+            if current_char == "\r":
+                continue
+
             current_line += current_char
             current_sentence += current_char
 
@@ -71,9 +74,6 @@ def base_parser(
                         sentence_counter=sentence_counter,
                     )
                 break
-
-            if current_char == "\r":
-                continue
 
             if skip_footer and current_line == "-----":
                 break
@@ -125,3 +125,25 @@ def base_parser(
                 current_sentence = ""
 
     return inner
+
+
+def has_no_adjacent_same_letter_words(sentence: str) -> bool:
+    if not sentence:
+        return False
+
+    in_word = False
+    prev_first_char = ""
+    current_word_first_char = ""
+
+    for char in sentence:
+        if char.isalpha():
+            if not in_word:
+                current_word_first_char = char.lower()
+                if prev_first_char and current_word_first_char == prev_first_char:
+                    return False
+                prev_first_char = current_word_first_char
+                in_word = True
+        else:
+            in_word = False
+
+    return True

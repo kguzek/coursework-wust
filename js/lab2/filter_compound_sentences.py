@@ -4,6 +4,10 @@ from utils import base_parser
 def main(min_connector_count: int):
     @base_parser(wait_for_sentence=True)
     def filter_compound_sentences(current_sentence: str, **_):
+        if not current_sentence:
+            print(current_sentence)
+            return True
+
         i_count = current_sentence.count(" i ")
         oraz_count = current_sentence.count(" oraz ")
         ale_count = current_sentence.count(" ale ")
