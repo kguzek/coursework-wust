@@ -29,18 +29,18 @@ def read_log():
     return log_entries
 
 
-def sort_log(log, index):
-    if not 0 <= index < len(log[0]):
+def sort_log(entries, index):
+    if not 0 <= index < len(entries[0]):
         raise IndexError(f"Invalid index: {index}")
-    return sorted(log, key=lambda x: x[index])
+    return sorted(entries, key=lambda x: x[index])
 
 
-def get_entries_by_code(log, code):
+def get_entries_by_code(entries, code):
     if not isinstance(code, int):
         raise TypeError("Code must be an integer")
-    if not (100 <= code < 600):
+    if not 100 <= code < 600:
         raise ValueError("Invalid HTTP status code")
-    return [entry for entry in log if entry[9] == code]
+    return [entry for entry in entries if entry[9] == code]
 
 
 def is_valid_ip(addr):
@@ -51,62 +51,61 @@ def is_valid_ip(addr):
     return all(0 <= int(part) <= 255 for part in parts)
 
 
-def get_entries_by_addr(log, addr):
+def get_entries_by_addr(entries, addr):
     if is_valid_ip(addr):
-        return [entry for entry in log if entry[2] == addr]
-    else:
-        return [entry for entry in log if entry[7] == addr]
+        return [entry for entry in entries if entry[2] == addr]
+    return [entry for entry in entries if entry[7] == addr]
 
 
-def get_failed_reads(log, merge=False):
-    errors_4xx = [entry for entry in log if 400 <= entry[9] < 500]
-    errors_5xx = [entry for entry in log if 500 <= entry[9] < 600]
+def get_failed_reads(entries, merge=False):
+    errors_4xx = [entry for entry in entries if 400 <= entry[9] < 500]
+    errors_5xx = [entry for entry in entries if 500 <= entry[9] < 600]
     if merge:
         return errors_4xx + errors_5xx
     return errors_4xx, errors_5xx
 
 
-def get_entries_by_extension(log, ext):
+def get_entries_by_extension(entries, ext):
     if not ext.startswith("."):
         ext = "." + ext
-    return [entry for entry in log if entry[8].split("?")[0].endswith(ext)]
+    return [entry for entry in entries if entry[8].split("?")[0].endswith(ext)]
 
 
-def get_top_ips(log, n=10):
-    ips = [entry[2] for entry in log]
+def get_top_ips(entries, n=10):
+    ips = [entry[2] for entry in entries]
     counter = Counter(ips)
     return counter.most_common(n)
 
 
-def get_unique_methods(log):
-    methods = set(entry[6] for entry in log)
+def get_unique_methods(entries):
+    methods = set(entry[6] for entry in entries)
     return sorted(list(methods))
 
 
-def get_entries_in_time_range(log, start, end):
+def get_entries_in_time_range(entries, start, end):
     if not isinstance(start, datetime.datetime) or not isinstance(
         end, datetime.datetime
     ):
         raise TypeError("Start and end must be datetime objects")
     if start > end:
         raise ValueError("Start must be before end")
-    return [entry for entry in log if start <= entry[0] < end]
+    return [entry for entry in entries if start <= entry[0] < end]
 
 
-def count_by_method(log):
-    methods = [entry[6] for entry in log]
+def count_by_method(entries):
+    methods = [entry[6] for entry in entries]
     return dict(Counter(methods))
 
 
-def get_top_uris(log, n=10):
-    uris = [entry[8] for entry in log]
+def get_top_uris(entries, n=10):
+    uris = [entry[8] for entry in entries]
     counter = Counter(uris)
     return counter.most_common(n)
 
 
-def count_status_classes(log):
+def count_status_classes(entries):
     result = {"2xx": 0, "3xx": 0, "4xx": 0, "5xx": 0}
-    for entry in log:
+    for entry in entries:
         code = entry[9]
         if 200 <= code < 300:
             result["2xx"] += 1
@@ -134,9 +133,9 @@ def entry_to_dict(entry):
     }
 
 
-def log_to_dict(log):
+def log_to_dict(entries):
     result = {}
-    for entry in log:
+    for entry in entries:
         uid = entry[1]
         entry_dict = entry_to_dict(entry)
         if uid not in result:
@@ -178,9 +177,9 @@ def get_most_active_session(log_dict):
     return max_uid, max_count
 
 
-def get_session_paths(log):
+def get_session_paths(entries):
     result = {}
-    for entry in log:
+    for entry in entries:
         uid = entry[1]
         uri = entry[8]
         if uid not in result:
@@ -189,8 +188,8 @@ def get_session_paths(log):
     return result
 
 
-def detect_sus(log, threshold):
-    ip_counts = Counter(entry[2] for entry in log)
+def detect_sus(entries, threshold):
+    ip_counts = Counter(entry[2] for entry in entries)
     sus_ips = []
     for ip, count in ip_counts.items():
         if count >= threshold:
@@ -198,9 +197,9 @@ def detect_sus(log, threshold):
     return sorted(sus_ips, key=lambda x: x[1], reverse=True)
 
 
-def get_extension_stats(log):
+def get_extension_stats(entries):
     extensions = []
-    for entry in log:
+    for entry in entries:
         uri = entry[8].split("?")[0]
         if "." in uri:
             ext = uri.rsplit(".", 1)[1]
@@ -210,17 +209,17 @@ def get_extension_stats(log):
     return dict(Counter(extensions))
 
 
-def analyze_log(log):
-    top_ips = get_top_ips(log, 5)
-    top_uris = get_top_uris(log, 5)
-    method_dist = count_by_method(log)
-    status_classes = count_status_classes(log)
-    errors_4xx = sum(1 for entry in log if 400 <= entry[9] < 500)
-    errors_5xx = sum(1 for entry in log if 500 <= entry[9] < 600)
-    total = len(log)
-    unique_ips = len(set(entry[2] for entry in log))
-    unique_uris = len(set(entry[8] for entry in log))
-    unique_methods = len(set(entry[6] for entry in log))
+def analyze_log(entries):
+    top_ips = get_top_ips(entries, 5)
+    top_uris = get_top_uris(entries, 5)
+    method_dist = count_by_method(entries)
+    status_classes = count_status_classes(entries)
+    errors_4xx = sum(1 for entry in entries if 400 <= entry[9] < 500)
+    errors_5xx = sum(1 for entry in entries if 500 <= entry[9] < 600)
+    total = len(entries)
+    unique_ips = len(set(entry[2] for entry in entries))
+    unique_uris = len(set(entry[8] for entry in entries))
+    unique_methods = len(set(entry[6] for entry in entries))
     return {
         "top_ips": top_ips,
         "top_uris": top_uris,
