@@ -234,6 +234,30 @@ def analyze_log(entries):
     }
 
 
+def get_most_active_host(log):
+    from collections import defaultdict
+
+    ip_entries = defaultdict(list)
+    for entry in log:
+        ip_entries[entry[2]].append(entry[0])
+
+    max_sum = 0
+    result = None
+    for ip, timestamps in ip_entries.items():
+        if len(timestamps) < 2:
+            continue
+        sorted_ts = sorted(timestamps)
+        interval_sum = sum(
+            (sorted_ts[i] - sorted_ts[i - 1]).total_seconds()
+            for i in range(1, len(sorted_ts))
+        )
+        if interval_sum > max_sum:
+            max_sum = interval_sum
+            result = ip
+
+    return result
+
+
 if __name__ == "__main__":
     log = read_log()
-    print(len(log))
+    print(get_most_active_host(log))
