@@ -1,7 +1,7 @@
 import datetime
 import re
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 
 
 def read_log():
@@ -234,11 +234,9 @@ def analyze_log(entries):
     }
 
 
-def get_most_active_host(log):
-    from collections import defaultdict
-
+def get_most_active_host(entries):
     ip_entries = defaultdict(list)
-    for entry in log:
+    for entry in entries:
         ip_entries[entry[2]].append(entry[0])
 
     max_sum = 0
@@ -259,5 +257,4 @@ def get_most_active_host(log):
 
 
 if __name__ == "__main__":
-    log = read_log()
-    print(get_most_active_host(log))
+    print(get_most_active_host(read_log()))
