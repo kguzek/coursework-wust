@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo "Jaki jest twój ulubiony system operacyjny?"
+read os
+
+if [ $os == "Windows" ]; then
+  echo "I na tym chcesz programować??"
+elif [ $os == "Mac" ]; then
+  echo "No tak, po co się w ogóle pytałem."
+elif [ $os == "Linux" ]; then
+  echo "Świetny wybór!"
+else
+  echo "Czy $os jest systemem operacyjnym?"
+fi
