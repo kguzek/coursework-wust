@@ -1,0 +1,1 @@
+Utwórz skrypt o nazwie myos, który pyta użytkownika: „Jaki jest twój ulubiony system operacyjny?”. Wyświetlaj ironiczne zdanie, jeśli użytkownik wpisze „Windows” lub „Mac”. Odpowiadaj „Świetny wybór!”, jeśli użytkownik wpisze „Linux”. W przypadku innych pytań wyświetl: „Czy <wpisane słowo> jest systemem operacyjnym?”.
