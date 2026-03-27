@@ -27,3 +27,4 @@ Technology.
 ### Semester 4
 
 - [Scripting Languages](js)
+- [Linux Server Management](linux)
