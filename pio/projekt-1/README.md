@@ -1,5 +1,7 @@
 # Projekt 1
 
+![projekt 1 diagram](./projekt-1.png)
+
 ```puml
 @startuml
 class Uczelnia {
