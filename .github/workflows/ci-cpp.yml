@@ -1,15 +1,25 @@
-name: (CI) [TEP]
+name: CI (C++)
 
 permissions:
   contents: read
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - "**/*.cpp"
+      - "**/*.h"
   pull_request:
+    branches:
+      - main
+    paths:
+      - "**/*.cpp"
+      - "**/*.h"
   workflow_dispatch:
 
 jobs:
-  build-and-run:
+  build-and-run-tep:
     runs-on: ubuntu-latest
 
     steps:
