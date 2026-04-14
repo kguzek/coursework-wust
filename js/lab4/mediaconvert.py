@@ -2,7 +2,8 @@ import os
 import sys
 from datetime import datetime
 from typing import Optional, Tuple
-import utils
+
+import media_utils as utils
 
 
 def get_output_filename(original_path: str, output_format: str) -> str:
