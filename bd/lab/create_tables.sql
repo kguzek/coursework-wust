@@ -1,0 +1,71 @@
+-- Tworzenie bazy danych
+CREATE DATABASE IF NOT EXISTS szkola CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE szkola;
+
+-- 1. Miasta
+CREATE TABLE Miasta (
+    IdM INT AUTO_INCREMENT PRIMARY KEY,
+    NazwaM VARCHAR(255) NOT NULL
+);
+
+-- 2. Nauczyciele
+CREATE TABLE Nauczyciele (
+    IdN INT AUTO_INCREMENT PRIMARY KEY,
+    Nazwisko VARCHAR(255) NOT NULL,
+    Imie VARCHAR(255) NOT NULL,
+    DZatr DATETIME,
+    DUr DATETIME,
+    Plec VARCHAR(1) CHECK (Plec IN ('K', 'M')),
+    Pensja DECIMAL(10,2) CHECK (Pensja >= 0),
+    Premia DECIMAL(10,2),
+    Pensum DECIMAL(4,1) CHECK (Pensum >= 0),
+    Telefon VARCHAR(50)
+);
+
+-- 3. Klasy
+CREATE TABLE Klasy (
+    Symbol VARCHAR(50) PRIMARY KEY,
+    Profil VARCHAR(255) NOT NULL,
+    Wych INT,
+    FOREIGN KEY (Wych) REFERENCES Nauczyciele(IdN) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- 4. Uczniowie
+CREATE TABLE Uczniowie (
+    IdU INT AUTO_INCREMENT PRIMARY KEY,
+    Nazwisko VARCHAR(255) NOT NULL,
+    Imie VARCHAR(255) NOT NULL,
+    DUr DATETIME,
+    Plec VARCHAR(1) CHECK (Plec IN ('K', 'M')),
+    Klasa VARCHAR(50),
+    Miasto INT,
+    FOREIGN KEY (Klasa) REFERENCES Klasy(Symbol) ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (Miasto) REFERENCES Miasta(IdM) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- 5. Przedmioty
+CREATE TABLE Przedmioty (
+    IdP INT AUTO_INCREMENT PRIMARY KEY,
+    NazwaP VARCHAR(255) NOT NULL
+);
+
+-- 6. Oceny
+CREATE TABLE Oceny (
+    IdU INT,
+    IdP INT,
+    Ocena DECIMAL(3,1) NOT NULL,
+    DataO DATETIME,
+    PRIMARY KEY (IdU, IdP, DataO),
+    FOREIGN KEY (IdU) REFERENCES Uczniowie(IdU) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (IdP) REFERENCES Przedmioty(IdP) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 7. Uczy
+CREATE TABLE Uczy (
+    IdN INT,
+    IdP INT,
+    IleGodz INT,
+    PRIMARY KEY (IdN, IdP),
+    FOREIGN KEY (IdN) REFERENCES Nauczyciele(IdN) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (IdP) REFERENCES Przedmioty(IdP) ON DELETE CASCADE ON UPDATE CASCADE
+);
