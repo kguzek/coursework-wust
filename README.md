@@ -21,10 +21,11 @@ Technology.
 
 - [Effective Programming Techniques](tep)
 - [Japanese A1](jp)
-- [Programming Paradigms](pp)
 - [Probability Theory and Statistics](rpis)
+- [Programming Paradigms](pp)
 
 ### Semester 4
 
-- [Scripting Languages](js)
+- [Databases](bd)
 - [Linux Server Management](linux)
+- [Scripting Languages](js)
