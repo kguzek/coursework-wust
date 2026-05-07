@@ -10,13 +10,13 @@ import sys
 from datetime import date, datetime
 from pathlib import Path
 
+from analysis import detect_anomalies, run_all_analyses
 from models import VALID_FREQUENCIES, VALID_INDICATORS, MeasurementRow
 from parsing import (
     group_measurement_files_by_key,
     parse_measurement_file,
     parse_stations,
 )
-from analysis import detect_anomalies, run_all_analyses
 
 logger = logging.getLogger("air_quality")
 
@@ -216,6 +216,60 @@ def cmd_stats(args: argparse.Namespace) -> None:
     print(f"Std dev: {stdev:.4f}")
 
 
+def cmd_best_station(args: argparse.Namespace) -> None:  # pylint: disable=too-many-locals
+    """Find station with the smallest mean value in the selected period."""
+    stations_path, measurements_dir = _resolve_paths(args)
+    stations = parse_stations(stations_path)
+    station_map = {s.code: s for s in stations}
+    file_indicator = normalize_indicator(args.indicator)
+    grouped = group_measurement_files_by_key(measurements_dir)
+
+    values_by_station: dict[str, list[float]] = {}
+    found_any = False
+
+    for key, fpath in grouped.items():
+        if key.indicator != file_indicator or key.frequency != args.frequency:
+            continue
+        found_any = True
+        mf = parse_measurement_file(fpath)
+        for row in mf.rows:
+            if not args.start <= row.timestamp.date() <= args.end:
+                continue
+            for code, val in row.values.items():
+                if val is not None:
+                    values_by_station.setdefault(code, []).append(val)
+
+    if not found_any:
+        logger.warning(
+            "No files found for indicator=%s, frequency=%s",
+            args.indicator,
+            args.frequency,
+        )
+        return
+
+    if not values_by_station:
+        logger.warning("No data in the given time range.")
+        return
+
+    best_code, best_values = min(
+        values_by_station.items(), key=lambda item: statistics.mean(item[1])
+    )
+    best_mean = statistics.mean(best_values)
+    station = station_map.get(best_code)
+
+    print(f"Best station (lowest mean): {best_code}")
+    if station:
+        print(f"Name: {station.name}")
+        print(
+            f"Address: {station.address or '(no address)'}, "
+            f"{station.city}, {station.voivodeship}"
+        )
+    print(f"Indicator: {args.indicator} ({args.frequency})")
+    print(f"Period: {args.start} — {args.end}")
+    print(f"Count: {len(best_values)}")
+    print(f"Mean: {best_mean:.4f}")
+
+
 def _collect_flat_measurements(
     args: argparse.Namespace,
     measurements_dir: Path,
@@ -366,6 +420,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub = parser.add_subparsers(dest="command", help="Available commands")
     sub.add_parser("random-station", help="Show random station for given parameters")
+    sub.add_parser(
+        "best-station",
+        help="Show station with the lowest mean value for given parameters",
+    )
 
     stats_p = sub.add_parser("stats", help="Compute mean and std dev for a station")
     stats_p.add_argument("station", type=str, help="Station code")
@@ -388,6 +446,7 @@ def main() -> None:
 
     commands = {
         "random-station": cmd_random_station,
+        "best-station": cmd_best_station,
         "stats": cmd_stats,
         "anomalies": cmd_anomalies,
         "regex-analysis": cmd_regex_analysis,
