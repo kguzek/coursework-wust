@@ -28,10 +28,14 @@ class _StdoutFilter(logging.Filter):  # pylint: disable=too-few-public-methods
         return record.levelno < logging.ERROR
 
 
-def setup_logging() -> None:
-    """Configure logging: DEBUG-WARNING to stdout, ERROR+ to stderr."""
+def setup_logging(level: str = "INFO") -> None:
+    """Configure logging with selected minimum level."""
     root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
+    numeric_level = getattr(logging, level.upper(), logging.INFO)
+    root.setLevel(numeric_level)
+
+    if root.handlers:
+        root.handlers.clear()
 
     fmt = logging.Formatter("[%(levelname)s] %(name)s: %(message)s")
 
@@ -323,6 +327,13 @@ def build_parser() -> argparse.ArgumentParser:
         description="Air quality measurement analysis tool",
     )
     parser.add_argument(
+        "--log-level",
+        type=str.upper,
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Logging level",
+    )
+    parser.add_argument(
         "--data-dir",
         type=str,
         default=".",
@@ -367,9 +378,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     """Entry point for the argparse CLI."""
-    setup_logging()
     parser = build_parser()
     args = parser.parse_args()
+    setup_logging(args.log_level)
 
     if not args.command:
         parser.print_help()

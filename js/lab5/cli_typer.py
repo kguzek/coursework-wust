@@ -1,5 +1,7 @@
 """Typer-based CLI for air quality measurement analysis."""
 
+# pylint: disable=too-many-arguments,too-many-positional-arguments,too-many-locals
+
 from __future__ import annotations
 
 import random
@@ -83,13 +85,18 @@ def _collect_matching_codes(
 @app.command()
 def random_station(
     data_dir: str = typer.Option(".", help="Base data directory"),
+    log_level: str = typer.Option(
+        "INFO",
+        "--log-level",
+        help="Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
+    ),
     indicator: str = typer.Option("PM10"),
     frequency: str = typer.Option("1g"),
     start: str = typer.Option("2023-01-01", help="Start date YYYY-MM-DD"),
     end: str = typer.Option("2023-12-31", help="End date YYYY-MM-DD"),
 ) -> None:
     """Show a random station that measured the given indicator in the time range."""
-    setup_logging()
+    setup_logging(log_level)
     _validate_indicator(indicator)
     _validate_frequency(frequency)
     start_d, end_d = _validate_date(start), _validate_date(end)
@@ -121,13 +128,18 @@ def random_station(
 def stats(  # pylint: disable=too-many-arguments,too-many-locals
     station: str = typer.Argument(..., help="Station code"),
     data_dir: str = typer.Option(".", help="Base data directory"),
+    log_level: str = typer.Option(
+        "INFO",
+        "--log-level",
+        help="Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
+    ),
     indicator: str = typer.Option("PM10"),
     frequency: str = typer.Option("1g"),
     start: str = typer.Option("2023-01-01", help="Start date YYYY-MM-DD"),
     end: str = typer.Option("2023-12-31", help="End date YYYY-MM-DD"),
 ) -> None:
     """Compute mean and std dev for a station."""
-    setup_logging()
+    setup_logging(log_level)
     _validate_indicator(indicator)
     _validate_frequency(frequency)
     start_d, end_d = _validate_date(start), _validate_date(end)
@@ -183,13 +195,18 @@ def _collect_flat(  # pylint: disable=too-many-arguments
 @app.command()
 def anomalies(
     data_dir: str = typer.Option(".", help="Base data directory"),
+    log_level: str = typer.Option(
+        "INFO",
+        "--log-level",
+        help="Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
+    ),
     indicator: str = typer.Option("PM10"),
     frequency: str = typer.Option("1g"),
     start: str = typer.Option("2023-01-01", help="Start date YYYY-MM-DD"),
     end: str = typer.Option("2023-12-31", help="End date YYYY-MM-DD"),
 ) -> None:
     """Detect anomalies in measurement data."""
-    setup_logging()
+    setup_logging(log_level)
     _validate_indicator(indicator)
     _validate_frequency(frequency)
     start_d, end_d = _validate_date(start), _validate_date(end)
@@ -221,9 +238,14 @@ def anomalies(
 @app.command()
 def regex_analysis(
     data_dir: str = typer.Option(".", help="Base data directory"),
+    log_level: str = typer.Option(
+        "INFO",
+        "--log-level",
+        help="Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
+    ),
 ) -> None:
     """Run all regex analyses on stacje.csv (task 4)."""
-    setup_logging()
+    setup_logging(log_level)
     stations_path, _ = _resolve(data_dir)
     results = run_all_analyses(stations_path)
 

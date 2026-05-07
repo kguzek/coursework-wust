@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Sequence
 
-from models import AnomalyRecord, POLISH_TO_LATIN, Station
+from models import POLISH_TO_LATIN, AnomalyRecord, Station
 from parsing import parse_stations
 
 
@@ -107,7 +107,7 @@ def _check_ratio(
     return None
 
 
-def _check_point(  # pylint: disable=too-many-arguments
+def _check_point(  # pylint: disable=too-many-arguments,too-many-positional-arguments
     ts: datetime,
     val: float | None,
     prev_val: float | None,
