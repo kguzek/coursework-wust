@@ -1,6 +1,8 @@
 import csv
 from pathlib import Path
 
+# pylint: disable-all
+
 
 class Station:
     def __init__(

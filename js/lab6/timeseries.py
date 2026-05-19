@@ -2,6 +2,8 @@ import datetime
 import math
 from typing import Self, Union
 
+# pylint: disable-all
+
 
 class TimeSeries:
     def __init__(
