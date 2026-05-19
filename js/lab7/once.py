@@ -4,7 +4,7 @@ def once(fun):
     def inner(*args, **kwargs):
         nonlocal called
         if called:
-            return
+            return None
         called = True
         return fun(*args, **kwargs)
 
