@@ -1,15 +1,17 @@
 import datetime
 from pathlib import Path
 
+from measurements import Measurements
 from station import Station, load_stations
 from timeseries import TimeSeries
 from validators import (
-    SeriesValidator,
     OutlierDetector,
-    ZeroSpikeDetector,
+    SeriesValidator,
     ThresholdDetector,
+    ZeroSpikeDetector,
 )
-from measurements import Measurements
+
+# pylint: disable-all
 
 
 # kacze typowanie - SimpleReporter nie dziedziczy po SeriesValidator
