@@ -1,0 +1,370 @@
+diff --git a/sem4/js/lab8/app.py b/sem4/js/lab8/app.py
+index c0de951..f7e2c73 100644
+--- a/sem4/js/lab8/app.py
++++ b/sem4/js/lab8/app.py
+@@ -3,14 +3,28 @@
+ import sys
+ from datetime import datetime, timedelta
+ 
++from PyQt6.QtCore import QDate, Qt, QTime
++from PyQt6.QtGui import QFont
+ from PyQt6.QtWidgets import (
+-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+-    QSplitter, QListWidget, QListWidgetItem, QPushButton, QLabel,
+-    QLineEdit, QDateEdit, QTimeEdit, QFormLayout, QGroupBox,
+-    QFileDialog, QSpinBox,
++    QApplication,
++    QCheckBox,
++    QDateEdit,
++    QFileDialog,
++    QFormLayout,
++    QGroupBox,
++    QHBoxLayout,
++    QLabel,
++    QLineEdit,
++    QListWidget,
++    QListWidgetItem,
++    QMainWindow,
++    QPushButton,
++    QSpinBox,
++    QSplitter,
++    QTimeEdit,
++    QVBoxLayout,
++    QWidget,
+ )
+-from PyQt6.QtCore import Qt, QDate, QTime
+-from PyQt6.QtGui import QFont
+ 
+ from log_model import LogModel
+ 
+@@ -20,26 +34,26 @@ class StatusBadge(QLabel):
+         super().__init__(parent)
+         self.setMinimumWidth(55)
+         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+-        self.setFont(QFont('monospace', 11, QFont.Weight.Bold))
+-        self._set_style('#9e9e9e')
++        self.setFont(QFont("monospace", 11, QFont.Weight.Bold))
++        self._set_style("#9e9e9e")
+ 
+     def set_code(self, code: int):
+         self.setText(str(code))
+         if 200 <= code < 300:
+-            self._set_style('#4caf50')
++            self._set_style("#4caf50")
+         elif 300 <= code < 400:
+-            self._set_style('#2196f3')
++            self._set_style("#2196f3")
+         elif 400 <= code < 500:
+-            self._set_style('#ff9800')
++            self._set_style("#ff9800")
+         elif 500 <= code < 600:
+-            self._set_style('#f44336')
++            self._set_style("#f44336")
+         else:
+-            self._set_style('#9e9e9e')
++            self._set_style("#9e9e9e")
+ 
+     def _set_style(self, bg: str):
+         self.setStyleSheet(
+-            f'background-color: {bg}; color: white; '
+-            f'border-radius: 4px; padding: 3px 10px;'
++            f"background-color: {bg}; color: white; "
++            f"border-radius: 4px; padding: 3px 10px;"
+         )
+ 
+ 
+@@ -48,7 +62,7 @@ class MainWindow(QMainWindow):
+         super().__init__()
+         self.model = LogModel()
+         self._updating = False
+-        self.setWindowTitle('Log browser')
++        self.setWindowTitle("Log browser")
+         self.setMinimumSize(1100, 650)
+         self._build_ui()
+         self._update_nav_buttons()
+@@ -62,9 +76,9 @@ class MainWindow(QMainWindow):
+ 
+         file_row = QHBoxLayout()
+         self.path_edit = QLineEdit()
+-        self.path_edit.setPlaceholderText('Ścieżka do pliku z logami...')
++        self.path_edit.setPlaceholderText("Ścieżka do pliku z logami...")
+         self.path_edit.setReadOnly(True)
+-        open_btn = QPushButton('Open')
++        open_btn = QPushButton("Open")
+         open_btn.setFixedWidth(80)
+         open_btn.clicked.connect(self._open_file)
+         file_row.addWidget(self.path_edit)
+@@ -78,80 +92,83 @@ class MainWindow(QMainWindow):
+         left_layout.setContentsMargins(0, 0, 4, 0)
+ 
+         filter_row = QHBoxLayout()
+-        filter_row.addWidget(QLabel('From'))
++        filter_row.addWidget(QLabel("From"))
+         self.from_date = QDateEdit()
+         self.from_date.setCalendarPopup(True)
+-        self.from_date.setDisplayFormat('yyyy-MM-dd')
++        self.from_date.setDisplayFormat("yyyy-MM-dd")
+         filter_row.addWidget(self.from_date)
+-        filter_row.addWidget(QLabel('To'))
++        filter_row.addWidget(QLabel("To"))
+         self.to_date = QDateEdit()
+         self.to_date.setCalendarPopup(True)
+-        self.to_date.setDisplayFormat('yyyy-MM-dd')
++        self.to_date.setDisplayFormat("yyyy-MM-dd")
+         filter_row.addWidget(self.to_date)
+-        filter_btn = QPushButton('Filtruj')
++        filter_btn = QPushButton("Filtruj")
+         filter_btn.clicked.connect(self._apply_filter)
+         filter_row.addWidget(filter_btn)
+-        clear_btn = QPushButton('Wyczyść')
++        clear_btn = QPushButton("Wyczyść")
+         clear_btn.clicked.connect(self._clear_filter)
+         filter_row.addWidget(clear_btn)
+         filter_row.addStretch()
++        self.success_only_cb = QCheckBox("Ukryj błędy")
++        self.success_only_cb.toggled.connect(self._on_success_only_toggled)
++        filter_row.addWidget(self.success_only_cb)
+         left_layout.addLayout(filter_row)
+ 
+         self.log_list = QListWidget()
+-        self.log_list.setFont(QFont('monospace', 9))
++        self.log_list.setFont(QFont("monospace", 9))
+         self.log_list.currentRowChanged.connect(self._on_list_selection)
+         left_layout.addWidget(self.log_list)
+ 
+         splitter.addWidget(left)
+ 
+-        right = QGroupBox('Szczegóły')
++        right = QGroupBox("Szczegóły")
+         detail = QFormLayout(right)
+         detail.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
+         detail.setVerticalSpacing(10)
+ 
+         self.detail_host = QLineEdit()
+         self.detail_host.setReadOnly(True)
+-        detail.addRow('Remote host:', self.detail_host)
++        detail.addRow("Remote host:", self.detail_host)
+ 
+         self.detail_date = QDateEdit()
+         self.detail_date.setReadOnly(True)
+-        self.detail_date.setDisplayFormat('yyyy-MM-dd')
+-        detail.addRow('Date:', self.detail_date)
++        self.detail_date.setDisplayFormat("yyyy-MM-dd")
++        detail.addRow("Date:", self.detail_date)
+ 
+         time_row = QHBoxLayout()
+         self.detail_time = QTimeEdit()
+         self.detail_time.setReadOnly(True)
+-        self.detail_time.setDisplayFormat('HH:mm:ss')
++        self.detail_time.setDisplayFormat("HH:mm:ss")
+         time_row.addWidget(self.detail_time)
+-        time_row.addWidget(QLabel('Timezone:'))
+-        self.detail_tz = QLineEdit('UTC')
++        time_row.addWidget(QLabel("Timezone:"))
++        self.detail_tz = QLineEdit("UTC")
+         self.detail_tz.setReadOnly(True)
+         self.detail_tz.setMaximumWidth(130)
+         time_row.addWidget(self.detail_tz)
+-        detail.addRow('Time:', time_row)
++        detail.addRow("Time:", time_row)
+ 
+         status_row = QHBoxLayout()
+         self.status_badge = StatusBadge()
+         status_row.addWidget(self.status_badge)
+         status_row.addSpacing(12)
+-        status_row.addWidget(QLabel('Method:'))
++        status_row.addWidget(QLabel("Method:"))
+         self.detail_method = QLineEdit()
+         self.detail_method.setReadOnly(True)
+         self.detail_method.setMaximumWidth(90)
+         status_row.addWidget(self.detail_method)
+         status_row.addStretch()
+-        detail.addRow('Status code:', status_row)
++        detail.addRow("Status code:", status_row)
+ 
+         self.detail_uri = QLineEdit()
+         self.detail_uri.setReadOnly(True)
+-        detail.addRow('Resource:', self.detail_uri)
++        detail.addRow("Resource:", self.detail_uri)
+ 
+         self.detail_size = QSpinBox()
+         self.detail_size.setReadOnly(True)
+         self.detail_size.setMaximum(2_147_483_647)
+-        self.detail_size.setSuffix(' Bytes')
++        self.detail_size.setSuffix(" Bytes")
+         self.detail_size.setButtonSymbols(QSpinBox.ButtonSymbols.NoButtons)
+-        detail.addRow('Size:', self.detail_size)
++        detail.addRow("Size:", self.detail_size)
+ 
+         splitter.addWidget(right)
+         splitter.setStretchFactor(0, 3)
+@@ -160,10 +177,10 @@ class MainWindow(QMainWindow):
+         root.addWidget(splitter, stretch=1)
+ 
+         nav_row = QHBoxLayout()
+-        self.prev_btn = QPushButton('Previous')
++        self.prev_btn = QPushButton("Previous")
+         self.prev_btn.setFixedWidth(100)
+         self.prev_btn.clicked.connect(self._go_prev)
+-        self.next_btn = QPushButton('Next')
++        self.next_btn = QPushButton("Next")
+         self.next_btn.setFixedWidth(100)
+         self.next_btn.clicked.connect(self._go_next)
+         nav_row.addWidget(self.prev_btn)
+@@ -173,14 +190,14 @@ class MainWindow(QMainWindow):
+ 
+     def _open_file(self):
+         path, _ = QFileDialog.getOpenFileName(
+-            self, 'Otwórz plik z logami', '',
+-            'Log files (*.log);;All files (*)'
++            self, "Otwórz plik z logami", "", "Log files (*.log);;All files (*)"
+         )
+         if not path:
+             return
+-        print(f'otwieranie pliku: {path}')
++        print(f"otwieranie pliku: {path}")
+         self.path_edit.setText(path)
+         self.model.load_file(path)
++        self.success_only_cb.setChecked(False)
+         self._update_date_filters()
+         self._populate_list()
+         self._show_current_detail()
+@@ -194,7 +211,7 @@ class MainWindow(QMainWindow):
+             self.log_list.setCurrentRow(self.model.current_index)
+         self._updating = False
+         self._update_nav_buttons()
+-        print(f'lista odswiezona, {self.log_list.count()} elementow')
++        print(f"lista odswiezona, {self.log_list.count()} elementow")
+ 
+     def _update_date_filters(self):
+         mn = self.model.min_date
+@@ -213,11 +230,17 @@ class MainWindow(QMainWindow):
+         self._show_current_detail()
+ 
+     def _clear_filter(self):
++        self.success_only_cb.setChecked(False)
+         self.model.clear_filter()
+         self._update_date_filters()
+         self._populate_list()
+         self._show_current_detail()
+ 
++    def _on_success_only_toggled(self, checked: bool):
++        self.model.set_success_only(checked)
++        self._populate_list()
++        self._show_current_detail()
++
+     def _on_list_selection(self, row: int):
+         if self._updating or row < 0:
+             return
+@@ -265,5 +288,5 @@ def main():
+     sys.exit(app.exec())
+ 
+ 
+-if __name__ == '__main__':
++if __name__ == "__main__":
+     main()
+diff --git a/sem4/js/lab8/log_model.py b/sem4/js/lab8/log_model.py
+index 59a8dde..df0e366 100644
+--- a/sem4/js/lab8/log_model.py
++++ b/sem4/js/lab8/log_model.py
+@@ -1,13 +1,13 @@
+ #!/usr/bin/env python3
+ 
+-import sys
+ import os
++import sys
+ from dataclasses import dataclass
+-from datetime import datetime, timedelta
++from datetime import datetime
+ from typing import List, Optional
+ 
+-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lab3'))
+-from log_analyzer import read_log, LogIndex
++sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "lab3"))
++from log_analyzer import LogIndex, read_log
+ 
+ 
+ @dataclass
+@@ -30,7 +30,7 @@ class LogEntry:
+     status_msg: str
+ 
+     @classmethod
+-    def from_tuple(cls, t) -> 'LogEntry':
++    def from_tuple(cls, t) -> "LogEntry":
+         return cls(
+             timestamp=t[LogIndex.TS],
+             uid=t[LogIndex.UID],
+@@ -52,12 +52,12 @@ class LogEntry:
+ 
+     def master_text(self, max_len: int = 80) -> str:
+         text = (
+-            f'{self.orig_ip} - - '
+-            f'[{self.timestamp.strftime("%d/%b/%Y:%H:%M:%S")}] '
++            f"{self.orig_ip} - - "
++            f"[{self.timestamp.strftime('%d/%b/%Y:%H:%M:%S')}] "
+             f'"{self.method} {self.uri}"'
+         )
+         if len(text) > max_len:
+-            return text[:max_len] + '...'
++            return text[:max_len] + "..."
+         return text
+ 
+ 
+@@ -66,26 +66,46 @@ class LogModel:
+         self._all_entries: List[LogEntry] = []
+         self._filtered_entries: List[LogEntry] = []
+         self._current_index: int = -1
++        self._time_start: Optional[datetime] = None
++        self._time_end: Optional[datetime] = None
++        self._success_only: bool = False
+ 
+     def load_file(self, path: str) -> int:
+-        with open(path, 'r') as f:
++        with open(path, "r") as f:
+             raw = read_log(f)
+         self._all_entries = [LogEntry.from_tuple(t) for t in raw]
+-        self._filtered_entries = list(self._all_entries)
+-        self._current_index = 0 if self._filtered_entries else -1
+-        print(f'wczytano {len(self._all_entries)} wpisow z pliku')
++        self._time_start = None
++        self._time_end = None
++        self._success_only = False
++        self._refilter()
++        print(f"wczytano {len(self._all_entries)} wpisow z pliku")
+         return len(self._all_entries)
+ 
+     def apply_time_filter(self, start: datetime, end: datetime) -> None:
+-        self._filtered_entries = [
+-            e for e in self._all_entries
+-            if start <= e.timestamp < end
+-        ]
+-        self._current_index = 0 if self._filtered_entries else -1
+-        print(f'po filtrowaniu zostalo {len(self._filtered_entries)} wpisow')
++        self._time_start = start
++        self._time_end = end
++        self._refilter()
++        print(f"po filtrowaniu zostalo {len(self._filtered_entries)} wpisow")
+ 
+     def clear_filter(self) -> None:
+-        self._filtered_entries = list(self._all_entries)
++        self._time_start = None
++        self._time_end = None
++        self._success_only = False
++        self._refilter()
++
++    def set_success_only(self, enabled: bool) -> None:
++        self._success_only = enabled
++        self._refilter()
++
++    def _refilter(self) -> None:
++        entries = self._all_entries
++        if self._time_start is not None and self._time_end is not None:
++            entries = [
++                e for e in entries if self._time_start <= e.timestamp < self._time_end
++            ]
++        if self._success_only:
++            entries = [e for e in entries if 200 <= e.status_code < 300]
++        self._filtered_entries = entries
+         self._current_index = 0 if self._filtered_entries else -1
+ 
+     @property
