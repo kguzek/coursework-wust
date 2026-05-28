@@ -1,0 +1,3 @@
+[submodule "bd/rezerwownik"]
+	path = bd/rezerwownik
+	url = git@github.com:qamarq/rezerwownik.git
