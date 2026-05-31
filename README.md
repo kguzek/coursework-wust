@@ -1,7 +1,7 @@
 # Coursework WUST
 
-This is a repository containing coursework for all my courses during my studies at the Wrocław University of Science and
-Technology.
+This is a repository containing coursework for all my courses during my studies at
+the [Wrocław University of Science and Technology](https://github.com/wroclaw-tech).
 
 ## Courses
 
@@ -29,3 +29,4 @@ Technology.
 - [Databases](bd)
 - [Linux Server Management](linux)
 - [Scripting Languages](js)
+- [Systems Analysis and Decision Support Methods](msid)

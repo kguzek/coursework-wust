@@ -1,3 +1,6 @@
 [submodule "bd/rezerwownik"]
 	path = bd/rezerwownik
 	url = git@github.com:qamarq/rezerwownik.git
+[submodule "msid/msid-projekt-lab"]
+	path = msid/msid-projekt-lab
+	url = git@github.com:michalges/msid-projekt-lab.git
