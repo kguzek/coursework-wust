@@ -1,0 +1,222 @@
+@startuml
+title System E-Wybory — diagram klas analitycznych
+
+' Diagram pomija klasy <<boundary>> reprezentujące API.
+' Klasy sterujące odpowiadają przypadkom użycia UC1-UC8.
+
+left to right direction
+skinparam dpi 160
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam linetype ortho
+skinparam BackgroundColor #F8FAFC
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.2
+skinparam DefaultFontName "Inter"
+skinparam DefaultFontSize 13
+skinparam PackageFontStyle bold
+skinparam PackageFontColor #0F172A
+skinparam PackageBorderColor #CBD5E1
+skinparam PackageBackgroundColor #FFFFFF
+skinparam ClassAttributeIconSize 0
+skinparam ClassBorderThickness 1.2
+skinparam ClassFontStyle bold
+skinparam ClassStereotypeFontStyle plain
+skinparam ClassStereotypeFontSize 11
+
+skinparam class {
+  BackgroundColor<<control>> #E0F2FE
+  BorderColor<<control>> #0284C7
+  FontColor<<control>> #0C4A6E
+  BackgroundColor<<entity>> #ECFDF5
+  BorderColor<<entity>> #059669
+  FontColor<<entity>> #064E3B
+}
+
+legend top right
+  |= Kolor |= Stereotyp |
+  |<#E0F2FE> niebieski | <<control>> sterowanie przypadkami użycia |
+  |<#ECFDF5> zielony | <<entity>> trwałe pojęcia dziedzinowe |
+endlegend
+
+package "Sterowanie procesem wyborczym" as Control {
+  class KontrolerUwierzytelniania <<control>> {
+    +wybierzMetodęLogowania(metoda)
+    +uwierzytelnijWyborcę(daneLogowania)
+    +utwórzBezpiecznąSesję()
+  }
+
+  class KontrolerGłosowania <<control>> {
+    +pobierzKartęDoGłosowania()
+    +przyjmijWybór(kandydat)
+    +zaszyfrujIGłosuj()
+  }
+
+  class KontrolerPotwierdzeń <<control>> {
+    +wygenerujTokenPotwierdzenia()
+    +udostępnijPotwierdzenie()
+  }
+
+  class KontrolerWeryfikacjiUprawnień <<control>> {
+    +sprawdźPrawoDoGłosowania()
+    +sprawdźCzyNieGłosował()
+  }
+
+  class KontrolerListyWyborców <<control>> {
+    +zaimportujRejestrPESEL()
+    +aktualizujSpisWyborców()
+    +zatwierdźListę()
+  }
+
+  class KontrolerWyników <<control>> {
+    +sprawdźZamknięcieUrny()
+    +obliczWynikiCząstkowe()
+    +udostępnijWynikiUprawnionym()
+  }
+
+  class KontrolerAudytu <<control>> {
+    +pobierzLogiOperacyjne()
+    +wykryjAnomalie()
+    +utwórzRaportAudytu()
+  }
+
+  class KontrolerPublikacjiWyników <<control>> {
+    +zweryfikujIntegralność()
+    +zatwierdźWynikiOficjalne()
+    +opublikujWyniki()
+  }
+}
+
+package "Model dziedziny e-wyborów" as Entity {
+  class Wyborca <<entity>> {
+    +identyfikator: UUID
+    +imię: String
+    +nazwisko: String
+    +statusTożsamości: String
+  }
+
+  class SesjaWyborcy <<entity>> {
+    +tokenSesji: String
+    +dataUtworzenia: DateTime
+    +dataWygaśnięcia: DateTime
+    +aktywna: Boolean
+  }
+
+  class UprawnienieWyborcze <<entity>> {
+    +okręg: String
+    +maPrawoGłosować: Boolean
+    +głosJużOddany: Boolean
+  }
+
+  class ListaWyborców <<entity>> {
+    +wersja: String
+    +dataAktualizacji: DateTime
+    +statusZatwierdzenia: String
+  }
+
+  class KartaDoGłosowania <<entity>> {
+    +identyfikator: UUID
+    +nazwaWyborów: String
+    +okręg: String
+  }
+
+  class Kandydat <<entity>> {
+    +identyfikator: UUID
+    +imięNazwisko: String
+    +komitet: String
+    +numerNaLiście: Integer
+  }
+
+  class GłosZaszyfrowany <<entity>> {
+    +identyfikator: UUID
+    +skrótKryptograficzny: String
+    +znacznikCzasu: DateTime
+    +treśćZaszyfrowana: Binary
+  }
+
+  class UrnaWyborcza <<entity>> {
+    +identyfikator: UUID
+    +status: String
+    +dataOtwarcia: DateTime
+    +dataZamknięcia: DateTime
+  }
+
+  class PotwierdzenieGłosu <<entity>> {
+    +tokenPotwierdzenia: String
+    +skrótGłosu: String
+    +dataWystawienia: DateTime
+  }
+
+  class WynikCząstkowy <<entity>> {
+    +liczbaGłosów: Integer
+    +okręg: String
+    +dataWygenerowania: DateTime
+  }
+
+  class WynikOficjalny <<entity>> {
+    +dataPublikacji: DateTime
+    +podpisKomisji: String
+    +statusPrawny: String
+  }
+
+  class LogSystemowy <<entity>> {
+    +identyfikator: UUID
+    +typZdarzenia: String
+    +opis: String
+    +dataZdarzenia: DateTime
+  }
+
+  class RaportAudytu <<entity>> {
+    +identyfikator: UUID
+    +wnioski: String
+    +dataUtworzenia: DateTime
+    +status: String
+  }
+}
+
+' --- Powiązania sterowania z encjami ---
+KontrolerUwierzytelniania ..> Wyborca : weryfikuje tożsamość
+KontrolerUwierzytelniania ..> SesjaWyborcy : tworzy
+
+KontrolerWeryfikacjiUprawnień ..> Wyborca : sprawdza
+KontrolerWeryfikacjiUprawnień ..> ListaWyborców : odczytuje
+KontrolerWeryfikacjiUprawnień ..> UprawnienieWyborcze : ustala
+
+KontrolerGłosowania ..> KontrolerWeryfikacjiUprawnień : <<include>>
+KontrolerGłosowania ..> KartaDoGłosowania : prezentuje
+KontrolerGłosowania ..> GłosZaszyfrowany : zapisuje anonimowo
+KontrolerGłosowania ..> UrnaWyborcza : umieszcza głos
+
+KontrolerPotwierdzeń ..> GłosZaszyfrowany : wykorzystuje skrót
+KontrolerPotwierdzeń ..> PotwierdzenieGłosu : generuje
+
+KontrolerListyWyborców ..> ListaWyborców : aktualizuje
+KontrolerListyWyborców ..> UprawnienieWyborcze : nadaje/odbiera
+
+KontrolerWyników ..> UrnaWyborcza : odczytuje po zamknięciu
+KontrolerWyników ..> WynikCząstkowy : oblicza
+
+KontrolerAudytu ..> LogSystemowy : analizuje
+KontrolerAudytu ..> RaportAudytu : tworzy
+
+KontrolerPublikacjiWyników ..> RaportAudytu : wymaga zakończenia
+KontrolerPublikacjiWyników ..> WynikCząstkowy : zatwierdza
+KontrolerPublikacjiWyników ..> WynikOficjalny : publikuje
+
+' --- Relacje dziedzinowe ---
+Wyborca "1" o-- "0..1" SesjaWyborcy : korzysta z
+Wyborca "1" -- "1" UprawnienieWyborcze : posiada
+ListaWyborców "1" o-- "0..*" UprawnienieWyborcze : zawiera
+KartaDoGłosowania "1" o-- "1..*" Kandydat : zawiera
+UrnaWyborcza "1" *-- "0..*" GłosZaszyfrowany : przechowuje
+GłosZaszyfrowany "1" -- "1" PotwierdzenieGłosu : potwierdzony przez
+Kandydat "1" -- "0..*" WynikCząstkowy : agreguje głosy dla
+WynikCząstkowy "1..*" -- "1" WynikOficjalny : składa się na
+LogSystemowy "0..*" -- "1" RaportAudytu : dokumentuje
+
+note bottom of GłosZaszyfrowany
+  Brak relacji do Wyborcy zachowuje
+  anonimowość i tajność głosowania.
+end note
+
+@enduml
