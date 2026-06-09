@@ -1,0 +1,132 @@
+@startuml
+title System E-Wybory - diagram klas dla UC2: Oddanie głosu
+
+' Diagram oparty wyłącznie na UC2 - Oddanie głosu.
+' Bez klas <<boundary>> reprezentujących API.
+
+left to right direction
+skinparam dpi 160
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam linetype ortho
+skinparam BackgroundColor #F8FAFC
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.2
+skinparam DefaultFontName "Inter"
+skinparam DefaultFontSize 13
+skinparam PackageFontStyle bold
+skinparam PackageFontColor #0F172A
+skinparam PackageBorderColor #CBD5E1
+skinparam PackageBackgroundColor #FFFFFF
+skinparam ClassAttributeIconSize 0
+skinparam ClassBorderThickness 1.2
+skinparam ClassFontStyle bold
+skinparam ClassStereotypeFontStyle plain
+skinparam ClassStereotypeFontSize 11
+
+skinparam class {
+  BackgroundColor<<controller>> #E0F2FE
+  BorderColor<<controller>> #0284C7
+  FontColor<<controller>> #0C4A6E
+  BackgroundColor<<entity>> #ECFDF5
+  BorderColor<<entity>> #059669
+  FontColor<<entity>> #064E3B
+}
+
+legend top right
+  |= Kolor |= Stereotyp |
+  |<#E0F2FE> niebieski | <<controller>> logika przypadku użycia |
+  |<#ECFDF5> zielony | <<entity>> trwałe pojęcia dziedzinowe |
+endlegend
+
+package "Klasa sterująca" as Controllers {
+  class KontrolerGłosowania <<controller>> {
+    +sprawdźAktywnąSesję(sesja: SesjaWyborcy)
+    +sprawdźUprawnienia(wyborca: Wyborca)
+    +pobierzKartęDoGłosowania(wyborca: Wyborca)
+    +przyjmijWybór(kandydat: Kandydat)
+    +zatwierdźWybór()
+    +zaszyfrujGłos()
+    +zapiszGłosAnonimowo()
+    +zablokujPonowneGłosowanie()
+  }
+}
+
+package "Klasy encyjne" as Entities {
+  class Wyborca <<entity>> {
+    +identyfikator: UUID
+    +numerPESEL: String
+  }
+
+  class SesjaWyborcy <<entity>> {
+    +tokenSesji: String
+    +dataWygaśnięcia: DateTime
+    +aktywna: Boolean
+  }
+
+  class UprawnienieWyborcze <<entity>> {
+    +okręg: String
+    +maPrawoGłosować: Boolean
+    +głosJużOddany: Boolean
+  }
+
+  class KartaDoGłosowania <<entity>> {
+    +identyfikator: UUID
+    +nazwaWyborów: String
+    +okręg: String
+  }
+
+  class Kandydat <<entity>> {
+    +identyfikator: UUID
+    +imięNazwisko: String
+    +komitet: String
+    +numerNaLiście: Integer
+  }
+
+  class WybórWyborcy <<entity>> {
+    +identyfikator: UUID
+    +dataZatwierdzenia: DateTime
+  }
+
+  class GłosZaszyfrowany <<entity>> {
+    +identyfikator: UUID
+    +treśćZaszyfrowana: Binary
+    +skrótKryptograficzny: String
+    +znacznikCzasu: DateTime
+  }
+
+  class UrnaWyborcza <<entity>> {
+    +identyfikator: UUID
+    +status: StatusUrny
+    +dataOtwarcia: DateTime
+    +dataZamknięcia: DateTime
+  }
+}
+
+KontrolerGłosowania ..> SesjaWyborcy : wymaga aktywnej sesji
+KontrolerGłosowania ..> Wyborca : identyfikuje zalogowanego
+KontrolerGłosowania ..> UprawnienieWyborcze : sprawdza i aktualizuje
+KontrolerGłosowania ..> KartaDoGłosowania : prezentuje
+KontrolerGłosowania ..> Kandydat : przyjmuje wskazanie
+KontrolerGłosowania ..> WybórWyborcy : tworzy przed szyfrowaniem
+KontrolerGłosowania ..> GłosZaszyfrowany : tworzy zaszyfrowany głos
+KontrolerGłosowania ..> UrnaWyborcza : zapisuje anonimowo
+
+Wyborca "1" o-- "1" SesjaWyborcy : ma aktywną
+Wyborca "1" -- "1" UprawnienieWyborcze : ma
+KartaDoGłosowania "1" o-- "1..*" Kandydat : zawiera
+WybórWyborcy "1" -- "1" Kandydat : wskazuje
+WybórWyborcy "1" ..> GłosZaszyfrowany : jest szyfrowany do
+UrnaWyborcza "1" *-- "0..*" GłosZaszyfrowany : przechowuje
+
+note bottom of GłosZaszyfrowany
+  Głos zaszyfrowany nie jest powiązany z Wyborcą,
+  ponieważ UC2 wymaga anonimowego zapisu w bazie.
+end note
+
+note bottom of KontrolerGłosowania
+  Alternatywy UC2: jeśli wyborca już głosował,
+  system odmawia; przy utracie sesji wymaga ponownego logowania.
+end note
+
+@enduml

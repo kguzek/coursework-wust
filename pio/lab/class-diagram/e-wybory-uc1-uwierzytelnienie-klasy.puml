@@ -1,0 +1,103 @@
+@startuml
+title System E-Wybory - diagram klas dla UC1: Uwierzytelnienie wyborcy
+
+' Diagram oparty wyłącznie na UC1 - Uwierzytelnienie wyborcy.
+' Bez klas <<boundary>> reprezentujących API.
+
+left to right direction
+skinparam dpi 160
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam linetype ortho
+skinparam BackgroundColor #F8FAFC
+skinparam ArrowColor #475569
+skinparam ArrowThickness 1.2
+skinparam DefaultFontName "Inter"
+skinparam DefaultFontSize 13
+skinparam PackageFontStyle bold
+skinparam PackageFontColor #0F172A
+skinparam PackageBorderColor #CBD5E1
+skinparam PackageBackgroundColor #FFFFFF
+skinparam ClassAttributeIconSize 0
+skinparam ClassBorderThickness 1.2
+skinparam ClassFontStyle bold
+skinparam ClassStereotypeFontStyle plain
+skinparam ClassStereotypeFontSize 11
+
+skinparam class {
+  BackgroundColor<<controller>> #E0F2FE
+  BorderColor<<controller>> #0284C7
+  FontColor<<controller>> #0C4A6E
+  BackgroundColor<<entity>> #ECFDF5
+  BorderColor<<entity>> #059669
+  FontColor<<entity>> #064E3B
+}
+
+legend top right
+  |= Kolor |= Stereotyp |
+  |<#E0F2FE> niebieski | <<controller>> logika przypadku użycia |
+  |<#ECFDF5> zielony | <<entity>> trwałe pojęcia dziedzinowe |
+endlegend
+
+package "Klasa sterująca" as Controllers {
+  class KontrolerUwierzytelniania <<controller>> {
+    +wybierzMetodęLogowania(metoda: MetodaLogowania)
+    +uwierzytelnijWyborcę(daneLogowania: DaneLogowania)
+    +zweryfikujTożsamość()
+    +zweryfikujUprawnienia()
+    +utwórzBezpiecznąSesję()
+    +odrzućLogowanie(powód: String)
+  }
+}
+
+package "Klasy encyjne" as Entities {
+  class Wyborca <<entity>> {
+    +identyfikator: UUID
+    +imię: String
+    +nazwisko: String
+    +numerPESEL: String
+    +statusTożsamości: StatusTożsamości
+  }
+
+  class DaneLogowania <<entity>> {
+    +metoda: MetodaLogowania
+    +tokenZewnętrzny: String
+    +dataUwierzytelnienia: DateTime
+  }
+
+  class KontoZaufane <<entity>> {
+    +identyfikatorZewnętrzny: String
+    +dostawca: MetodaLogowania
+    +aktywne: Boolean
+  }
+
+  class UprawnienieWyborcze <<entity>> {
+    +okręg: String
+    +maPrawoGłosować: Boolean
+    +głosJużOddany: Boolean
+  }
+
+  class SesjaWyborcy <<entity>> {
+    +tokenSesji: String
+    +dataUtworzenia: DateTime
+    +dataWygaśnięcia: DateTime
+    +aktywna: Boolean
+  }
+}
+
+KontrolerUwierzytelniania ..> DaneLogowania : przyjmuje
+KontrolerUwierzytelniania ..> KontoZaufane : sprawdza ePUAP/mObywatel
+KontrolerUwierzytelniania ..> Wyborca : weryfikuje tożsamość
+KontrolerUwierzytelniania ..> UprawnienieWyborcze : weryfikuje prawo głosu
+KontrolerUwierzytelniania ..> SesjaWyborcy : tworzy po sukcesie
+
+Wyborca "1" -- "1" KontoZaufane : posiada
+Wyborca "1" -- "1" UprawnienieWyborcze : ma
+Wyborca "1" o-- "0..1" SesjaWyborcy : korzysta z
+
+note bottom of KontrolerUwierzytelniania
+  Alternatywy UC1: brak aktywnego konta
+  lub niedostępność usługi powoduje odmowę logowania.
+end note
+
+@enduml
