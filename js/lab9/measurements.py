@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 from timeseries import TimeSeries
-from validators import Analyzer, detect_all_anomalies
+from typed_validators import Analyzer, detect_all_anomalies
 
 
 @dataclass(frozen=True)

@@ -1,49 +1,38 @@
 import datetime
 import math
+from dataclasses import dataclass
 from typing import Self, overload
 
 
 Measurement = tuple[datetime.datetime, float | None]
 
 
+@dataclass
 class TimeSeries:
-    def __init__(
-        self,
-        parameter_name: str,
-        station_code: str,
-        averaging_time: str,
-        dates: list[datetime.datetime],
-        values: list[float | None],
-        unit: str,
-    ) -> None:
-        if len(dates) != len(values):
+    parameter_name: str
+    station_code: str
+    averaging_time: str
+    dates: list[datetime.datetime]
+    values: list[float | None]
+    unit: str
+
+    def __post_init__(self) -> None:
+        if len(self.dates) != len(self.values):
             raise ValueError("Dates and values must have the same length")
 
-        self.parameter_name = parameter_name
-        self.station_code = station_code
-        self.averaging_time = averaging_time
-        self._dates = list(dates)
-        self._values = list(values)
-        self.unit = unit
-
-    @property
-    def dates(self) -> list[datetime.datetime]:
-        return self._dates
-
-    @property
-    def values(self) -> list[float | None]:
-        return self._values
+        self.dates = list(self.dates)
+        self.values = list(self.values)
 
     @property
     def mean(self) -> float | None:
-        valid: list[float] = [value for value in self._values if value is not None]
+        valid: list[float] = [value for value in self.values if value is not None]
         if not valid:
             return None
         return sum(valid) / len(valid)
 
     @property
     def stddev(self) -> float | None:
-        valid: list[float] = [value for value in self._values if value is not None]
+        valid: list[float] = [value for value in self.values if value is not None]
         count = len(valid)
         if count < 2:
             return None
@@ -67,20 +56,20 @@ class TimeSeries:
         key: int | slice | datetime.date | datetime.datetime,
     ) -> Measurement | list[Measurement] | float | None | list[float | None]:
         if isinstance(key, int):
-            return self._dates[key], self._values[key]
+            return self.dates[key], self.values[key]
 
         if isinstance(key, slice):
-            return list(zip(self._dates[key], self._values[key]))
+            return list(zip(self.dates[key], self.values[key]))
 
         if isinstance(key, datetime.datetime):
-            for date, value in zip(self._dates, self._values):
+            for date, value in zip(self.dates, self.values):
                 if date == key:
                     return value
             raise KeyError(key)
 
         if isinstance(key, datetime.date):
             matches: list[float | None] = [
-                value for date, value in zip(self._dates, self._values) if date.date() == key
+                value for date, value in zip(self.dates, self.values) if date.date() == key
             ]
             if not matches:
                 raise KeyError(key)
@@ -89,13 +78,13 @@ class TimeSeries:
         raise TypeError(f"Unsupported key type: {type(key)}")
 
     def __len__(self) -> int:
-        return len(self._dates)
+        return len(self.dates)
 
     def __repr__(self) -> str:
         return (
             f"TimeSeries(param={self.parameter_name!r}, "
             f"station={self.station_code!r}, "
-            f"n={len(self._dates)})"
+            f"n={len(self.dates)})"
         )
 
     def __add__(self, other: Self) -> Self:
@@ -110,7 +99,7 @@ class TimeSeries:
             raise ValueError("Cannot merge series with different averaging times")
 
         merged: list[Measurement] = sorted(
-            list(zip(self._dates, self._values)) + list(zip(other._dates, other._values)),
+            list(zip(self.dates, self.values)) + list(zip(other.dates, other.values)),
             key=lambda item: item[0],
         )
         merged_dates: list[datetime.datetime] = [date for date, _ in merged]

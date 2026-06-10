@@ -5,7 +5,7 @@ import pytest
 
 from station import Station
 from timeseries import TimeSeries
-from validators import (
+from typed_validators import (
     Analyzer,
     OutlierDetector,
     SimpleReporter,

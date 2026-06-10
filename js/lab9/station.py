@@ -1,42 +1,26 @@
 import csv
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Self
 
 
+@dataclass(eq=False)
 class Station:
-    def __init__(
-        self,
-        nr: int,
-        station_code: str,
-        international_code: str,
-        name: str,
-        old_code: str,
-        start_date: str,
-        end_date: str,
-        station_type: str,
-        area_type: str,
-        station_kind: str,
-        voivodeship: str,
-        city: str,
-        address: str,
-        lat: float | None,
-        lon: float | None,
-    ) -> None:
-        self.nr = nr
-        self.station_code = station_code
-        self.international_code = international_code
-        self.name = name
-        self.old_code = old_code
-        self.start_date = start_date
-        self.end_date = end_date
-        self.station_type = station_type
-        self.area_type = area_type
-        self.station_kind = station_kind
-        self.voivodeship = voivodeship
-        self.city = city
-        self.address = address
-        self.lat = lat
-        self.lon = lon
+    nr: int
+    station_code: str
+    international_code: str
+    name: str
+    old_code: str
+    start_date: str
+    end_date: str
+    station_type: str
+    area_type: str
+    station_kind: str
+    voivodeship: str
+    city: str
+    address: str
+    lat: float | None
+    lon: float | None
 
     def __str__(self) -> str:
         return f"Station({self.station_code}, {self.name}, {self.city})"
