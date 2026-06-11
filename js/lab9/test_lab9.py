@@ -2,7 +2,6 @@ import datetime
 import math
 
 import pytest
-
 from station import Station
 from timeseries import TimeSeries
 from typed_validators import (
@@ -65,6 +64,13 @@ def test_timeseries_getitem_with_slice() -> None:
         (datetime.datetime(2024, 1, 1, 1, 0), 20.0),
         (datetime.datetime(2024, 1, 1, 2, 0), 30.0),
     ]
+
+
+def test_timeseries_getitem_with_nonexistent_slice_raises_key_error() -> None:
+    series = make_series([10.0, 20.0, 30.0])
+
+    with pytest.raises(ValueError):
+        _ = series[2:4:0]
 
 
 def test_timeseries_getitem_with_existing_date() -> None:
