@@ -5,9 +5,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
-from lab10.db import database_url
-from lab10.gtfs import COPY_COLUMNS, LOAD_ORDER, batch, normalized_rows
-from lab10.orm_models import MODEL_BY_TABLE, Base
+from db import database_url
+from gtfs import COPY_COLUMNS, LOAD_ORDER, batch, normalized_rows
+from orm_models import MODEL_BY_TABLE, Base
 
 
 def create_database_orm(database: str | None = None) -> None:

@@ -2,10 +2,10 @@ import argparse
 from collections.abc import Sequence
 from decimal import Decimal
 
-from lab10.loader import create_database, load_gtfs
-from lab10.orm_loader import create_database_orm, load_gtfs_orm
-from lab10.orm_queries import route_departure_counts
-from lab10.services import StopStats, search_stops, stop_statistics
+from loader import create_database, load_gtfs
+from orm_loader import create_database_orm, load_gtfs_orm
+from orm_queries import route_departure_counts
+from services import StopStats, search_stops, stop_statistics
 
 
 def main(argv: Sequence[str] | None = None) -> int:

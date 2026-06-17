@@ -1,8 +1,8 @@
 from sqlalchemy import desc, func, select
 from sqlalchemy.orm import Session
 
-from lab10.orm_loader import orm_engine
-from lab10.orm_models import Route, StopTime, Trip
+from orm_loader import orm_engine
+from orm_models import Route, StopTime, Trip
 
 
 def route_departure_counts(stop_id: int, database: str | None = None) -> list[tuple[str, int]]:

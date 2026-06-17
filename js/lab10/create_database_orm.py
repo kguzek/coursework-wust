@@ -1,9 +1,6 @@
 import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from lab10.orm_loader import create_database_orm  # pylint: disable=wrong-import-position
+from orm_loader import create_database_orm
 
 
 def main() -> None:

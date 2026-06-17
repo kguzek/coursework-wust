@@ -3,13 +3,26 @@ from typing import TypedDict
 
 from psycopg.rows import dict_row
 
-from lab10.db import connect
+from db import connect
 
 
 class StopChoice(TypedDict):
     stop_id: int
     stop_code: str
     stop_name: str
+
+
+class StopPreview(TypedDict):
+    stop_id: int
+    stop_code: str
+    stop_name: str
+    stop_lat: float
+    stop_lon: float
+    lines: int
+    bus_lines: int
+    tram_lines: int
+    night_lines: int
+    departures: int
 
 
 class DirectionCount(TypedDict):
@@ -47,6 +60,36 @@ def search_stops(query: str, database: str | None = None, limit: int = 25) -> li
         with connection.cursor(row_factory=dict_row) as cursor:
             cursor.execute(statement, {"pattern": pattern, "query": query, "limit": limit})
             return [StopChoice(row) for row in cursor.fetchall()]
+
+
+def search_stops_preview(query: str, database: str | None = None, limit: int = 25) -> list[StopPreview]:
+    pattern = f"%{query}%"
+    statement = """
+        SELECT
+            s.stop_id,
+            s.stop_code,
+            s.stop_name,
+            s.stop_lat,
+            s.stop_lon,
+            count(DISTINCT r.route_id) AS lines,
+            count(DISTINCT r.route_id) FILTER (WHERE rt.route_type2_name ILIKE '%%autobusowa%%') AS bus_lines,
+            count(DISTINCT r.route_id) FILTER (WHERE rt.route_type2_name ILIKE '%%tramwajowa%%') AS tram_lines,
+            count(DISTINCT r.route_id) FILTER (WHERE rt.route_type2_name ILIKE '%%nocna%%') AS night_lines,
+            count(*) AS departures
+        FROM stops s
+        LEFT JOIN stop_times st ON st.stop_id = s.stop_id
+        LEFT JOIN trips t ON t.trip_id = st.trip_id
+        LEFT JOIN routes r ON r.route_id = t.route_id
+        LEFT JOIN route_types rt ON rt.route_type2_id = r.route_type2_id
+        WHERE s.stop_name ILIKE %(pattern)s OR s.stop_code ILIKE %(pattern)s OR s.stop_id::text = %(query)s
+        GROUP BY s.stop_id, s.stop_code, s.stop_name
+        ORDER BY s.stop_name, s.stop_code
+        LIMIT %(limit)s
+    """
+    with connect(database) as connection:
+        with connection.cursor(row_factory=dict_row) as cursor:
+            cursor.execute(statement, {"pattern": pattern, "query": query, "limit": limit})
+            return [StopPreview(row) for row in cursor.fetchall()]
 
 
 def stop_by_id(stop_id: int, database: str | None = None) -> StopChoice:

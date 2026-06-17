@@ -15,5 +15,15 @@ services:
       timeout: 3s
       retries: 20
 
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      LAB10_DATABASE_URL: postgresql://lab10:lab10@postgres:5432/lab10
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:

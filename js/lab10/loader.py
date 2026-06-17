@@ -2,8 +2,8 @@ from pathlib import Path
 
 from psycopg import Connection, sql
 
-from lab10.db import connect, execute_schema
-from lab10.gtfs import COPY_COLUMNS, LOAD_ORDER, normalized_rows
+from db import connect, execute_schema
+from gtfs import COPY_COLUMNS, LOAD_ORDER, normalized_rows
 
 
 def create_database(database: str | None = None) -> None:
