@@ -4,3 +4,6 @@
 [submodule "msid/msid-projekt-lab"]
 	path = msid/msid-projekt-lab
 	url = git@github.com:michalges/msid-projekt-lab.git
+[submodule "js/plakatownik"]
+	path = js/plakatownik
+	url = git@github.com:qamarq/plakatownik.git
