@@ -23,6 +23,8 @@ from icons import (
 from services import search_stops_preview, stop_statistics
 from uvicorn.middleware.wsgi import WSGIMiddleware
 
+# pylint: disable=line-too-long
+
 TAILWIND_CONFIG = """
 tailwind.config = {
     theme: {
