@@ -7,26 +7,27 @@ the [Wrocław University of Science and Technology](https://github.com/wroclaw-t
 
 ### Semester 1
 
-- [Logic for IT Specialists](logic)
-- [Structural and Object-Oriented Programming](psio)
+- [Logic for IT Specialists](semestr-1/logic)
+- [Structural and Object-Oriented Programming](semestr-1/psio)
 
 ### Semester 2
 
-- [Algorithms and Data Structures](aisd)
-- [Computer Architecture](ak)
-- [Mathematical Analysis 2](am2)
-- [Operating Systems](sysop)
+- [Algorithms and Data Structures](semestr-2/aisd)
+- [Computer Architecture](semestr-2/ak)
+- [Mathematical Analysis 2](semestr-2/am2)
+- [Operating Systems](semestr-2/sysop)
 
 ### Semester 3
 
-- [Effective Programming Techniques](tep)
-- [Japanese A1](jp)
-- [Probability Theory and Statistics](rpis)
-- [Programming Paradigms](pp)
+- [Effective Programming Techniques](semestr-3/tep)
+- [Japanese A1](semestr-3/jp)
+- [Probability Theory and Statistics](semestr-3/rpis)
+- [Programming Paradigms](semestr-3/pp)
 
 ### Semester 4
 
-- [Databases](bd)
-- [Linux Server Management](linux)
-- [Scripting Languages](js)
-- [Systems Analysis and Decision Support Methods](msid)
+- [Basics of Software Engineering](semestr-4/pio)
+- [Databases](semestr-4/bd)
+- [Linux Server Management](semestr-4/linux)
+- [Scripting Languages](semestr-4/js)
+- [Systems Analysis and Decision Support Methods](semestr-4/msid)

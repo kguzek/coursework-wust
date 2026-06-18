@@ -30,15 +30,15 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y cmake build-essential
 
       - name: Configure project (C++98)
-        working-directory: ./tep
+        working-directory: ./semestr-3/tep
         run: cmake -S . -B build
 
       - name: Build all executables
-        working-directory: ./tep/build
+        working-directory: ./semestr-3/tep/build
         run: cmake --build .
 
       - name: Run all executables
-        working-directory: ./tep/build
+        working-directory: ./semestr-3/tep/build
         run: |
           echo "Running all compiled executables..."
           set -e

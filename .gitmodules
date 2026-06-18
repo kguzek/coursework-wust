@@ -1,9 +1,9 @@
 [submodule "bd/rezerwownik"]
-	path = bd/rezerwownik
+	path = semestr-4/bd/rezerwownik
 	url = git@github.com:qamarq/rezerwownik.git
 [submodule "msid/msid-projekt-lab"]
-	path = msid/msid-projekt-lab
+	path = semestr-4/msid/msid-projekt-lab
 	url = git@github.com:michalges/msid-projekt-lab.git
 [submodule "js/plakatownik"]
-	path = js/plakatownik
+	path = semestr-4/js/plakatownik
 	url = git@github.com:qamarq/plakatownik.git

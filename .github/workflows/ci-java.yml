@@ -38,7 +38,7 @@ jobs:
           java-version: "8"
 
       - name: Run lab tests
-        working-directory: ./aisd
+        working-directory: ./semestr-2/aisd
         run: |
           for folder in `ls | grep dsaa.lab`; do
             echo
@@ -48,7 +48,7 @@ jobs:
       - name: Build exercise tests
         run: |
           mkdir -p out
-          javac -cp "dependencies/junit/*" -d out $(find aisd -name "*.java")
+          javac -cp "dependencies/junit/*" -d out $(find semestr-2/aisd -name "*.java")
         if: always()
 
       - name: Run exercise tests
@@ -56,7 +56,7 @@ jobs:
           java -jar dependencies/junit/junit-platform-console-standalone-1.9.3.jar \
           --class-path out \
           --scan-class-path \
-          --reports-dir=aisd/junit-reports
+          --reports-dir=semestr-2/aisd/junit-reports
 
       - name: Report exercise tests
         uses: mikepenz/action-junit-report@v5
