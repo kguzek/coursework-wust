@@ -7,3 +7,6 @@
 [submodule "js/plakatownik"]
 	path = semestr-4/js/plakatownik
 	url = git@github.com:qamarq/plakatownik.git
+[submodule "semestr-5/ios/zmykamy"]
+	path = semestr-5/ios/zmykamy
+	url = git@github.com:wroclaw-tech/zmykamy.git

@@ -31,3 +31,7 @@ the [Wrocław University of Science and Technology](https://github.com/wroclaw-t
 - [Linux Server Management](semestr-4/linux)
 - [Scripting Languages](semestr-4/js)
 - [Systems Analysis and Decision Support Methods](semestr-4/msid)
+
+### Semester 5
+
+- [Mobile Applications for iOS](semestr-5/ios)
