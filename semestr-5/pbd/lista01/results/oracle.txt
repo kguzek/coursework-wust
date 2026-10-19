@@ -1,0 +1,193 @@
+
+Session altered.
+
+=== Oracle version and application schema ===
+
+BANNER_FULL
+----------------------------------------------------------------------------------------------------
+Oracle AI Database 26ai Free Release 23.26.3.0.0 - Develop, Learn, and Run for Free
+Version 23.26.3.0.0
+
+
+1 row selected.
+
+
+SCHEMA_NAME     DATABASE_NAME
+--------------- ---------------
+KONRAD          FREEPDB1
+
+1 row selected.
+
+=== Row counts and missing references ===
+
+RELACJA              LICZBA_WIERSZY
+-------------------- --------------
+funkcje                           8
+bandy                             5
+kocury                           18
+wrogowie                         10
+wrogowie_kocurow                 18
+
+5 rows selected.
+
+
+CATS_WITHOUT_GANG GANGS_WITHOUT_LEADER INCIDENTS_WITHOUT_CAT INCIDENTS_WITHOUT_ENEMY
+----------------- -------------------- --------------------- -----------------------
+                0                    0                     0                       0
+
+1 row selected.
+
+=== Funkcje ===
+
+FUNKCJA     MIN_MYSZY  MAX_MYSZY
+---------- ---------- ----------
+BANDZIOR           70         90
+DZIELCZY           45         55
+HONOROWA            6         25
+KOT                40         50
+LAPACZ             50         60
+LOWCZY             60         70
+MILUSIA            20         30
+SZEFUNIO           90        110
+
+8 rows selected.
+
+=== Bandy ===
+
+  NR_BANDY NAZWA                TEREN           SZEF_BANDY
+---------- -------------------- --------------- ---------------
+         1 SZEFOSTWO            CALOSC          TYGRYS
+         2 CZARNI RYCERZE       POLE            LYSY
+         3 BIALI LOWCY          SAD             ZOMBI
+         4 LACIACI MYSLIWI      GORKA           RAFA
+         5 ROCKERSI             ZAGRODA
+
+5 rows selected.
+
+=== Kocury ===
+
+IMIE            PLEC PSEUDO          FUNKCJA    SZEF            W_STADKU_OD         PRZYDZIAL_MYSZY MYSZY_EXTRA   NR_BANDY
+--------------- ---- --------------- ---------- --------------- ------------------- --------------- ----------- ----------
+CHYTRY          M    BOLEK           DZIELCZY   TYGRYS          2002-05-05 00:00:00              50                      1
+MELA            D    DAMA            LAPACZ     RAFA            2008-11-01 00:00:00              51                      4
+PUNIA           D    KURKA           LOWCZY     ZOMBI           2008-01-01 00:00:00              61                      3
+BELA            D    LASKA           MILUSIA    LYSY            2008-02-01 00:00:00              24          28          2
+MICKA           D    LOLA            MILUSIA    TYGRYS          2009-10-14 00:00:00              25          47          1
+BOLEK           M    LYSY            BANDZIOR   TYGRYS          2006-08-15 00:00:00              72          21          2
+RUDA            D    MALA            MILUSIA    TYGRYS          2006-09-17 00:00:00              22          42          1
+DUDEK           M    MALY            KOT        RAFA            2011-05-15 00:00:00              40                      4
+KSAWERY         M    MAN             LAPACZ     RAFA            2008-07-12 00:00:00              51                      4
+JACEK           M    PLACEK          LOWCZY     LYSY            2008-12-01 00:00:00              67                      2
+SONIA           D    PUSZYSTA        MILUSIA    ZOMBI           2010-11-18 00:00:00              20          35          3
+PUCEK           M    RAFA            LOWCZY     TYGRYS          2006-10-15 00:00:00              65                      4
+BARI            M    RURA            LAPACZ     LYSY            2009-09-01 00:00:00              56                      2
+ZUZIA           D    SZYBKA          LOWCZY     LYSY            2006-07-21 00:00:00              65                      2
+MRUCZEK         M    TYGRYS          SZEFUNIO                   2002-01-01 00:00:00             103          33          1
+LATKA           D    UCHO            KOT        RAFA            2011-01-01 00:00:00              40                      4
+LUCEK           M    ZERO            KOT        KURKA           2010-03-01 00:00:00              43                      3
+KOREK           M    ZOMBI           BANDZIOR   TYGRYS          2004-03-16 00:00:00              75          13          3
+
+18 rows selected.
+
+=== Wrogowie ===
+
+IMIE_WROGA      STOPIEN_WROGOSCI GATUNEK         LAPOWKA
+--------------- ---------------- --------------- --------------------
+BAZYLI                         3 KOGUT           KURA DO STADA
+BETHOVEN                       1 PIES            PEDIGRIPALL
+BUREK                          4 PIES            KOSC
+CHYTRUSEK                      5 LIS             KURCZAK
+DZIKI BILL                    10 PIES
+GLUPIA ZOSKA                   1 CZLOWIEK        KORALIK
+KAZIO                         10 CZLOWIEK        FLASZKA
+REKSIO                         2 PIES            KOSC
+SMUKLA                         1 SOSNA
+SWAWOLNY DYZIO                 7 CZLOWIEK        GUMA DO ZUCIA
+
+10 rows selected.
+
+=== Wrogowie_kocurow ===
+
+PSEUDO          IMIE_WROGA      DATA_INCYDENTU      OPIS_INCYDENTU
+--------------- --------------- ------------------- --------------------------------------------------
+BOLEK           DZIKI BILL      2007-11-10 00:00:00 ODGRYZL UCHO
+BOLEK           KAZIO           2005-03-29 00:00:00 POSZCZUL BURKIEM
+DAMA            KAZIO           2009-02-07 00:00:00 CHCIAL OBEDRZEC ZE SKORY
+KURKA           BUREK           2010-12-14 00:00:00 POGONIL
+LASKA           DZIKI BILL      2008-12-12 00:00:00 POGRYZL ZE LEDWO SIE WYLIZALA
+LASKA           KAZIO           2009-01-07 00:00:00 ZLAPAL ZA OGON I ZROBIL WIATRAK
+LYSY            BETHOVEN        2009-05-11 00:00:00 NIE PODZIELIL SIE SWOJA KASZA
+MALA            CHYTRUSEK       2007-03-07 00:00:00 ZALECAL SIE
+MALY            CHYTRUSEK       2011-07-13 00:00:00 PODEBRAL PODEBRANE JAJKA
+MAN             REKSIO          2009-04-14 00:00:00 WYJATKOWO NIEGRZECZNIE OBSZCZEKAL
+PLACEK          BAZYLI          2010-07-12 00:00:00 DZIOBIAC UNIEMOZLIWIL PODEBRANIE KURCZAKA
+PUSZYSTA        SMUKLA          2010-11-19 00:00:00 OBRZUCILA SZYSZKAMI
+RURA            DZIKI BILL      2009-09-03 00:00:00 ODGRYZL OGON
+SZYBKA          GLUPIA ZOSKA    2006-09-12 00:00:00 UZYLA KOTA JAKO SCIERKI
+TYGRYS          DZIKI BILL      2007-06-12 00:00:00 USILOWAL POZBAWIC ZYCIA
+TYGRYS          KAZIO           2004-10-13 00:00:00 USILOWAL NABIC NA WIDLY
+UCHO            SWAWOLNY DYZIO  2011-07-14 00:00:00 OBRZUCIL KAMIENIAMI
+ZOMBI           SWAWOLNY DYZIO  2005-03-07 00:00:00 WYBIL OKO Z PROCY
+
+18 rows selected.
+
+=== Constraint status (C includes NOT NULL) ===
+
+TABLE_NAME           CONSTRAINT_TYPE STATUS     VALIDATED       DEFERRABLE      CONSTRAINT_COUNT
+-------------------- --------------- ---------- --------------- --------------- ----------------
+BANDY                C               ENABLED    VALIDATED       NOT DEFERRABLE                 1
+BANDY                P               ENABLED    VALIDATED       NOT DEFERRABLE                 1
+BANDY                R               ENABLED    VALIDATED       NOT DEFERRABLE                 1
+BANDY                U               ENABLED    VALIDATED       NOT DEFERRABLE                 2
+FUNKCJE              C               ENABLED    VALIDATED       NOT DEFERRABLE                 3
+FUNKCJE              P               ENABLED    VALIDATED       NOT DEFERRABLE                 1
+KOCURY               C               ENABLED    VALIDATED       NOT DEFERRABLE                 2
+KOCURY               P               ENABLED    VALIDATED       NOT DEFERRABLE                 1
+KOCURY               R               ENABLED    VALIDATED       NOT DEFERRABLE                 3
+WROGOWIE             C               ENABLED    VALIDATED       NOT DEFERRABLE                 1
+WROGOWIE             P               ENABLED    VALIDATED       NOT DEFERRABLE                 1
+WROGOWIE_KOCUROW     C               ENABLED    VALIDATED       NOT DEFERRABLE                 1
+WROGOWIE_KOCUROW     P               ENABLED    VALIDATED       NOT DEFERRABLE                 1
+WROGOWIE_KOCUROW     R               ENABLED    VALIDATED       NOT DEFERRABLE                 2
+
+14 rows selected.
+
+=== Constraint and default tests ===
+PASS: minimum > 5 (SQLCODE -2290)
+PASS: maximum < 200 (SQLCODE -2290)
+PASS: maximum >= minimum (SQLCODE -2290)
+PASS: hostility between 1 and 10 (SQLCODE -2290)
+PASS: sex M or D (SQLCODE -2290)
+PASS: unique cat primary key (SQLCODE -1)
+PASS: existing gang reference (SQLCODE -2291)
+PASS: unique territory (SQLCODE -1)
+PASS: unique gang leader (SQLCODE -1)
+PASS: required cat name (SQLCODE -1400)
+PASS: unique cat/enemy pair (SQLCODE -1)
+PASS: required incident date (SQLCODE -1400)
+PASS: default date and optional attributes
+PASS: multiple NULLs in UNIQUE columns
+PASS: valid mouse-range boundaries
+PASS: all test data rolled back
+
+PL/SQL procedure successfully completed.
+
+=== Final row counts after rollback ===
+
+RELACJA              LICZBA_WIERSZY
+-------------------- --------------
+funkcje                           8
+bandy                             5
+kocury                           18
+wrogowie                         10
+wrogowie_kocurow                 18
+
+5 rows selected.
+
+
+CATS_WITHOUT_GANG GANGS_WITHOUT_LEADER INCIDENTS_WITHOUT_CAT INCIDENTS_WITHOUT_ENEMY
+----------------- -------------------- --------------------- -----------------------
+                0                    0                     0                       0
+
+1 row selected.
+

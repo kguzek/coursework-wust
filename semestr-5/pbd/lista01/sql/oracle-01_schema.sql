@@ -1,11 +1,12 @@
 -- Lista projektowa nr 1 - Oracle Database Free.
--- The Compose startup mount runs this file during first Oracle initialization.
+-- The Compose initializer runs this file once, in the KONRAD schema.
 -- ALTER TABLE resolves the Bandy <-> Kocury referential cycle.
 
 CREATE TABLE funkcje (
     funkcja    VARCHAR2(10) PRIMARY KEY,
     min_myszy  NUMBER(3) CHECK (min_myszy > 5),
-    max_myszy  NUMBER(3) CHECK (max_myszy >= min_myszy AND max_myszy < 200)
+    max_myszy  NUMBER(3) CHECK (max_myszy < 200),
+    CHECK (max_myszy >= min_myszy)
 );
 
 CREATE TABLE bandy (

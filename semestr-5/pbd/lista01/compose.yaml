@@ -2,20 +2,21 @@ name: pbd-lista01
 
 services:
   oracle:
-    image: container-registry.oracle.com/database/free:latest-lite
+    image: docker.io/gvenzl/oracle-free:23-slim-faststart
     container_name: pbd-oracle
     restart: "no"
     ports:
       - "${ORACLE_PORT:-1521}:1521"
     environment:
-      ORACLE_PWD: ${ORACLE_PWD:?set ORACLE_PWD in .env}
-      PBD_PASSWORD: ${PBD_PASSWORD:?set PBD_PASSWORD in .env}
+      ORACLE_PASSWORD: ${ORACLE_PWD:?set ORACLE_PWD in .env}
+      APP_USER: konrad
+      APP_USER_PASSWORD: ${PBD_PASSWORD:?set PBD_PASSWORD in .env}
     volumes:
       - oracle_data:/opt/oracle/oradata
-      - ./sql/oracle-01_schema.sql:/opt/oracle/scripts/startup/01_schema.sql:ro,z
-      - ./sql/oracle-02_seed.sql:/opt/oracle/scripts/startup/02_seed.sql:ro,z
+      - ./sql:/pbd/sql:ro,z
+      - ./sql/oracle-init.sh:/container-entrypoint-initdb.d/01_init.sh:ro,z
     healthcheck:
-      test: ["CMD", "/opt/oracle/checkDBStatus.sh"]
+      test: ["CMD", "healthcheck.sh"]
       interval: 30s
       timeout: 10s
       retries: 20
