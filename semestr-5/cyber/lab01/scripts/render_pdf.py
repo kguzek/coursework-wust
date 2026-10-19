@@ -4,15 +4,18 @@
 # dependencies = ["Markdown==3.10.2", "weasyprint==68.1"]
 # ///
 """Run: uv run scripts/render_pdf.py [input.md] [output.pdf]."""
+
 import argparse
 import html
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Homebrew libraries required by WeasyPrint on macOS.
 if sys.platform == "darwin":
-    os.environ.setdefault("DYLD_FALLBACK_LIBRARY_PATH", "/opt/homebrew/lib:/usr/local/lib")
+    _ = os.environ.setdefault(
+        "DYLD_FALLBACK_LIBRARY_PATH", "/opt/homebrew/lib:/usr/local/lib"
+    )
 
 import markdown
 from weasyprint import HTML
@@ -43,13 +46,18 @@ a { color: inherit; }
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("input", nargs="?", type=Path, default=ROOT / "notes.md")
-    parser.add_argument("output", nargs="?", type=Path)
+    _ = parser.add_argument("input", nargs="?", type=Path, default=ROOT / "notes.md")
+    _ = parser.add_argument("output", nargs="?", type=Path)
     args = parser.parse_args()
     source = args.input.resolve()
     destination = args.output or source.with_suffix(".pdf")
-    body = markdown.markdown(source.read_text(encoding="utf8"), extensions=["tables", "fenced_code"])
-    document = f'<!doctype html><html lang="pl"><meta charset="utf-8"><title>{html.escape(source.stem)}</title><style>{CSS}</style><body>{body}</body></html>'
+    body = markdown.markdown(
+        source.read_text(encoding="utf8"), extensions=["tables", "fenced_code"]
+    )
+    document = (
+        f'<!doctype html><html lang="pl"><meta charset="utf-8"><title>{html.escape(source.stem)}</title>'
+        f"<style>{CSS}</style><body>{body}</body></html>"
+    )
     HTML(string=document, base_url=source.parent.as_uri() + "/").write_pdf(destination)
     print(destination)
 
