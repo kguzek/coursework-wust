@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "utm": {
+        "type": "local",
+        "command": [
+          "{env:HOME}/.local/bin/uv",
+          "--directory",
+          "{env:HOME}/repos/clones/utm_mcp",
+          "run",
+          "utm-mcp",
+        ],
+      },
+    },
+  },
+}
