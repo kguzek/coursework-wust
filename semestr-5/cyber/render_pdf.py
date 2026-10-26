@@ -3,7 +3,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["Markdown==3.10.2", "weasyprint==68.1"]
 # ///
-"""Run: uv run scripts/render_pdf.py [input.md] [output.pdf]."""
+"""Run: uv run render_pdf.py LAB (for example, 2 renders lab02/notes.pdf)."""
 
 import argparse
 import html
@@ -20,7 +20,7 @@ if sys.platform == "darwin":
 import markdown
 from weasyprint import HTML
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parent
 CSS = """
 @page {
     size: A4 landscape;
@@ -46,11 +46,14 @@ a { color: inherit; }
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    _ = parser.add_argument("input", nargs="?", type=Path, default=ROOT / "notes.md")
-    _ = parser.add_argument("output", nargs="?", type=Path)
+    _ = parser.add_argument("lab", type=int, help="lab number (for example, 2 or 02)")
     args = parser.parse_args()
-    source = args.input.resolve()
-    destination = args.output or source.with_suffix(".pdf")
+    if args.lab < 1:
+        parser.error("lab number must be positive")
+    source = ROOT / f"lab{args.lab:02d}" / "notes.md"
+    if not source.is_file():
+        parser.error(f"notes file not found: {source}")
+    destination = source.with_suffix(".pdf")
     body = markdown.markdown(
         source.read_text(encoding="utf8"), extensions=["tables", "fenced_code"]
     )
