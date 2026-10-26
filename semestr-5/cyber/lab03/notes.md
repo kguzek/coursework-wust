@@ -20,6 +20,8 @@ Do porównania wybrano AES z blokiem 128-bitowym i 3DES, który korzysta z blok�
 
 AES i 3DES badano w trybie CBC. Dla AES-128 A użyto klucza `00 01 … 0f`, a dla AES-128 B `10 11 … 1f`. Klucze AES-192 i AES-256 miały odpowiednio 24 i 32 kolejne bajty od `00`; 3DES używał 24 bajtów. IV AES wynosił `f0…ff`, a IV 3DES `f0…f7`.
 
+AES udostępnia trzy długości klucza: 128, 192 i 256 bitów; dlatego porównano wszystkie trzy warianty oraz dwie wartości klucza 128-bitowego. Zastosowany 3DES korzystał z klucza 24-bajtowego, tj. 168 bitów efektywnego klucza DES po pominięciu bitów parzystości.
+
 | TJ | H(TJ) | AES-128 A | AES-128 B | AES-192 | AES-256 | 3DES-168 |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Jednorodny | 0,0000 | 7,79 | 7,7832 | 7,7844 | 7,7988 | 7,8370 |
@@ -37,7 +39,7 @@ W histogramie tekstu jednorodnego występuje tylko `48(1024)`, czyli kod znaku `
 
 ### 1.3 Wnioski (pytania 1.3–1.9)
 
-**1.3.** Algorytmy blokowe są używane np. w TLS i VPN-ach, przy szyfrowaniu dysków, archiwów oraz danych przechowywanych na serwerach. Najczęściej spotykany jest obecnie AES, zwykle z kluczem 128 lub 256 bitów. 3DES jest już wycofywany.
+**1.3.** Algorytmy blokowe są używane np. w TLS i VPN-ach, przy szyfrowaniu dysków, archiwów oraz danych przechowywanych na serwerach. Najczęściej spotykany jest obecnie AES z blokiem 128-bitowym i kluczem 128 albo 256 bitów (AES-192 jest również dostępny). Blok 128-bitowy jest współczesnym standardem dla AES; 3DES z blokiem 64-bitowym jest już wycofywany.
 
 **1.4–1.5.** Szyfr blokowy w odpowiednim trybie dobrze ukrywa histogram tekstu. Nawet dla `H×1024` po szyfrowaniu otrzymano około 7,8 bit/bajt. Dla porównania w Cezarze histogram jest tylko przesunięty, a przy transpozycji zostaje praktycznie taki sam, więc tam analiza częstości jest o wiele prostsza.
 
@@ -60,14 +62,14 @@ ECB szyfruje identyczne bloki dokładnie tak samo, przez co wzór w pliku nadal 
 
 ### 2.5 i 2.8 Propagacja błędów
 
-Dla AES-128-CBC, gdzie blok ma 16 B, odwrócono jeden bit w `C[10]`. Po odszyfrowaniu zmieniło się 17 bajtów: pierwszy blok był nieczytelny, a w następnym bloku odwrócił się ten sam bit.
+Dla AES-128-CBC, gdzie blok ma 16 B, użyto tekstu zróżnicowanego i numeracji bajtów od zera. Odwrócono bit 0 w `C[10]`. Po odszyfrowaniu pierwszy blok był nieczytelny, a w drugim bloku odwrócił się bit 0 w bajcie o tym samym przesunięciu; łącznie zmieniło się 17 bajtów. Następnie odwrócono bity w `C[10]` i `C[11]` (blisko siebie): pierwszy blok znów był nieczytelny, a w drugim zmieniły się dokładnie dwa wskazane bity. Dla bitów w `C[10]` i `C[74]` (daleko od siebie) nieczytelne były dwa odpowiadające im bloki, a po każdym z nich zmieniał się tylko wskazany bit następnego bloku.
 
 | Modyfikacja TT | Wynik deszyfrowania CBC |
 | --- | --- |
 | Bit/jeden lub wiele bitów w bloku | bieżący blok nieczytelny; odpowiadające bity zmienione w następnym bloku |
-| Dodanie/usunięcie 1 B | długość nie jest wielokrotnością 16, więc deszyfrator odrzuca TT |
-| Dodanie bloku 16 B | wstawiony blok daje śmieci, a następny blok jest uszkodzony; potem następuje synchronizacja |
-| Usunięcie bloku 16 B | odpowiadający blok TJ znika, jego zastępnik jest uszkodzony; kolejne bloki są znów poprawne |
+| Dodanie/usunięcie 1 B w środku TT | długość nie jest wielokrotnością 16, więc deszyfrator odrzuca TT |
+| Wstawienie 16 B po `C[3]` | wstawiony blok daje śmieci, następny blok TJ jest uszkodzony, a od kolejnego bloku następuje synchronizacja |
+| Usunięcie `C[4]` | `P[4]` znika, `P[5]` jest uszkodzony, a od `P[6]` kolejne bloki są znów poprawne |
 
 Dla porównania ECB uszkadza tylko blok odpowiadający błędowi, OFB tylko te bity, a CFB ma ograniczoną propagację do kolejnego segmentu/bloku.
 
@@ -84,7 +86,7 @@ W podanych przykładach bloki zapisano po 32 znaki hex, czyli po 16 B. Taki podz
 ### 2.7–2.11 Odpowiedzi
 
 - **2.7:** Dla jednorodnego TJ ECB zostawia powtarzające się bloki, dlatego entropia tej próbki jest wyraźnie niższa. CBC, CFB i OFB dały płaskie histogramy oraz około 7,8 bit/bajt.
-- **2.8:** W CBC jeden błąd wpływa na dwa bloki, w ECB tylko na jeden, a w OFB zmieniają się jedynie te bity, które zostały zmienione w TT. W CFB błąd przechodzi też na następny segment.
-- **2.9:** Usunięcie fragmentu niebędącego pełnym blokiem rozstraja ECB i CBC. Po utracie całego bloku CBC wraca do poprawnego odczytu po kolejnym bloku, a ECB nie ma zależności między blokami. W OFB i CFB utrata bajtu przesuwa cały dalszy strumień.
+- **2.8:** W CBC jeden błąd wpływa na dwa bloki. Przykładowo zmiana bitu 0 w `C[10]` zniszczyła cały pierwszy blok TJ, a w drugim zmieniła tylko bit 0 tego samego bajtu; zmiana dwóch bitów w `C[10]` i `C[11]` dała dwa takie kontrolowane przekłamania w drugim bloku. W ECB uszkodzony byłby tylko blok odpowiadający błędowi, w OFB zmieniają się jedynie te bity, które zostały zmienione w TT, a w CFB błąd przechodzi też na następny segment.
+- **2.9:** Usunięcie fragmentu niebędącego pełnym blokiem rozstraja ECB i CBC: po usunięciu jednego bajtu z badanego AES-CBC deszyfracja została odrzucona, bo długość TT nie była wielokrotnością 16 B. Po usunięciu całego `C[4]` blok `P[4]` zniknął, `P[5]` był uszkodzony, a od `P[6]` tekst znów był poprawny. ECB nie ma zależności między blokami. W OFB i CFB utrata bajtu przesuwa cały dalszy strumień.
 - **2.10:** ECB można wykorzystać dla niezależnych bloków, które już wcześniej nie mają widocznej struktury, ale przy plikach tekstowych nie jest dobrym wyborem. CBC nadaje się do szyfrowania kolejnych bloków wiadomości lub pliku.
-- **2.11:** ECB pozwala bez problemu szyfrować i odszyfrowywać bloki równolegle. CBC szyfruje się po kolei, chociaż przy odszyfrowywaniu można rozdzielić bloki mając poprzedni fragment TT. OFB działa kolejno w obu kierunkach. CFB też szyfruje się kolejno, a przy deszyfrowaniu potrzebny jest poprzedni segment TT.
+- **2.11:** ECB pozwala bez problemu szyfrować i odszyfrowywać bloki równolegle. CBC szyfruje się po kolei, ale odszyfrowanie bloków można rozdzielić, jeśli dla każdego zadania dostępny jest poprzedni blok TT (dla pierwszego — IV). OFB działa kolejno w obu kierunkach. CFB szyfruje się kolejno; jego odszyfrowanie można wykonywać równolegle przy dostępie do poprzedniego segmentu TT.
