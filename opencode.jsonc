@@ -12,6 +12,16 @@
           "utm-mcp",
         ],
       },
+      "linear": {
+        "type": "remote",
+        "url": "https://mcp.linear.app/mcp",
+        "disabled": true,
+      },
+      "linear-personal": {
+        "type": "remote",
+        "url": "https://mcp.linear.app/mcp",
+        "disabled": false,
+      },
     },
   },
 }
