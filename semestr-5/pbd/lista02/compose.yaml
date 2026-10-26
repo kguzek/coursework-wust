@@ -1,0 +1,45 @@
+name: pbd-lista02
+
+services:
+  oracle:
+    image: docker.io/gvenzl/oracle-free:23-slim-faststart
+    container_name: pbd-oracle
+    restart: "no"
+    ports:
+      - "${ORACLE_PORT:-1521}:1521"
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PWD:?set ORACLE_PWD in .env}
+      APP_USER: konrad
+      APP_USER_PASSWORD: ${PBD_PASSWORD:?set PBD_PASSWORD in .env}
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+      - ./sql:/pbd/sql:ro,z
+      - ./sql/oracle-init.sh:/container-entrypoint-initdb.d/01_init.sh:ro,z
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
+
+  postgres:
+    image: postgres:18
+    container_name: pbd-postgres
+    restart: "no"
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: pbduser
+      POSTGRES_PASSWORD: ${PBD_PASSWORD:?set PBD_PASSWORD in .env}
+      POSTGRES_DB: pbd
+    volumes:
+      - pg_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pbduser -d pbd"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  oracle_data:
+  pg_data:
