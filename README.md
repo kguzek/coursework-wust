@@ -38,3 +38,4 @@ the [Wrocław University of Science and Technology](https://github.com/wroclaw-t
 - [Mobile Applications for iOS](semestr-5/ios)
 - [Internet of Things](semestr-5/iot)
 - [Database Programming](semestr-5/pbd)
+- [Software Engineering](semestr-5/po)
