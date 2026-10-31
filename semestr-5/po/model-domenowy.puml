@@ -1,0 +1,185 @@
+@startuml
+title FLAME — model domenowy
+left to right direction
+hide methods
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+package "Organizacja dydaktyki" {
+  class "Rok akademicki" as Rok {
+    oznaczenie
+  }
+  class "Semestr" as Semestr {
+    rodzaj: zimowy / letni
+  }
+  class "Zestaw powierzeń" as Zestaw {
+    stan: roboczy / zatwierdzony
+    dataZatwierdzenia [0..1]
+    dataPrzekazaniaDoPlanowania [0..1]
+  }
+  class "Kurs" as Kurs {
+    kod
+    nazwa
+    forma: W / C / L / P / S
+    liczbaGodzinNaGrupe
+    punktyECTS
+  }
+  class "Grupa zajęciowa" as Grupa {
+    oznaczenie
+  }
+  class "Powierzenie zajęć" as Powierzenie {
+    /liczbaGrup
+    liczbaGodzin
+  }
+  class "Osoba dokonująca powierzeń" as Przydzielajacy {
+    imieINazwisko
+  }
+  class "Prodziekan ds. kształcenia" as Prodziekan {
+    imieINazwisko
+  }
+  class "Dział planowania" as Planowanie
+}
+
+package "Prowadzący i obciążenie" {
+  abstract class "Prowadzący" as Prowadzacy {
+    imieINazwisko
+    adresEmail
+  }
+  class "Nauczyciel akademicki" as Nauczyciel
+  class "Ekspert zewnętrzny" as Ekspert
+  class "Roczne rozliczenie pensum" as Pensum {
+    stanowisko
+    pensumBazowe
+    limitGodzinPonadwymiarowych
+    /pensumPoZnizkach
+    /godzinyPowierzone
+    /brakujaceGodziny
+    /godzinyPonadwymiarowe
+  }
+  class "Zniżka pensum" as Znizka {
+    podstawa
+    liczbaGodzin
+  }
+  class "Preferencja prowadzącego" as Preferencja {
+    preferowanaForma [0..1]
+    opisDostepnosci [0..1]
+  }
+  class "Kompetencja do prowadzenia kursu" as Kompetencja
+}
+
+package "Konsultowanie propozycji" {
+  class "Propozycja przydziału" as Propozycja {
+    numerWersji
+    dataWyslania
+    terminOdpowiedzi
+    status
+    dataAkceptacji [0..1]
+  }
+  class "Pozycja propozycji" as Pozycja {
+    kodKursu
+    nazwaKursu
+    forma
+    oznaczeniaGrup
+    liczbaGodzin
+  }
+  class "Odpowiedź prowadzącego" as Odpowiedz {
+    dataOtrzymania
+    tresc
+    rodzaj: zgoda / odmowa / prosbaOZmiane / niejednoznaczna
+  }
+  class "Uwaga do propozycji" as Uwaga {
+    tresc
+    stan: oczekujaca / rozwiazana
+    sposobRozwiazania [0..1]: zmianaPowierzenia / odrzucenie
+    uzasadnienie [0..1]
+    dataRozwiazania [0..1]
+  }
+}
+
+Rok "1" *-- "2" Semestr
+Semestr "1" -- "0..1" Zestaw : zestaw wydziału
+Semestr "1" -- "0..*" Grupa
+Kurs "1" -- "0..*" Grupa
+Zestaw "1" *-- "0..*" Powierzenie
+Kurs "1" -- "0..*" Powierzenie
+Powierzenie "0..1" -- "1..*" Grupa : obejmuje
+Prowadzacy "1" -- "0..*" Powierzenie : otrzymuje
+Przydzielajacy "1..*" -- "0..*" Zestaw : przygotowuje
+Prodziekan "0..1" -- "0..*" Zestaw : zatwierdza
+Planowanie "1" -- "0..*" Zestaw : otrzymuje zatwierdzony
+
+Prowadzacy <|-- Nauczyciel
+Prowadzacy <|-- Ekspert
+Nauczyciel "1" -- "0..*" Pensum
+Rok "1" -- "0..*" Pensum
+Pensum "1" *-- "0..*" Znizka
+Prowadzacy "1" -- "0..*" Preferencja
+Semestr "1" -- "0..*" Preferencja
+Kurs "0..1" -- "0..*" Preferencja : preferowany kurs
+Prowadzacy "1" -- "0..*" Kompetencja
+Kurs "1" -- "0..*" Kompetencja
+
+Zestaw "1" -- "0..*" Propozycja
+Prowadzacy "1" -- "0..*" Propozycja : adresat
+Propozycja "1" *-- "1..*" Pozycja
+Powierzenie "0..1" -- "0..*" Pozycja : dotyczy
+Propozycja "1" -- "0..*" Odpowiedz
+Odpowiedz "1" -- "0..*" Uwaga : zawiera
+Uwaga "0..*" -- "0..*" Pozycja : dotyczy
+Przydzielajacy "0..1" -- "0..*" Uwaga : rozwiązuje
+Prodziekan "0..1" -- "0..*" Uwaga : rozstrzyga spór
+
+note bottom of Kurs
+  Zgodnie ze słownikiem kod kursu określa kurs
+  realizowany w jednej formie zajęć.
+  Jeżeli kod obejmuje kilka form, należy wydzielić
+  klasę „Realizacja kursu” (kurs + forma + godziny).
+end note
+
+note bottom of Powierzenie
+  Grupy jednego powierzenia należą do tego samego
+  kursu i semestru co powierzenie.
+  /liczbaGrup = liczba objętych grup.
+  Godziny podaje się w godzinach dydaktycznych.
+  Założenie do potwierdzenia: jedna grupa ma
+  najwyżej jedno powierzenie (bez współprowadzenia).
+end note
+
+note bottom of Pensum
+  Jedno rozliczenie na nauczyciela i rok akademicki.
+  Pensum jest roczne, nie semestralne.
+  Suma godzin obejmuje oba semestry danego roku.
+  Zasady przeliczeń i limity wynikają z regulacji PWr.
+  Ekspert zewnętrzny nie ma pensum.
+end note
+
+note bottom of Propozycja
+  Statusy z wizji: wysłana, zaakceptowana,
+  zaakceptowana milcząco, zgłoszono uwagi, rozwiązana.
+  Akceptacja dotyczy konkretnej wysłanej wersji.
+  Zmieniony przydział wymaga ponownej wysyłki.
+  „Rozwiązana” oznacza rozpatrzenie wszystkich uwag,
+  nie automatycznie zgodę na nowy przydział.
+end note
+
+note bottom of Pozycja
+  Niezmienny zapis treści wysłanej propozycji.
+  Zachowuje dane także po zmianie lub usunięciu
+  powierzenia; stąd opcjonalne powiązanie z nim.
+end note
+
+note bottom of Preferencja
+  Preferencje: wydanie 1.1.
+  Kompetencje: wydanie 2.0.
+  Są to pojęcia docelowej domeny, nie wymagania
+  do realizacji w pierwszym wydaniu.
+end note
+
+legend bottom
+  / — wartość wyliczana; [0..1] — atrybut opcjonalny.
+  Model dotyczy jednego wydziału. Nie modeluje sal,
+  terminów zajęć, kont, poczty ani modułu AI:
+  są poza zakresem domeny powierzeń lub są techniczne.
+  Szczegóły wymagające potwierdzenia opisano w regułach.
+endlegend
+@enduml
