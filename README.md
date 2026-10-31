@@ -36,4 +36,5 @@ the [Wrocław University of Science and Technology](https://github.com/wroclaw-t
 
 - [Cybersecurity](semestr-5/cyber)
 - [Mobile Applications for iOS](semestr-5/ios)
+- [Internet of Things](semestr-5/iot)
 - [Database Programming](semestr-5/pbd)
