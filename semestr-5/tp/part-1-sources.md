@@ -1,0 +1,5 @@
+- Jakobson R., _Poetyka w świetle językoznawstwa_, „Pamiętnik Literacki” 1960, nr 51/2.
+- Stewart J. (red.), _Mosty zamiast murów. Podręcznik komunikacji interpersonalnej_, PWN, Warszawa 2012.
+- Watzlawick P., Beavin J.H., Jackson D.D., _Pragmatics of Human Communication_, Norton, New York 1967.
+- Austin J.L., _Jak działać słowami_, w: _Mówienie i poznawanie_, PWN, Warszawa 1993.
+- Schulz von Thun F., _Sztuka rozmawiania_, t. 1: _Analiza zaburzeń_, WAM, Kraków 2003.

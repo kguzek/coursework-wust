@@ -39,3 +39,4 @@ the [Wrocław University of Science and Technology](https://github.com/wroclaw-t
 - [Internet of Things](semestr-5/iot)
 - [Database Programming](semestr-5/pbd)
 - [Software Engineering](semestr-5/po)
+- [Presentation Techniques](semestr-5/tp)
