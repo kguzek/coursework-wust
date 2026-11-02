@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Ćwiczenie 3 – karty obszarów</title>
+<style>
+  @page { size: A4; margin: 10mm; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fff; color: #000; }
+  body { font-family: "DejaVu Sans", Arial, Helvetica, sans-serif; }
+  .sheet {
+    width: 190mm;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .sheet { grid-template-rows: repeat(3, 92mm); }
+  .card {
+    border: 1px dashed #777;
+    padding: 6mm 8mm;
+    display: flex; flex-direction: column; gap: 5mm;
+  }
+  .label { font-size: 9pt; text-transform: uppercase; letter-spacing: 0.08em; color: #444; margin-bottom: 1mm; }
+  .area { font-size: 20pt; font-weight: 700; }
+  .example .label { color: #000; font-weight: 700; }
+  .example p { margin: 0; font-size: 12.5pt; line-height: 1.35; }
+  .answer {
+    flex: 1;
+    border: 2px solid #000;
+    background: repeating-linear-gradient(to bottom, transparent 0, transparent 7.5mm, #bbb 7.5mm, #bbb 7.8mm);
+    background-origin: content-box;
+    padding: 0 3mm;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  @media screen {
+    html, body { background: #ccc; }
+    body { padding: 10mm 0; }
+    .sheet { background: #fff; box-shadow: 0 0 6px rgba(0,0,0,.3); }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="card">
+    <div><div class="label">Obszar</div><div class="area">prywatny</div></div>
+    <div class="example">
+      <div class="label">Przykład tekstu w tym stylu</div>
+      <p>SMS do przyjaciela, z którym umówiłeś się na mieście</p>
+    </div>
+    <div class="answer"></div>
+  </div>
+
+  <div class="card">
+    <div><div class="label">Obszar</div><div class="area">edukacyjny</div></div>
+    <div class="example">
+      <div class="label">Przykład tekstu w tym stylu</div>
+      <p>Mail do prowadzącego, że nie oddasz projektu w terminie</p>
+    </div>
+    <div class="answer"></div>
+  </div>
+
+  <div class="card">
+    <div><div class="label">Obszar</div><div class="area">publiczny</div></div>
+    <div class="example">
+      <div class="label">Przykład tekstu w tym stylu</div>
+      <p>Komunikat przewoźnika na dworcu lub w aplikacji</p>
+    </div>
+    <div class="answer"></div>
+  </div>
+
+  <div class="card">
+    <div><div class="label">Obszar</div><div class="area">urzędowy</div></div>
+    <div class="example">
+      <div class="label">Przykład tekstu w tym stylu</div>
+      <p>Pismo do urzędu z prośbą o przedłużenie terminu</p>
+    </div>
+    <div class="answer"></div>
+  </div>
+
+  <div class="card">
+    <div><div class="label">Obszar</div><div class="area">zawodowy</div></div>
+    <div class="example">
+      <div class="label">Przykład tekstu w tym stylu</div>
+      <p>Wiadomość do klienta, że zamówienie dotrze później</p>
+    </div>
+    <div class="answer"></div>
+  </div>
+
+  <div class="card">
+    <div><div class="label">Obszar</div><div class="area">publiczny / internet</div></div>
+    <div class="example">
+      <div class="label">Przykład tekstu w tym stylu</div>
+      <p>Post na profilu sklepu internetowego</p>
+    </div>
+    <div class="answer"></div>
+  </div>
+
+</div>
+</body>
+</html>
