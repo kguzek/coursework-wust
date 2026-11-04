@@ -1,6 +1,10 @@
+#include <LiquidCrystal_I2C.h>
+
 #define LED_RED 6
 #define LED_GREEN 5
 #define LED_BLUE 3
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 int led[] = {LED_RED, LED_GREEN, LED_BLUE};
 unsigned long period[] = {900UL, 1000UL, 1100UL};
@@ -23,6 +27,9 @@ void blinkLed(int i)
 
 void setup()
 {
+  lcd.init();
+  lcd.clear();
+
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);

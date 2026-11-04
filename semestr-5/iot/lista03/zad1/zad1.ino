@@ -1,3 +1,5 @@
+#include <LiquidCrystal_I2C.h>
+
 #define LED_RED 6
 #define LED_GREEN 5
 #define LED_BLUE 3
@@ -6,6 +8,8 @@
 #define GREEN_BUTTON 4
 
 #define DEBOUNCE_PERIOD 10UL
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 int led[] = {LED_RED, LED_GREEN, LED_BLUE};
 int led_index = 0;
@@ -41,6 +45,9 @@ bool isButtonReleased(int i)
 
 void setup()
 {
+  lcd.init();
+  lcd.clear();
+
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
