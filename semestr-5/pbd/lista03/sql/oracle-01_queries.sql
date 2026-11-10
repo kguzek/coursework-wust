@@ -1,6 +1,6 @@
 -- Zadanie 1
--- Kot bez incydentow nie moze miec wroga w tej bazie. Warunek imienia wroga
--- dotyczy wiec kotow z incydentami; pozostale zachowujemy jak w przykladzie.
+-- Kot bez incydentow nie ma wroga, wiec warunek imienia wroga dotyczy tylko
+-- kotow wczesniejszych od szefa - jak w przykladzie.
 SELECT DISTINCT k.imie AS "W stadku przed szefem lub bez incydentu",
        CASE WHEN k.w_stadku_od < j.w_stadku_od THEN 'Tak'
             ELSE 'Nie' END AS "Przed Jackiem"
@@ -9,25 +9,25 @@ LEFT JOIN kocury s ON s.pseudo = k.szef
 LEFT JOIN wrogowie_kocurow w ON w.pseudo = k.pseudo
 CROSS JOIN kocury j
 WHERE j.imie = 'JACEK'
-  AND (k.w_stadku_od < s.w_stadku_od OR w.pseudo IS NULL)
-  AND (w.imie_wroga LIKE '%A' OR w.pseudo IS NULL)
+  AND (k.w_stadku_od < s.w_stadku_od AND w.imie_wroga LIKE '%A'
+       OR w.pseudo IS NULL)
 ORDER BY 1;
 
 -- Zadanie 2
--- Brak meskiego przelozonego/podwladnego tez oznaczamy jako brak.
--- Wzgledem przykladu dochodza: ZOMBI bez podwladnego i ZERO bez przelozonego.
+-- Plec filtrujemy po zlaczeniu, wiec brak oznacza brak jakiegokolwiek
+-- przelozonego/podwladnego: kotki przy ZOMBI i ZERO nie daja wierszy "Brak".
 SELECT COALESCE(s.pseudo, 'Brak przelozonego') AS "Przelozony",
        COALESCE(k.pseudo, 'Brak podwladnego') AS "Podwladny"
 FROM kocury s
-FULL OUTER JOIN kocury k
-  ON k.szef = s.pseudo AND s.plec = 'M' AND k.plec = 'M'
+FULL JOIN kocury k ON k.szef = s.pseudo
 WHERE (s.plec = 'M' OR s.pseudo IS NULL)
   AND (k.plec = 'M' OR k.pseudo IS NULL)
 ORDER BY 1, 2;
 
 -- Zadanie 3
 -- Jak w przykladzie liczymy przydzial podstawowy, bez myszy_extra.
--- Dzielenie przez liczbe wrogow usuwa powielenie sumy przez zlaczenie.
+-- Dzielenie przez liczbe wrogow usuwa powielenie sumy przez zlaczenie;
+-- klucz (pseudo, imie_wroga) gwarantuje, ze wrogowie kota sa rozni.
 SELECT k.pseudo, k.przydzial_myszy,
        SUM(m.przydzial_myszy) / COUNT(DISTINCT w.imie_wroga) AS sum_w_bandzie,
        ROUND(100 * k.przydzial_myszy * COUNT(DISTINCT w.imie_wroga)
@@ -66,9 +66,9 @@ SELECT k.funkcja AS "Funkcja", k.pseudo AS "Pseudonim kota",
 FROM kocury k
 JOIN wrogowie_kocurow wk ON wk.pseudo = k.pseudo
 JOIN wrogowie w ON w.imie_wroga = wk.imie_wroga
+WHERE w.gatunek IN ('CZLOWIEK', 'PIES')
 GROUP BY k.funkcja, k.pseudo
-HAVING COUNT(CASE WHEN w.gatunek = 'CZLOWIEK' THEN 1 END) > 0
-   AND COUNT(CASE WHEN w.gatunek = 'PIES' THEN 1 END) > 0
+HAVING COUNT(DISTINCT w.gatunek) = 2
 ORDER BY k.pseudo;
 
 -- Zadanie 6a
@@ -88,6 +88,7 @@ JOIN kocury k ON k.nr_bandy = b.nr_bandy
 ORDER BY 1;
 
 -- Zadanie 7: prominenci i szaraki; remisy na minimum zostaja.
+-- DECODE porownuje NULL jak zwykla wartosc, wiec koty bez bandy tworza grupe.
 SELECT pseudo AS "Pseudonim", przydzial_myszy AS "Zjada", nr_bandy AS "Banda",
        'Prominent' AS "Typ",
        CASE WHEN przydzial_myszy > 60 THEN 'powyzej 60'
@@ -102,7 +103,7 @@ FROM kocury k
 WHERE k.przydzial_myszy IS NOT NULL
   AND NOT EXISTS (
     SELECT 1 FROM kocury m
-    WHERE (m.nr_bandy = k.nr_bandy OR (m.nr_bandy IS NULL AND k.nr_bandy IS NULL))
+    WHERE DECODE(m.nr_bandy, k.nr_bandy, 1) = 1
       AND m.przydzial_myszy < k.przydzial_myszy
   )
 ORDER BY 4, 3, 2 DESC, 1;
@@ -179,15 +180,14 @@ CONNECT BY PRIOR pseudo = szef
 ORDER SIBLINGS BY pseudo;
 
 -- Zadanie 12
--- Biezaca data; dla przykladu z PDF mozna wstawic DATE '2024-07-17'.
--- Zgodnie z trescia najwyzszy szef ma najmniejsze wciecie (odwrotnie niz w PDF).
-SELECT LPAD(' ', 4 * (MAX(LEVEL) OVER (PARTITION BY CONNECT_BY_ROOT pseudo)
-                     - LEVEL)) || pseudo AS "Droga sluzbowa"
+-- Wciecia jak w przykladzie. Staz liczony od biezacej daty; wynik z PDF
+-- daje zamiana TRUNC(SYSDATE) na DATE '2024-07-17'.
+SELECT LPAD(' ', 4 * (LEVEL - 1)) || pseudo AS "Droga sluzbowa"
 FROM kocury
 START WITH plec = 'M' AND w_stadku_od < ADD_MONTHS(TRUNC(SYSDATE), -180)
            AND COALESCE(myszy_extra, 0) = 0
 CONNECT BY PRIOR szef = pseudo
-ORDER BY CONNECT_BY_ROOT pseudo, LEVEL DESC;
+ORDER BY CONNECT_BY_ROOT pseudo, LEVEL;
 
 -- Zadanie 13a: trzy poziomy szefow wystarczaja dla danych z listy.
 SELECT k.imie AS "Imie", k.funkcja AS "Funkcja",
@@ -200,9 +200,10 @@ WHERE k.funkcja IN ('KOT', 'MILUSIA')
 ORDER BY k.imie;
 
 -- Zadanie 13b: pelna sciezka, bez stalego limitu liczby szefow.
--- Z poczatku sciezki usuwamy separator, imie kota i kolejny separator.
+-- Sciezka zaczyna sie od imienia kota; ucinamy ja do drugiego separatora.
 SELECT CONNECT_BY_ROOT imie AS "Imie", CONNECT_BY_ROOT funkcja AS "Funkcja",
-       SUBSTR(SYS_CONNECT_BY_PATH(imie, ' | '), LENGTH(CONNECT_BY_ROOT imie) + 7)
+       SUBSTR(SYS_CONNECT_BY_PATH(imie, ' | '),
+              INSTR(SYS_CONNECT_BY_PATH(imie, ' | '), ' | ', 1, 2) + 3)
          AS "Imiona kolejnych szefow"
 FROM kocury
 WHERE CONNECT_BY_ISLEAF = 1

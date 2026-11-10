@@ -1,0 +1,238 @@
+SELECT version(), CURRENT_DATE AS data_wykonania
+                                                         version                                                          | data_wykonania 
+--------------------------------------------------------------------------------------------------------------------------+----------------
+ PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit | 2026-11-10
+(1 row)
+
+-- Zadanie 4
+-- DISTINCT liczy koty, nie incydenty; pusta banda ma wynik 0.
+SELECT b.nazwa AS "Nazwa bandy", COUNT(DISTINCT w.pseudo) AS "Koty z wrogami"
+FROM bandy b
+LEFT JOIN kocury k ON k.nr_bandy = b.nr_bandy
+LEFT JOIN wrogowie_kocurow w ON w.pseudo = k.pseudo
+GROUP BY b.nr_bandy, b.nazwa
+ORDER BY b.nr_bandy;
+   Nazwa bandy   | Koty z wrogami 
+-----------------+----------------
+ SZEFOSTWO       |              3
+ CZARNI RYCERZE  |              5
+ BIALI LOWCY     |              3
+ LACIACI MYSLIWI |              4
+ ROCKERSI        |              0
+(5 rows)
+
+-- Zadanie 5: wiecej niz jeden wrog
+SELECT k.funkcja AS "Funkcja", k.pseudo AS "Pseudonim kota",
+       COUNT(*) AS "Liczba wrogow"
+FROM kocury k
+JOIN wrogowie_kocurow w ON w.pseudo = k.pseudo
+GROUP BY k.funkcja, k.pseudo
+HAVING COUNT(*) > 1
+ORDER BY k.pseudo;
+ Funkcja  | Pseudonim kota | Liczba wrogow 
+----------+----------------+---------------
+ DZIELCZY | BOLEK          |             2
+ MILUSIA  | LASKA          |             2
+ SZEFUNIO | TYGRYS         |             2
+(3 rows)
+
+-- Zadanie 5: jednoczesnie czlowiek i pies
+SELECT k.funkcja AS "Funkcja", k.pseudo AS "Pseudonim kota",
+       COUNT(*) AS "Liczba wrogow"
+FROM kocury k
+JOIN wrogowie_kocurow wk ON wk.pseudo = k.pseudo
+JOIN wrogowie w ON w.imie_wroga = wk.imie_wroga
+WHERE w.gatunek IN ('CZLOWIEK', 'PIES')
+GROUP BY k.funkcja, k.pseudo
+HAVING COUNT(DISTINCT w.gatunek) = 2
+ORDER BY k.pseudo;
+ Funkcja  | Pseudonim kota | Liczba wrogow 
+----------+----------------+---------------
+ DZIELCZY | BOLEK          |             2
+ MILUSIA  | LASKA          |             2
+ SZEFUNIO | TYGRYS         |             2
+(3 rows)
+
+-- Zadanie 6a
+SELECT b.nr_bandy AS "Nr bandy", b.nazwa AS "Nazwa", b.teren AS "Teren"
+FROM bandy b
+LEFT JOIN kocury k ON k.nr_bandy = b.nr_bandy
+WHERE k.pseudo IS NULL
+ORDER BY b.nr_bandy;
+ Nr bandy |  Nazwa   |  Teren  
+----------+----------+---------
+        5 | ROCKERSI | ZAGRODA
+(1 row)
+
+-- Zadanie 6b: EXCEPT zamiast Oracle'owego MINUS.
+SELECT nr_bandy AS "Nr bandy", nazwa AS "Nazwa", teren AS "Teren"
+FROM bandy
+EXCEPT
+SELECT b.nr_bandy, b.nazwa, b.teren
+FROM bandy b
+JOIN kocury k ON k.nr_bandy = b.nr_bandy
+ORDER BY 1;
+ Nr bandy |  Nazwa   |  Teren  
+----------+----------+---------
+        5 | ROCKERSI | ZAGRODA
+(1 row)
+
+-- Zadanie 7: prominenci i szaraki; remisy na minimum zostaja.
+-- IS NOT DISTINCT FROM porownuje NULL jak zwykla wartosc.
+SELECT pseudo AS "Pseudonim", przydzial_myszy AS "Zjada", nr_bandy AS "Banda",
+       'Prominent' AS "Typ",
+       CASE WHEN przydzial_myszy > 60 THEN 'powyzej 60'
+            ELSE 'ponizej 60' END AS "Ocena"
+FROM kocury
+WHERE przydzial_myszy > (SELECT AVG(przydzial_myszy) FROM kocury)
+UNION ALL
+SELECT k.pseudo, k.przydzial_myszy, k.nr_bandy, 'Szarak',
+       CASE WHEN k.przydzial_myszy > 60 THEN 'powyzej 60'
+            ELSE 'ponizej 60' END
+FROM kocury k
+WHERE k.przydzial_myszy IS NOT NULL
+  AND NOT EXISTS (
+    SELECT 1 FROM kocury m
+    WHERE m.nr_bandy IS NOT DISTINCT FROM k.nr_bandy
+      AND m.przydzial_myszy < k.przydzial_myszy
+  )
+ORDER BY 4, 3, 2 DESC, 1;
+ Pseudonim | Zjada | Banda |    Typ    |   Ocena    
+-----------+-------+-------+-----------+------------
+ TYGRYS    |   103 |     1 | Prominent | powyzej 60
+ LYSY      |    72 |     2 | Prominent | powyzej 60
+ PLACEK    |    67 |     2 | Prominent | powyzej 60
+ SZYBKA    |    65 |     2 | Prominent | powyzej 60
+ RURA      |    56 |     2 | Prominent | ponizej 60
+ ZOMBI     |    75 |     3 | Prominent | powyzej 60
+ KURKA     |    61 |     3 | Prominent | powyzej 60
+ RAFA      |    65 |     4 | Prominent | powyzej 60
+ MALA      |    22 |     1 | Szarak    | ponizej 60
+ LASKA     |    24 |     2 | Szarak    | ponizej 60
+ PUSZYSTA  |    20 |     3 | Szarak    | ponizej 60
+ MALY      |    40 |     4 | Szarak    | ponizej 60
+ UCHO      |    40 |     4 | Szarak    | ponizej 60
+(13 rows)
+
+-- Zadanie 7: NOT IN z NULL w kolumnie szef nie zwraca zadnego kota.
+SELECT pseudo AS "Nie sa niczyim szefem"
+FROM kocury
+WHERE pseudo NOT IN (SELECT szef FROM kocury)
+ORDER BY pseudo;
+ Nie sa niczyim szefem 
+-----------------------
+(0 rows)
+
+-- NOT EXISTS sprawdza tylko dopasowania, wiec NULL mu nie przeszkadza.
+SELECT k.pseudo AS "Nie sa niczyim szefem"
+FROM kocury k
+WHERE NOT EXISTS (SELECT 1 FROM kocury p WHERE p.szef = k.pseudo)
+ORDER BY k.pseudo;
+ Nie sa niczyim szefem 
+-----------------------
+ BOLEK
+ DAMA
+ LASKA
+ LOLA
+ MALA
+ MALY
+ MAN
+ PLACEK
+ PUSZYSTA
+ RURA
+ SZYBKA
+ UCHO
+ ZERO
+(13 rows)
+
+-- Odfiltrowanie NULL sprawia, ze NOT IN daje ten sam wynik co NOT EXISTS.
+SELECT pseudo AS "Nie sa niczyim szefem"
+FROM kocury
+WHERE pseudo NOT IN (SELECT szef FROM kocury WHERE szef IS NOT NULL)
+ORDER BY pseudo;
+ Nie sa niczyim szefem 
+-----------------------
+ BOLEK
+ DAMA
+ LASKA
+ LOLA
+ MALA
+ MALY
+ MAN
+ PLACEK
+ PUSZYSTA
+ RURA
+ SZYBKA
+ UCHO
+ ZERO
+(13 rows)
+
+-- Zadanie 8: bez sredniej calego stada w wyniku
+SELECT nr_bandy AS "Lepsze bandy",
+       ROUND(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)), 1)
+         AS "Sredni przydzial w bandzie"
+FROM kocury
+GROUP BY nr_bandy
+HAVING AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) >
+       (SELECT AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) FROM kocury)
+ORDER BY nr_bandy;
+ Lepsze bandy | Sredni przydzial w bandzie 
+--------------+----------------------------
+            1 |                       80.5
+            2 |                       66.6
+(2 rows)
+
+-- Zadanie 8: ze srednia calego stada w wyniku
+SELECT nr_bandy AS "Lepsze bandy",
+       ROUND(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)), 1)
+         AS "Sredni przydzial w bandzie",
+       (SELECT ROUND(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)), 1)
+        FROM kocury) AS "Sredni przydzial"
+FROM kocury
+GROUP BY nr_bandy
+HAVING AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) >
+       (SELECT AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) FROM kocury)
+ORDER BY nr_bandy;
+ Lepsze bandy | Sredni przydzial w bandzie | Sredni przydzial 
+--------------+----------------------------+------------------
+            1 |                       80.5 |             63.8
+            2 |                       66.6 |             63.8
+(2 rows)
+
+-- Zadanie 9: MONTH bez TM daje angielskie nazwy jak w przykladzie.
+SELECT TO_CHAR(w_stadku_od, 'FMMONTH') AS "Miesiac", COUNT(*) AS "Liczba rekrutow"
+FROM kocury
+WHERE w_stadku_od IS NOT NULL
+GROUP BY EXTRACT(MONTH FROM w_stadku_od), TO_CHAR(w_stadku_od, 'FMMONTH')
+ORDER BY EXTRACT(MONTH FROM w_stadku_od);
+  Miesiac  | Liczba rekrutow 
+-----------+-----------------
+ JANUARY   |               3
+ FEBRUARY  |               1
+ MARCH     |               2
+ MAY       |               2
+ JULY      |               2
+ AUGUST    |               1
+ SEPTEMBER |               2
+ OCTOBER   |               2
+ NOVEMBER  |               2
+ DECEMBER  |               1
+(10 rows)
+
+-- Zadanie 10: >= ALL zamiast MAX; CALOSC obejmuje tez sad.
+SELECT imie AS "Imie", funkcja AS "Funkcja", przydzial_myszy AS "Przydzial myszy"
+FROM kocury
+WHERE przydzial_myszy >= ALL (
+  SELECT 3 * k.przydzial_myszy
+  FROM kocury k
+  JOIN bandy b ON b.nr_bandy = k.nr_bandy
+  WHERE k.funkcja = 'MILUSIA' AND b.teren IN ('SAD', 'CALOSC')
+    AND k.przydzial_myszy IS NOT NULL
+)
+ORDER BY imie;
+  Imie   | Funkcja  | Przydzial myszy 
+---------+----------+-----------------
+ KOREK   | BANDZIOR |              75
+ MRUCZEK | SZEFUNIO |             103
+(2 rows)
+

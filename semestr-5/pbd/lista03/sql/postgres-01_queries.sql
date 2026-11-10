@@ -22,9 +22,9 @@ SELECT k.funkcja AS "Funkcja", k.pseudo AS "Pseudonim kota",
 FROM kocury k
 JOIN wrogowie_kocurow wk ON wk.pseudo = k.pseudo
 JOIN wrogowie w ON w.imie_wroga = wk.imie_wroga
+WHERE w.gatunek IN ('CZLOWIEK', 'PIES')
 GROUP BY k.funkcja, k.pseudo
-HAVING COUNT(CASE WHEN w.gatunek = 'CZLOWIEK' THEN 1 END) > 0
-   AND COUNT(CASE WHEN w.gatunek = 'PIES' THEN 1 END) > 0
+HAVING COUNT(DISTINCT w.gatunek) = 2
 ORDER BY k.pseudo;
 
 -- Zadanie 6a
@@ -44,6 +44,7 @@ JOIN kocury k ON k.nr_bandy = b.nr_bandy
 ORDER BY 1;
 
 -- Zadanie 7: prominenci i szaraki; remisy na minimum zostaja.
+-- IS NOT DISTINCT FROM porownuje NULL jak zwykla wartosc.
 SELECT pseudo AS "Pseudonim", przydzial_myszy AS "Zjada", nr_bandy AS "Banda",
        'Prominent' AS "Typ",
        CASE WHEN przydzial_myszy > 60 THEN 'powyzej 60'
@@ -58,7 +59,7 @@ FROM kocury k
 WHERE k.przydzial_myszy IS NOT NULL
   AND NOT EXISTS (
     SELECT 1 FROM kocury m
-    WHERE (m.nr_bandy = k.nr_bandy OR (m.nr_bandy IS NULL AND k.nr_bandy IS NULL))
+    WHERE m.nr_bandy IS NOT DISTINCT FROM k.nr_bandy
       AND m.przydzial_myszy < k.przydzial_myszy
   )
 ORDER BY 4, 3, 2 DESC, 1;

@@ -1,0 +1,478 @@
+BANNER_FULL
+------------------------------------------------------------------------------------------
+Oracle AI Database 26ai Free Release 23.26.3.0.0 - Develop, Learn, and Run for Free
+Version 23.26.3.0.0
+
+
+1 row selected.
+
+
+DATA_WYKON
+----------
+2026-11-10
+
+1 row selected.
+
+SQL> @@oracle-01_queries.sql
+SQL> -- Zadanie 1
+SQL> -- Kot bez incydentow nie ma wroga, wiec warunek imienia wroga dotyczy tylko
+SQL> -- kotow wczesniejszych od szefa - jak w przykladzie.
+SQL> SELECT DISTINCT k.imie AS "W stadku przed szefem lub bez incydentu",
+  2         CASE WHEN k.w_stadku_od < j.w_stadku_od THEN 'Tak'
+  3              ELSE 'Nie' END AS "Przed Jackiem"
+  4  FROM kocury k
+  5  LEFT JOIN kocury s ON s.pseudo = k.szef
+  6  LEFT JOIN wrogowie_kocurow w ON w.pseudo = k.pseudo
+  7  CROSS JOIN kocury j
+  8  WHERE j.imie = 'JACEK'
+  9    AND (k.w_stadku_od < s.w_stadku_od AND w.imie_wroga LIKE '%A'
+ 10         OR w.pseudo IS NULL)
+ 11  ORDER BY 1;
+
+W stadku przed szefem lub bez incydentu  Przed Jackiem
+---------------------------------------- -------------
+LUCEK                                    Nie
+MICKA                                    Nie
+PUCEK                                    Tak
+ZUZIA                                    Tak
+
+4 rows selected.
+
+SQL> 
+SQL> -- Zadanie 2
+SQL> -- Plec filtrujemy po zlaczeniu, wiec brak oznacza brak jakiegokolwiek
+SQL> -- przelozonego/podwladnego: kotki przy ZOMBI i ZERO nie daja wierszy "Brak".
+SQL> SELECT COALESCE(s.pseudo, 'Brak przelozonego') AS "Przelozony",
+  2         COALESCE(k.pseudo, 'Brak podwladnego') AS "Podwladny"
+  3  FROM kocury s
+  4  FULL JOIN kocury k ON k.szef = s.pseudo
+  5  WHERE (s.plec = 'M' OR s.pseudo IS NULL)
+  6    AND (k.plec = 'M' OR k.pseudo IS NULL)
+  7  ORDER BY 1, 2;
+
+Przelozony        Podwladny
+----------------- ----------------
+BOLEK             Brak podwladnego
+Brak przelozonego TYGRYS
+LYSY              PLACEK
+LYSY              RURA
+MALY              Brak podwladnego
+MAN               Brak podwladnego
+PLACEK            Brak podwladnego
+RAFA              MALY
+RAFA              MAN
+RURA              Brak podwladnego
+TYGRYS            BOLEK
+TYGRYS            LYSY
+TYGRYS            RAFA
+TYGRYS            ZOMBI
+ZERO              Brak podwladnego
+
+15 rows selected.
+
+SQL> 
+SQL> -- Zadanie 3
+SQL> -- Jak w przykladzie liczymy przydzial podstawowy, bez myszy_extra.
+SQL> -- Dzielenie przez liczbe wrogow usuwa powielenie sumy przez zlaczenie;
+SQL> -- klucz (pseudo, imie_wroga) gwarantuje, ze wrogowie kota sa rozni.
+SQL> SELECT k.pseudo, k.przydzial_myszy,
+  2         SUM(m.przydzial_myszy) / COUNT(DISTINCT w.imie_wroga) AS sum_w_bandzie,
+  3         ROUND(100 * k.przydzial_myszy * COUNT(DISTINCT w.imie_wroga)
+  4               / NULLIF(SUM(m.przydzial_myszy), 0)) AS proc_w_bandzie
+  5  FROM kocury k
+  6  JOIN bandy b ON b.nr_bandy = k.nr_bandy
+  7  JOIN kocury m ON m.nr_bandy = k.nr_bandy
+  8  JOIN wrogowie_kocurow wk ON wk.pseudo = k.pseudo
+  9  JOIN wrogowie w ON w.imie_wroga = wk.imie_wroga
+ 10  WHERE b.teren IN ('POLE', 'CALOSC')
+ 11    AND w.stopien_wrogosci BETWEEN 6 AND 10
+ 12  GROUP BY k.pseudo, k.przydzial_myszy
+ 13  ORDER BY k.pseudo;
+
+PSEUDO          PRZYDZIAL_MYSZY SUM_W_BANDZIE PROC_W_BANDZIE
+--------------- --------------- ------------- --------------
+BOLEK                        50           200             25
+LASKA                        24           284              8
+RURA                         56           284             20
+TYGRYS                      103           200             52
+
+4 rows selected.
+
+SQL> 
+SQL> -- Zadanie 4
+SQL> -- DISTINCT liczy koty, nie incydenty; pusta banda ma wynik 0.
+SQL> SELECT b.nazwa AS "Nazwa bandy", COUNT(DISTINCT w.pseudo) AS "Koty z wrogami"
+  2  FROM bandy b
+  3  LEFT JOIN kocury k ON k.nr_bandy = b.nr_bandy
+  4  LEFT JOIN wrogowie_kocurow w ON w.pseudo = k.pseudo
+  5  GROUP BY b.nr_bandy, b.nazwa
+  6  ORDER BY b.nr_bandy;
+
+Nazwa bandy          Koty z wrogami
+-------------------- --------------
+SZEFOSTWO                         3
+CZARNI RYCERZE                    5
+BIALI LOWCY                       3
+LACIACI MYSLIWI                   4
+ROCKERSI                          0
+
+5 rows selected.
+
+SQL> 
+SQL> -- Zadanie 5: wiecej niz jeden wrog
+SQL> SELECT k.funkcja AS "Funkcja", k.pseudo AS "Pseudonim kota",
+  2         COUNT(*) AS "Liczba wrogow"
+  3  FROM kocury k
+  4  JOIN wrogowie_kocurow w ON w.pseudo = k.pseudo
+  5  GROUP BY k.funkcja, k.pseudo
+  6  HAVING COUNT(*) > 1
+  7  ORDER BY k.pseudo;
+
+Funkcja    Pseudonim kota  Liczba wrogow
+---------- --------------- -------------
+DZIELCZY   BOLEK                       2
+MILUSIA    LASKA                       2
+SZEFUNIO   TYGRYS                      2
+
+3 rows selected.
+
+SQL> 
+SQL> -- Zadanie 5: jednoczesnie czlowiek i pies
+SQL> SELECT k.funkcja AS "Funkcja", k.pseudo AS "Pseudonim kota",
+  2         COUNT(*) AS "Liczba wrogow"
+  3  FROM kocury k
+  4  JOIN wrogowie_kocurow wk ON wk.pseudo = k.pseudo
+  5  JOIN wrogowie w ON w.imie_wroga = wk.imie_wroga
+  6  WHERE w.gatunek IN ('CZLOWIEK', 'PIES')
+  7  GROUP BY k.funkcja, k.pseudo
+  8  HAVING COUNT(DISTINCT w.gatunek) = 2
+  9  ORDER BY k.pseudo;
+
+Funkcja    Pseudonim kota  Liczba wrogow
+---------- --------------- -------------
+DZIELCZY   BOLEK                       2
+MILUSIA    LASKA                       2
+SZEFUNIO   TYGRYS                      2
+
+3 rows selected.
+
+SQL> 
+SQL> -- Zadanie 6a
+SQL> SELECT b.nr_bandy AS "Nr bandy", b.nazwa AS "Nazwa", b.teren AS "Teren"
+  2  FROM bandy b
+  3  LEFT JOIN kocury k ON k.nr_bandy = b.nr_bandy
+  4  WHERE k.pseudo IS NULL
+  5  ORDER BY b.nr_bandy;
+
+  Nr bandy Nazwa                Teren
+---------- -------------------- ---------------
+         5 ROCKERSI             ZAGRODA
+
+1 row selected.
+
+SQL> 
+SQL> -- Zadanie 6b
+SQL> SELECT nr_bandy AS "Nr bandy", nazwa AS "Nazwa", teren AS "Teren"
+  2  FROM bandy
+  3  MINUS
+  4  SELECT b.nr_bandy, b.nazwa, b.teren
+  5  FROM bandy b
+  6  JOIN kocury k ON k.nr_bandy = b.nr_bandy
+  7  ORDER BY 1;
+
+  Nr bandy Nazwa                Teren
+---------- -------------------- ---------------
+         5 ROCKERSI             ZAGRODA
+
+1 row selected.
+
+SQL> 
+SQL> -- Zadanie 7: prominenci i szaraki; remisy na minimum zostaja.
+SQL> -- DECODE porownuje NULL jak zwykla wartosc, wiec koty bez bandy tworza grupe.
+SQL> SELECT pseudo AS "Pseudonim", przydzial_myszy AS "Zjada", nr_bandy AS "Banda",
+  2         'Prominent' AS "Typ",
+  3         CASE WHEN przydzial_myszy > 60 THEN 'powyzej 60'
+  4              ELSE 'ponizej 60' END AS "Ocena"
+  5  FROM kocury
+  6  WHERE przydzial_myszy > (SELECT AVG(przydzial_myszy) FROM kocury)
+  7  UNION ALL
+  8  SELECT k.pseudo, k.przydzial_myszy, k.nr_bandy, 'Szarak',
+  9         CASE WHEN k.przydzial_myszy > 60 THEN 'powyzej 60'
+ 10              ELSE 'ponizej 60' END
+ 11  FROM kocury k
+ 12  WHERE k.przydzial_myszy IS NOT NULL
+ 13    AND NOT EXISTS (
+ 14      SELECT 1 FROM kocury m
+ 15      WHERE DECODE(m.nr_bandy, k.nr_bandy, 1) = 1
+ 16        AND m.przydzial_myszy < k.przydzial_myszy
+ 17    )
+ 18  ORDER BY 4, 3, 2 DESC, 1;
+
+Pseudonim            Zjada      Banda Typ       Ocena
+--------------- ---------- ---------- --------- ----------
+TYGRYS                 103          1 Prominent powyzej 60
+LYSY                    72          2 Prominent powyzej 60
+PLACEK                  67          2 Prominent powyzej 60
+SZYBKA                  65          2 Prominent powyzej 60
+RURA                    56          2 Prominent ponizej 60
+ZOMBI                   75          3 Prominent powyzej 60
+KURKA                   61          3 Prominent powyzej 60
+RAFA                    65          4 Prominent powyzej 60
+MALA                    22          1 Szarak    ponizej 60
+LASKA                   24          2 Szarak    ponizej 60
+PUSZYSTA                20          3 Szarak    ponizej 60
+MALY                    40          4 Szarak    ponizej 60
+UCHO                    40          4 Szarak    ponizej 60
+
+13 rows selected.
+
+SQL> 
+SQL> -- Zadanie 7: NOT IN z NULL w kolumnie szef nie zwraca zadnego kota.
+SQL> SELECT pseudo AS "Nie sa niczyim szefem"
+  2  FROM kocury
+  3  WHERE pseudo NOT IN (SELECT szef FROM kocury)
+  4  ORDER BY pseudo;
+
+no rows selected
+
+SQL> 
+SQL> -- NOT EXISTS sprawdza tylko dopasowania, wiec NULL mu nie przeszkadza.
+SQL> SELECT k.pseudo AS "Nie sa niczyim szefem"
+  2  FROM kocury k
+  3  WHERE NOT EXISTS (SELECT 1 FROM kocury p WHERE p.szef = k.pseudo)
+  4  ORDER BY k.pseudo;
+
+Nie sa niczyim szefem
+---------------------
+BOLEK
+DAMA
+LASKA
+LOLA
+MALA
+MALY
+MAN
+PLACEK
+PUSZYSTA
+RURA
+SZYBKA
+UCHO
+ZERO
+
+13 rows selected.
+
+SQL> 
+SQL> -- Odfiltrowanie NULL sprawia, ze NOT IN daje ten sam wynik co NOT EXISTS.
+SQL> SELECT pseudo AS "Nie sa niczyim szefem"
+  2  FROM kocury
+  3  WHERE pseudo NOT IN (SELECT szef FROM kocury WHERE szef IS NOT NULL)
+  4  ORDER BY pseudo;
+
+Nie sa niczyim szefem
+---------------------
+BOLEK
+DAMA
+LASKA
+LOLA
+MALA
+MALY
+MAN
+PLACEK
+PUSZYSTA
+RURA
+SZYBKA
+UCHO
+ZERO
+
+13 rows selected.
+
+SQL> 
+SQL> -- Zadanie 8: bez sredniej calego stada w wyniku
+SQL> SELECT nr_bandy AS "Lepsze bandy",
+  2         ROUND(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)), 1)
+  3           AS "Sredni przydzial w bandzie"
+  4  FROM kocury
+  5  GROUP BY nr_bandy
+  6  HAVING AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) >
+  7         (SELECT AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) FROM kocury)
+  8  ORDER BY nr_bandy;
+
+Lepsze bandy Sredni przydzial w bandzie
+------------ --------------------------
+           1                       80.5
+           2                       66.6
+
+2 rows selected.
+
+SQL> 
+SQL> -- Zadanie 8: ze srednia calego stada w wyniku
+SQL> SELECT nr_bandy AS "Lepsze bandy",
+  2         ROUND(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)), 1)
+  3           AS "Sredni przydzial w bandzie",
+  4         (SELECT ROUND(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)), 1)
+  5          FROM kocury) AS "Sredni przydzial"
+  6  FROM kocury
+  7  GROUP BY nr_bandy
+  8  HAVING AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) >
+  9         (SELECT AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) FROM kocury)
+ 10  ORDER BY nr_bandy;
+
+Lepsze bandy Sredni przydzial w bandzie Sredni przydzial
+------------ -------------------------- ----------------
+           1                       80.5             63.8
+           2                       66.6             63.8
+
+2 rows selected.
+
+SQL> 
+SQL> -- Zadanie 9: nazwy jak w przykladzie, niezaleznie od jezyka sesji.
+SQL> SELECT TO_CHAR(w_stadku_od, 'FMMONTH', 'NLS_DATE_LANGUAGE=ENGLISH') AS "Miesiac",
+  2         COUNT(*) AS "Liczba rekrutow"
+  3  FROM kocury
+  4  WHERE w_stadku_od IS NOT NULL
+  5  GROUP BY EXTRACT(MONTH FROM w_stadku_od),
+  6           TO_CHAR(w_stadku_od, 'FMMONTH', 'NLS_DATE_LANGUAGE=ENGLISH')
+  7  ORDER BY EXTRACT(MONTH FROM w_stadku_od);
+
+Miesiac    Liczba rekrutow
+---------- ---------------
+JANUARY                  3
+FEBRUARY                 1
+MARCH                    2
+MAY                      2
+JULY                     2
+AUGUST                   1
+SEPTEMBER                2
+OCTOBER                  2
+NOVEMBER                 2
+DECEMBER                 1
+
+10 rows selected.
+
+SQL> 
+SQL> -- Zadanie 10: >= ALL zamiast MAX; CALOSC obejmuje tez sad.
+SQL> SELECT imie AS "Imie", funkcja AS "Funkcja", przydzial_myszy AS "Przydzial myszy"
+  2  FROM kocury
+  3  WHERE przydzial_myszy >= ALL (
+  4    SELECT 3 * k.przydzial_myszy
+  5    FROM kocury k
+  6    JOIN bandy b ON b.nr_bandy = k.nr_bandy
+  7    WHERE k.funkcja = 'MILUSIA' AND b.teren IN ('SAD', 'CALOSC')
+  8      AND k.przydzial_myszy IS NOT NULL
+  9  )
+ 10  ORDER BY imie;
+
+Imie            Funkcja    Przydzial myszy
+--------------- ---------- ---------------
+KOREK           BANDZIOR                75
+MRUCZEK         SZEFUNIO               103
+
+2 rows selected.
+
+SQL> 
+SQL> -- Zadanie 11
+SQL> -- Plec filtrujemy po zbudowaniu drzewa: ZERO ma po drodze kotke KURKA.
+SQL> SELECT LEVEL AS "Poziom", pseudo AS "Pseudonim", funkcja AS "Funkcja",
+  2         nr_bandy AS "Nr bandy"
+  3  FROM kocury
+  4  WHERE plec = 'M'
+  5  START WITH plec = 'M' AND funkcja = 'BANDZIOR'
+  6  CONNECT BY PRIOR pseudo = szef
+  7  ORDER SIBLINGS BY pseudo;
+
+    Poziom Pseudonim       Funkcja      Nr bandy
+---------- --------------- ---------- ----------
+         1 LYSY            BANDZIOR            2
+         2 PLACEK          LOWCZY              2
+         2 RURA            LAPACZ              2
+         1 ZOMBI           BANDZIOR            3
+         3 ZERO            KOT                 3
+
+5 rows selected.
+
+SQL> 
+SQL> -- Zadanie 12
+SQL> -- Wciecia jak w przykladzie. Staz liczony od biezacej daty; wynik z PDF
+SQL> -- daje zamiana TRUNC(SYSDATE) na DATE '2024-07-17'.
+SQL> SELECT LPAD(' ', 4 * (LEVEL - 1)) || pseudo AS "Droga sluzbowa"
+  2  FROM kocury
+  3  START WITH plec = 'M' AND w_stadku_od < ADD_MONTHS(TRUNC(SYSDATE), -180)
+  4             AND COALESCE(myszy_extra, 0) = 0
+  5  CONNECT BY PRIOR szef = pseudo
+  6  ORDER BY CONNECT_BY_ROOT pseudo, LEVEL;
+
+Droga sluzbowa
+------------------------------
+BOLEK
+    TYGRYS
+MALY
+    RAFA
+        TYGRYS
+MAN
+    RAFA
+        TYGRYS
+PLACEK
+    LYSY
+        TYGRYS
+RAFA
+    TYGRYS
+RURA
+    LYSY
+        TYGRYS
+ZERO
+    KURKA
+        ZOMBI
+            TYGRYS
+
+20 rows selected.
+
+SQL> 
+SQL> -- Zadanie 13a: trzy poziomy szefow wystarczaja dla danych z listy.
+SQL> SELECT k.imie AS "Imie", k.funkcja AS "Funkcja",
+  2         s1.imie AS "Szef 1", s2.imie AS "Szef 2", s3.imie AS "Szef 3"
+  3  FROM kocury k
+  4  LEFT JOIN kocury s1 ON s1.pseudo = k.szef
+  5  LEFT JOIN kocury s2 ON s2.pseudo = s1.szef
+  6  LEFT JOIN kocury s3 ON s3.pseudo = s2.szef
+  7  WHERE k.funkcja IN ('KOT', 'MILUSIA')
+  8  ORDER BY k.imie;
+
+Imie            Funkcja    Szef 1          Szef 2          Szef 3
+--------------- ---------- --------------- --------------- ---------------
+BELA            MILUSIA    BOLEK           MRUCZEK
+DUDEK           KOT        PUCEK           MRUCZEK
+LATKA           KOT        PUCEK           MRUCZEK
+LUCEK           KOT        PUNIA           KOREK           MRUCZEK
+MICKA           MILUSIA    MRUCZEK
+RUDA            MILUSIA    MRUCZEK
+SONIA           MILUSIA    KOREK           MRUCZEK
+
+7 rows selected.
+
+SQL> 
+SQL> -- Zadanie 13b: pelna sciezka, bez stalego limitu liczby szefow.
+SQL> -- Sciezka zaczyna sie od imienia kota; ucinamy ja do drugiego separatora.
+SQL> SELECT CONNECT_BY_ROOT imie AS "Imie", CONNECT_BY_ROOT funkcja AS "Funkcja",
+  2         SUBSTR(SYS_CONNECT_BY_PATH(imie, ' | '),
+  3                INSTR(SYS_CONNECT_BY_PATH(imie, ' | '), ' | ', 1, 2) + 3)
+  4           AS "Imiona kolejnych szefow"
+  5  FROM kocury
+  6  WHERE CONNECT_BY_ISLEAF = 1
+  7  START WITH funkcja IN ('KOT', 'MILUSIA')
+  8  CONNECT BY PRIOR szef = pseudo
+  9  ORDER BY 1;
+
+Imie            Funkcja    Imiona kolejnych szefow
+--------------- ---------- ----------------------------------------
+BELA            MILUSIA    BOLEK | MRUCZEK
+DUDEK           KOT        PUCEK | MRUCZEK
+LATKA           KOT        PUCEK | MRUCZEK
+LUCEK           KOT        PUNIA | KOREK | MRUCZEK
+MICKA           MILUSIA    MRUCZEK
+RUDA            MILUSIA    MRUCZEK
+SONIA           MILUSIA    KOREK | MRUCZEK
+
+7 rows selected.
+
+SQL> SET ECHO OFF
+Disconnected from Oracle AI Database 26ai Free Release 23.26.3.0.0 - Develop, Learn, and Run for Free
+Version 23.26.3.0.0
