@@ -1,8 +1,15 @@
+#include <LiquidCrystal_I2C.h>
+
 #define RED_BUTTON 2
 #define GREEN_BUTTON 4
 
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
 void setup()
 {
+  lcd.init();
+  lcd.clear();
+
   pinMode(RED_BUTTON, INPUT_PULLUP);
   pinMode(GREEN_BUTTON, INPUT_PULLUP);
 
