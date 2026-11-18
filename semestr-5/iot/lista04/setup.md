@@ -9,4 +9,4 @@ Serial Monitor line ending: "New Line".
 Baud rates:
 
 - zad1: 2000000
-- zad2, zad4: 9600
+- zad2, zad3_4: 9600

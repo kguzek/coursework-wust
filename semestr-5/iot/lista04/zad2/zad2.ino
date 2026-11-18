@@ -31,18 +31,41 @@ void loop()
     String command = Serial.readStringUntil('\n');
     command.trim();
 
+    bool valid = true;
+    int digits = 0;
+    for (unsigned int i = 0; i < command.length(); i++)
+    {
+      char c = command[i];
+      if (isDigit(c))
+        digits++;
+      else if (c == ' ')
+        digits = 0;
+      else
+        valid = false;
+
+      if (digits > 3)
+        valid = false;
+    }
+
     int values[3];
-    if (sscanf(command.c_str(), "%d %d %d", &values[0], &values[1], &values[2]) != 3)
+    int end = 0;
+    if (!valid || sscanf(command.c_str(), "%d %d %d%n", &values[0], &values[1], &values[2], &end) != 3 || end != (int)command.length())
+      valid = false;
+
+    for (int i = 0; valid && i < 3; i++)
+    {
+      if (values[i] > 255)
+        valid = false;
+    }
+
+    if (!valid)
     {
       Serial.println("Usage: <red> <green> <blue> (0-255)");
       return;
     }
 
     for (int i = 0; i < 3; i++)
-    {
-      values[i] = constrain(values[i], 0, 255);
       analogWrite(leds[i], values[i]);
-    }
 
     Serial.println(String("RGB ") + values[0] + " " + values[1] + " " + values[2]);
   }
