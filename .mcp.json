@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "utm": {
+      "type": "stdio",
+      "command": "${HOME}/.local/bin/uv",
+      "args": ["--directory", "${HOME}/repos/clones/utm_mcp", "run", "utm-mcp"]
+    }
+  }
+}
