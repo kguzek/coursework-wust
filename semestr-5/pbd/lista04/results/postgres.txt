@@ -1,0 +1,417 @@
+SELECT version(), CURRENT_DATE AS data_wykonania;
+                                                         version                                                          | data_wykonania 
+--------------------------------------------------------------------------------------------------------------------------+----------------
+ PostgreSQL 18.7 (Debian 18.7-1.pgdg13+5) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit | 2026-11-24
+(1 row)
+
+SELECT k.funkcja AS "FUNKCJA",
+       SUM(CASE WHEN b.nazwa = 'CZARNI RYCERZE'
+                THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) END)
+         AS "Banda CZARNI RYCERZE",
+       SUM(CASE WHEN b.nazwa = 'BIALI LOWCY'
+                THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) END)
+         AS "Banda BIALI LOWCY"
+FROM kocury k
+LEFT JOIN bandy b ON b.nr_bandy = k.nr_bandy
+WHERE k.funkcja <> 'SZEFUNIO'
+GROUP BY k.funkcja
+ORDER BY k.funkcja;
+ FUNKCJA  | Banda CZARNI RYCERZE | Banda BIALI LOWCY 
+----------+----------------------+-------------------
+ BANDZIOR |                   93 |                88
+ DZIELCZY |                      |                  
+ KOT      |                      |                43
+ LAPACZ   |                   56 |                  
+ LOWCZY   |                  132 |                61
+ MILUSIA  |                   52 |                55
+(6 rows)
+
+SELECT k.funkcja AS "FUNKCJA", k.plec AS "P",
+       SUM(CASE WHEN b.nazwa = 'CZARNI RYCERZE'
+                THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) END)
+         AS "Banda CZARNI RYCERZE",
+       SUM(CASE WHEN b.nazwa = 'CZARNI RYCERZE' THEN 1 END) AS "Ile",
+       SUM(CASE WHEN b.nazwa = 'BIALI LOWCY'
+                THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) END)
+         AS "Banda BIALI LOWCY",
+       SUM(CASE WHEN b.nazwa = 'BIALI LOWCY' THEN 1 END) AS "Ile"
+FROM kocury k
+LEFT JOIN bandy b ON b.nr_bandy = k.nr_bandy
+WHERE k.funkcja <> 'SZEFUNIO'
+GROUP BY k.funkcja, k.plec
+ORDER BY k.funkcja, k.plec;
+ FUNKCJA  | P | Banda CZARNI RYCERZE | Ile | Banda BIALI LOWCY | Ile 
+----------+---+----------------------+-----+-------------------+-----
+ BANDZIOR | M |                   93 |   1 |                88 |   1
+ DZIELCZY | M |                      |     |                   |    
+ KOT      | D |                      |     |                   |    
+ KOT      | M |                      |     |                43 |   1
+ LAPACZ   | D |                      |     |                   |    
+ LAPACZ   | M |                   56 |   1 |                   |    
+ LOWCZY   | D |                   65 |   1 |                61 |   1
+ LOWCZY   | M |                   67 |   1 |                   |    
+ MILUSIA  | D |                   52 |   1 |                55 |   1
+(9 rows)
+
+SELECT f.funkcja AS "FUNKCJA", COUNT(k.pseudo) AS "KOTY",
+       COALESCE(SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)), 0) AS "RAZEM",
+       ROUND(AVG(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)), 4) AS "SREDNIA"
+FROM funkcje f
+LEFT JOIN kocury k ON k.funkcja = f.funkcja
+GROUP BY f.funkcja
+ORDER BY f.funkcja;
+ FUNKCJA  | KOTY | RAZEM | SREDNIA  
+----------+------+-------+----------
+ BANDZIOR |    2 |   181 |  90.5000
+ DZIELCZY |    1 |    50 |  50.0000
+ HONOROWA |    0 |     0 |         
+ KOT      |    3 |   123 |  41.0000
+ LAPACZ   |    3 |   158 |  52.6667
+ LOWCZY   |    4 |   258 |  64.5000
+ MILUSIA  |    4 |   243 |  60.7500
+ SZEFUNIO |    1 |   136 | 136.0000
+(8 rows)
+
+SELECT f.funkcja AS "FUNKCJA", COUNT(*) AS "KOTY",
+       SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)) AS "RAZEM"
+FROM funkcje f
+JOIN kocury k ON k.funkcja = f.funkcja
+GROUP BY f.funkcja
+ORDER BY f.funkcja;
+ FUNKCJA  | KOTY | RAZEM 
+----------+------+-------
+ BANDZIOR |    2 |   181
+ DZIELCZY |    1 |    50
+ KOT      |    3 |   123
+ LAPACZ   |    3 |   158
+ LOWCZY   |    4 |   258
+ MILUSIA  |    4 |   243
+ SZEFUNIO |    1 |   136
+(7 rows)
+
+SELECT f.funkcja AS "FUNKCJA", COUNT(*) AS "KOTY",
+       SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)) AS "RAZEM"
+FROM funkcje f
+LEFT JOIN kocury k ON k.funkcja = f.funkcja
+GROUP BY f.funkcja
+ORDER BY f.funkcja;
+ FUNKCJA  | KOTY | RAZEM 
+----------+------+-------
+ BANDZIOR |    2 |   181
+ DZIELCZY |    1 |    50
+ HONOROWA |    1 |      
+ KOT      |    3 |   123
+ LAPACZ   |    3 |   158
+ LOWCZY   |    4 |   258
+ MILUSIA  |    4 |   243
+ SZEFUNIO |    1 |   136
+(8 rows)
+
+SELECT k.imie AS "IMIE", k.w_stadku_od AS "POLUJE OD"
+FROM kocury k
+JOIN kocury j ON j.imie = 'JACEK' AND k.w_stadku_od < j.w_stadku_od
+ORDER BY k.w_stadku_od DESC;
+  IMIE   | POLUJE OD  
+---------+------------
+ MELA    | 2008-11-01
+ KSAWERY | 2008-07-12
+ BELA    | 2008-02-01
+ PUNIA   | 2008-01-01
+ PUCEK   | 2006-10-15
+ RUDA    | 2006-09-17
+ BOLEK   | 2006-08-15
+ ZUZIA   | 2006-07-21
+ KOREK   | 2004-03-16
+ CHYTRY  | 2002-05-05
+ MRUCZEK | 2002-01-01
+(11 rows)
+
+SELECT nr_bandy AS "NR_BANDY", nazwa AS "NAZWA", pseudo AS "PSEUDO",
+       zjada AS "ZJADA"
+FROM (
+  SELECT b.nr_bandy, b.nazwa, k.pseudo,
+         k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS zjada,
+         ROW_NUMBER() OVER (
+           PARTITION BY b.nr_bandy
+           ORDER BY k.przydzial_myszy + COALESCE(k.myszy_extra, 0) DESC, k.pseudo
+         ) AS miejsce
+  FROM bandy b
+  LEFT JOIN kocury k ON k.nr_bandy = b.nr_bandy
+) AS r
+WHERE miejsce <= 2
+ORDER BY nr_bandy, miejsce;
+ NR_BANDY |      NAZWA      | PSEUDO | ZJADA 
+----------+-----------------+--------+-------
+        1 | SZEFOSTWO       | TYGRYS |   136
+        1 | SZEFOSTWO       | LOLA   |    72
+        2 | CZARNI RYCERZE  | LYSY   |    93
+        2 | CZARNI RYCERZE  | PLACEK |    67
+        3 | BIALI LOWCY     | ZOMBI  |    88
+        3 | BIALI LOWCY     | KURKA  |    61
+        4 | LACIACI MYSLIWI | RAFA   |    65
+        4 | LACIACI MYSLIWI | DAMA   |    51
+        5 | ROCKERSI        |        |      
+(9 rows)
+
+SELECT funkcja AS "FUNKCJA", pseudo AS "PSEUDO", zjada AS "ZJADA",
+       CASE WHEN zjada > max_myszy THEN 'POWYZEJ WIDELEK'
+            WHEN zjada < min_myszy THEN 'PONIZEJ WIDELEK'
+            WHEN zjada IS NOT NULL THEN 'W WIDELKACH' END AS "OCENA"
+FROM (
+  SELECT f.funkcja, f.min_myszy, f.max_myszy, k.pseudo,
+         k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS zjada,
+         RANK() OVER (
+           PARTITION BY f.funkcja
+           ORDER BY k.przydzial_myszy + COALESCE(k.myszy_extra, 0) DESC
+         ) AS miejsce
+  FROM funkcje f
+  LEFT JOIN kocury k ON k.funkcja = f.funkcja
+) AS r
+WHERE miejsce = 1
+ORDER BY funkcja;
+ FUNKCJA  | PSEUDO | ZJADA |      OCENA      
+----------+--------+-------+-----------------
+ BANDZIOR | LYSY   |    93 | POWYZEJ WIDELEK
+ DZIELCZY | BOLEK  |    50 | W WIDELKACH
+ HONOROWA |        |       | 
+ KOT      | ZERO   |    43 | W WIDELKACH
+ LAPACZ   | RURA   |    56 | W WIDELKACH
+ LOWCZY   | PLACEK |    67 | W WIDELKACH
+ MILUSIA  | LOLA   |    72 | POWYZEJ WIDELEK
+ SZEFUNIO | TYGRYS |   136 | POWYZEJ WIDELEK
+(8 rows)
+
+WITH lata AS (
+  SELECT EXTRACT(YEAR FROM w_stadku_od) AS rok, COUNT(*) AS liczba
+  FROM kocury
+  WHERE w_stadku_od IS NOT NULL
+  GROUP BY EXTRACT(YEAR FROM w_stadku_od)
+)
+SELECT rok AS "ROK", liczba AS "LICZBA WSTAPIEN"
+FROM (
+  SELECT 1 AS kolejnosc, CAST(rok AS text) AS rok, liczba
+  FROM lata
+  WHERE liczba = (SELECT MAX(liczba) FROM lata
+                  WHERE liczba <= (SELECT AVG(liczba) FROM lata))
+  UNION ALL
+  SELECT 2, 'Srednia', ROUND(AVG(liczba), 7) FROM lata
+  UNION ALL
+  SELECT 3, CAST(rok AS text), liczba
+  FROM lata
+  WHERE liczba = (SELECT MIN(liczba) FROM lata
+                  WHERE liczba > (SELECT AVG(liczba) FROM lata))
+) AS r
+ORDER BY kolejnosc, rok;
+   ROK   | LICZBA WSTAPIEN 
+---------+-----------------
+ 2002    |               2
+ 2009    |               2
+ 2010    |               2
+ 2011    |               2
+ Srednia |       2.5714286
+ 2006    |               4
+(6 rows)
+
+SELECT k.imie AS "IMIE", k.w_stadku_od AS "WSTAPIL DO STADKA",
+       '<--- NAJSTARSZY STAZEM W BANDZIE ' || b.nazwa AS " "
+FROM kocury k
+JOIN bandy b ON b.nr_bandy = k.nr_bandy
+WHERE k.w_stadku_od = (SELECT MIN(m.w_stadku_od) FROM kocury m
+                       WHERE m.nr_bandy = k.nr_bandy)
+UNION ALL
+SELECT k.imie, k.w_stadku_od, '<--- NAJMLODSZY STAZEM W BANDZIE ' || b.nazwa
+FROM kocury k
+JOIN bandy b ON b.nr_bandy = k.nr_bandy
+WHERE k.w_stadku_od = (SELECT MAX(m.w_stadku_od) FROM kocury m
+                       WHERE m.nr_bandy = k.nr_bandy)
+UNION ALL
+(
+  SELECT imie, w_stadku_od, ' ' FROM kocury
+  EXCEPT
+  SELECT k.imie, k.w_stadku_od, ' '
+  FROM kocury k
+  WHERE k.w_stadku_od IN (SELECT MIN(m.w_stadku_od) FROM kocury m
+                          WHERE m.nr_bandy = k.nr_bandy
+                          UNION
+                          SELECT MAX(m.w_stadku_od) FROM kocury m
+                          WHERE m.nr_bandy = k.nr_bandy)
+)
+ORDER BY 1;
+  IMIE   | WSTAPIL DO STADKA |                                                  
+---------+-------------------+--------------------------------------------------
+ BARI    | 2009-09-01        | <--- NAJMLODSZY STAZEM W BANDZIE CZARNI RYCERZE
+ BELA    | 2008-02-01        |  
+ BOLEK   | 2006-08-15        |  
+ CHYTRY  | 2002-05-05        |  
+ DUDEK   | 2011-05-15        | <--- NAJMLODSZY STAZEM W BANDZIE LACIACI MYSLIWI
+ JACEK   | 2008-12-01        |  
+ KOREK   | 2004-03-16        | <--- NAJSTARSZY STAZEM W BANDZIE BIALI LOWCY
+ KSAWERY | 2008-07-12        |  
+ LATKA   | 2011-01-01        |  
+ LUCEK   | 2010-03-01        |  
+ MELA    | 2008-11-01        |  
+ MICKA   | 2009-10-14        | <--- NAJMLODSZY STAZEM W BANDZIE SZEFOSTWO
+ MRUCZEK | 2002-01-01        | <--- NAJSTARSZY STAZEM W BANDZIE SZEFOSTWO
+ PUCEK   | 2006-10-15        | <--- NAJSTARSZY STAZEM W BANDZIE LACIACI MYSLIWI
+ PUNIA   | 2008-01-01        |  
+ RUDA    | 2006-09-17        |  
+ SONIA   | 2010-11-18        | <--- NAJMLODSZY STAZEM W BANDZIE BIALI LOWCY
+ ZUZIA   | 2006-07-21        | <--- NAJSTARSZY STAZEM W BANDZIE CZARNI RYCERZE
+(18 rows)
+
+SELECT k.pseudo AS "Do przeczolgania", b.nazwa AS "Nazwa bandy"
+FROM kocury k
+JOIN funkcje f ON f.funkcja = k.funkcja
+LEFT JOIN bandy b ON b.nr_bandy = k.nr_bandy
+WHERE NOT EXISTS (SELECT 1 FROM kocury p WHERE p.szef = k.pseudo)
+  AND EXISTS (SELECT 1 FROM wrogowie_kocurow w WHERE w.pseudo = k.pseudo)
+  AND k.przydzial_myszy >= f.min_myszy + (f.max_myszy - f.min_myszy) / 3
+ORDER BY b.nazwa, k.pseudo;
+ Do przeczolgania |  Nazwa bandy   
+------------------+----------------
+ LASKA            | CZARNI RYCERZE
+ PLACEK           | CZARNI RYCERZE
+ RURA             | CZARNI RYCERZE
+ SZYBKA           | CZARNI RYCERZE
+ BOLEK            | SZEFOSTWO
+(5 rows)
+
+SELECT funkcja AS "Funkcja",
+       ROUND(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)))
+         AS "Srednio najw. i najm. myszy"
+FROM kocury
+WHERE funkcja <> 'SZEFUNIO'
+GROUP BY funkcja
+HAVING AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) IN (
+         (SELECT MAX(srednia) FROM (
+            SELECT AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) AS srednia
+            FROM kocury WHERE funkcja <> 'SZEFUNIO' GROUP BY funkcja) AS s),
+         (SELECT MIN(srednia) FROM (
+            SELECT AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) AS srednia
+            FROM kocury WHERE funkcja <> 'SZEFUNIO' GROUP BY funkcja) AS s))
+ORDER BY 2;
+ Funkcja  | Srednio najw. i najm. myszy 
+----------+-----------------------------
+ KOT      |                          41
+ BANDZIOR |                          91
+(2 rows)
+
+SELECT k.imie AS "IMIE", k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS "ZJADA",
+       k.nr_bandy AS "NR BANDY",
+       ROUND(AVG(m.przydzial_myszy + COALESCE(m.myszy_extra, 0)), 2) AS "SREDNIA BANDY"
+FROM kocury k
+JOIN kocury m ON m.nr_bandy = k.nr_bandy
+WHERE k.plec = 'M'
+GROUP BY k.pseudo, k.imie, k.przydzial_myszy, k.myszy_extra, k.nr_bandy
+HAVING k.przydzial_myszy + COALESCE(k.myszy_extra, 0)
+       <= AVG(m.przydzial_myszy + COALESCE(m.myszy_extra, 0))
+ORDER BY k.nr_bandy DESC;
+  IMIE  | ZJADA | NR BANDY | SREDNIA BANDY 
+--------+-------+----------+---------------
+ DUDEK  |    40 |        4 |         49.40
+ LUCEK  |    43 |        3 |         61.75
+ BARI   |    56 |        2 |         66.60
+ CHYTRY |    50 |        1 |         80.50
+(4 rows)
+
+SELECT k.imie AS "IMIE", k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS "ZJADA",
+       k.nr_bandy AS "NR BANDY", ROUND(s.srednia, 2) AS "SREDNIA BANDY"
+FROM kocury k
+JOIN (SELECT nr_bandy, AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) AS srednia
+      FROM kocury
+      GROUP BY nr_bandy) AS s ON s.nr_bandy = k.nr_bandy
+WHERE k.plec = 'M'
+  AND k.przydzial_myszy + COALESCE(k.myszy_extra, 0) <= s.srednia
+ORDER BY k.nr_bandy DESC;
+  IMIE  | ZJADA | NR BANDY | SREDNIA BANDY 
+--------+-------+----------+---------------
+ DUDEK  |    40 |        4 |         49.40
+ LUCEK  |    43 |        3 |         61.75
+ BARI   |    56 |        2 |         66.60
+ CHYTRY |    50 |        1 |         80.50
+(4 rows)
+
+SELECT k.imie AS "IMIE", k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS "ZJADA",
+       k.nr_bandy AS "NR BANDY",
+       (SELECT ROUND(AVG(m.przydzial_myszy + COALESCE(m.myszy_extra, 0)), 2)
+        FROM kocury m WHERE m.nr_bandy = k.nr_bandy) AS "SREDNIA BANDY"
+FROM kocury k
+WHERE k.plec = 'M'
+  AND k.przydzial_myszy + COALESCE(k.myszy_extra, 0) <=
+      (SELECT AVG(m.przydzial_myszy + COALESCE(m.myszy_extra, 0))
+       FROM kocury m WHERE m.nr_bandy = k.nr_bandy)
+ORDER BY k.nr_bandy DESC;
+  IMIE  | ZJADA | NR BANDY | SREDNIA BANDY 
+--------+-------+----------+---------------
+ DUDEK  |    40 |        4 |         49.40
+ LUCEK  |    43 |        3 |         61.75
+ BARI   |    56 |        2 |         66.60
+ CHYTRY |    50 |        1 |         80.50
+(4 rows)
+
+SELECT b.nazwa AS "NAZWA BANDY",
+       CASE k.plec WHEN 'D' THEN 'Kotka' ELSE 'Kocor' END AS "PLEC",
+       COUNT(*) AS "ILE",
+       SUM(CASE k.funkcja WHEN 'SZEFUNIO' THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) ELSE 0 END) AS "SZEFUNIO",
+       SUM(CASE k.funkcja WHEN 'BANDZIOR' THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) ELSE 0 END) AS "BANDZIOR",
+       SUM(CASE k.funkcja WHEN 'LOWCZY' THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) ELSE 0 END) AS "LOWCZY",
+       SUM(CASE k.funkcja WHEN 'LAPACZ' THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) ELSE 0 END) AS "LAPACZ",
+       SUM(CASE k.funkcja WHEN 'KOT' THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) ELSE 0 END) AS "KOT",
+       SUM(CASE k.funkcja WHEN 'MILUSIA' THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) ELSE 0 END) AS "MILUSIA",
+       SUM(CASE k.funkcja WHEN 'DZIELCZY' THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) ELSE 0 END) AS "DZIELCZY",
+       SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)) AS "SUMA"
+FROM kocury k
+JOIN bandy b ON b.nr_bandy = k.nr_bandy
+GROUP BY b.nazwa, k.plec
+ORDER BY b.nazwa, k.plec;
+   NAZWA BANDY   | PLEC  | ILE | SZEFUNIO | BANDZIOR | LOWCZY | LAPACZ | KOT | MILUSIA | DZIELCZY | SUMA 
+-----------------+-------+-----+----------+----------+--------+--------+-----+---------+----------+------
+ BIALI LOWCY     | Kotka |   2 |        0 |        0 |     61 |      0 |   0 |      55 |        0 |  116
+ BIALI LOWCY     | Kocor |   2 |        0 |       88 |      0 |      0 |  43 |       0 |        0 |  131
+ CZARNI RYCERZE  | Kotka |   2 |        0 |        0 |     65 |      0 |   0 |      52 |        0 |  117
+ CZARNI RYCERZE  | Kocor |   3 |        0 |       93 |     67 |     56 |   0 |       0 |        0 |  216
+ LACIACI MYSLIWI | Kotka |   2 |        0 |        0 |      0 |     51 |  40 |       0 |        0 |   91
+ LACIACI MYSLIWI | Kocor |   3 |        0 |        0 |     65 |     51 |  40 |       0 |        0 |  156
+ SZEFOSTWO       | Kotka |   2 |        0 |        0 |      0 |      0 |   0 |     136 |        0 |  136
+ SZEFOSTWO       | Kocor |   2 |      136 |        0 |      0 |      0 |   0 |       0 |       50 |  186
+(8 rows)
+
+CREATE EXTENSION IF NOT EXISTS tablefunc;
+NOTICE:  extension "tablefunc" already exists, skipping
+CREATE EXTENSION
+SELECT nazwa AS "NAZWA BANDY",
+       CASE p WHEN 'D' THEN 'Kotka' ELSE 'Kocor' END AS "PLEC",
+       ile AS "ILE",
+       COALESCE(szefunio, 0) AS "SZEFUNIO", COALESCE(bandzior, 0) AS "BANDZIOR",
+       COALESCE(lowczy, 0) AS "LOWCZY", COALESCE(lapacz, 0) AS "LAPACZ",
+       COALESCE(kot, 0) AS "KOT", COALESCE(milusia, 0) AS "MILUSIA",
+       COALESCE(dzielczy, 0) AS "DZIELCZY", suma AS "SUMA"
+FROM crosstab(
+  $$SELECT b.nazwa || '/' || k.plec, b.nazwa::text, k.plec::text AS p,
+           SUM(COUNT(*)) OVER w,
+           SUM(SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0))) OVER w,
+           k.funkcja::text,
+           SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0))
+    FROM kocury k
+    JOIN bandy b ON b.nr_bandy = k.nr_bandy
+    GROUP BY b.nazwa, k.plec, k.funkcja
+    WINDOW w AS (PARTITION BY b.nazwa, k.plec)
+    ORDER BY 1$$,
+  $$VALUES ('SZEFUNIO'), ('BANDZIOR'), ('LOWCZY'), ('LAPACZ'), ('KOT'),
+           ('MILUSIA'), ('DZIELCZY')$$
+) AS ct(klucz text, nazwa text, p text, ile numeric, suma numeric,
+        szefunio numeric, bandzior numeric, lowczy numeric, lapacz numeric,
+        kot numeric, milusia numeric, dzielczy numeric)
+ORDER BY nazwa, p;
+   NAZWA BANDY   | PLEC  | ILE | SZEFUNIO | BANDZIOR | LOWCZY | LAPACZ | KOT | MILUSIA | DZIELCZY | SUMA 
+-----------------+-------+-----+----------+----------+--------+--------+-----+---------+----------+------
+ BIALI LOWCY     | Kotka |   2 |        0 |        0 |     61 |      0 |   0 |      55 |        0 |  116
+ BIALI LOWCY     | Kocor |   2 |        0 |       88 |      0 |      0 |  43 |       0 |        0 |  131
+ CZARNI RYCERZE  | Kotka |   2 |        0 |        0 |     65 |      0 |   0 |      52 |        0 |  117
+ CZARNI RYCERZE  | Kocor |   3 |        0 |       93 |     67 |     56 |   0 |       0 |        0 |  216
+ LACIACI MYSLIWI | Kotka |   2 |        0 |        0 |      0 |     51 |  40 |       0 |        0 |   91
+ LACIACI MYSLIWI | Kocor |   3 |        0 |        0 |     65 |     51 |  40 |       0 |        0 |  156
+ SZEFOSTWO       | Kotka |   2 |        0 |        0 |      0 |      0 |   0 |     136 |        0 |  136
+ SZEFOSTWO       | Kocor |   2 |      136 |        0 |      0 |      0 |   0 |       0 |       50 |  186
+(8 rows)
+

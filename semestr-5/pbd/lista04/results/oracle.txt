@@ -1,0 +1,514 @@
+BANNER_FULL
+------------------------------------------------------------------------------------------
+Oracle AI Database 26ai Free Release 23.26.4.0.0 - Develop, Learn, and Run for Free
+Version 23.26.4.0.0
+
+
+1 row selected.
+
+
+DATA_WYKON
+----------
+2026-11-24
+
+1 row selected.
+
+SQL> @@oracle-01_queries.sql
+SQL> -- Zadanie 1
+SQL> -- Calkowity przydzial uwzglednia myszy_extra; brak dodatku to NULL.
+SQL> -- Funkcje bez kotow z obu band (DZIELCZY) zostaja z pustymi wartosciami.
+SQL> SELECT k.funkcja AS "FUNKCJA",
+  2         SUM(CASE WHEN b.nazwa = 'CZARNI RYCERZE'
+  3                  THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) END)
+  4           AS "Banda CZARNI RYCERZE",
+  5         SUM(CASE WHEN b.nazwa = 'BIALI LOWCY'
+  6                  THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) END)
+  7           AS "Banda BIALI LOWCY"
+  8  FROM kocury k
+  9  LEFT JOIN bandy b ON b.nr_bandy = k.nr_bandy
+ 10  WHERE k.funkcja <> 'SZEFUNIO'
+ 11  GROUP BY k.funkcja
+ 12  ORDER BY k.funkcja;
+
+FUNKCJA    Banda CZARNI RYCERZE Banda BIALI LOWCY
+---------- -------------------- -----------------
+BANDZIOR                     93                88
+DZIELCZY
+KOT                                            43
+LAPACZ                       56
+LOWCZY                      132                61
+MILUSIA                      52                55
+
+6 rows selected.
+
+SQL> 
+SQL> -- Zadanie 2
+SQL> -- SUM(CASE ... THEN 1 END) daje NULL zamiast 0, jak puste pola w przykladzie.
+SQL> SELECT k.funkcja AS "FUNKCJA", k.plec AS "P",
+  2         SUM(CASE WHEN b.nazwa = 'CZARNI RYCERZE'
+  3                  THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) END)
+  4           AS "Banda CZARNI RYCERZE",
+  5         SUM(CASE WHEN b.nazwa = 'CZARNI RYCERZE' THEN 1 END) AS "Ile",
+  6         SUM(CASE WHEN b.nazwa = 'BIALI LOWCY'
+  7                  THEN k.przydzial_myszy + COALESCE(k.myszy_extra, 0) END)
+  8           AS "Banda BIALI LOWCY",
+  9         SUM(CASE WHEN b.nazwa = 'BIALI LOWCY' THEN 1 END) AS "Ile"
+ 10  FROM kocury k
+ 11  LEFT JOIN bandy b ON b.nr_bandy = k.nr_bandy
+ 12  WHERE k.funkcja <> 'SZEFUNIO'
+ 13  GROUP BY k.funkcja, k.plec
+ 14  ORDER BY k.funkcja, k.plec;
+
+FUNKCJA    P Banda CZARNI RYCERZE        Ile Banda BIALI LOWCY        Ile
+---------- - -------------------- ---------- ----------------- ----------
+BANDZIOR   M                   93          1                88          1
+DZIELCZY   M
+KOT        D
+KOT        M                                                43          1
+LAPACZ     D
+LAPACZ     M                   56          1
+LOWCZY     D                   65          1                61          1
+LOWCZY     M                   67          1
+MILUSIA    D                   52          1                55          1
+
+9 rows selected.
+
+SQL> 
+SQL> -- Zadanie 3
+SQL> -- COUNT(k.pseudo) pomija wiersz NULL z LEFT JOIN; pusta suma to 0,
+SQL> -- a srednia z pustego zbioru pozostaje NULL zamiast dzielenia przez zero.
+SQL> SELECT f.funkcja AS "FUNKCJA", COUNT(k.pseudo) AS "KOTY",
+  2         COALESCE(SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)), 0) AS "RAZEM",
+  3         ROUND(AVG(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)), 4) AS "SREDNIA"
+  4  FROM funkcje f
+  5  LEFT JOIN kocury k ON k.funkcja = f.funkcja
+  6  GROUP BY f.funkcja
+  7  ORDER BY f.funkcja;
+
+FUNKCJA          KOTY      RAZEM    SREDNIA
+---------- ---------- ---------- ----------
+BANDZIOR            2        181       90.5
+DZIELCZY            1         50         50
+HONOROWA            0          0
+KOT                 3        123         41
+LAPACZ              3        158    52.6667
+LOWCZY              4        258       64.5
+MILUSIA             4        243      60.75
+SZEFUNIO            1        136        136
+
+8 rows selected.
+
+SQL> 
+SQL> -- Zadanie 3a: bez zabezpieczen
+SQL> -- Zwykly JOIN gubi funkcje HONOROWA, bo nie ma dla niej pary w kocury.
+SQL> SELECT f.funkcja AS "FUNKCJA", COUNT(*) AS "KOTY",
+  2         SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)) AS "RAZEM"
+  3  FROM funkcje f
+  4  JOIN kocury k ON k.funkcja = f.funkcja
+  5  GROUP BY f.funkcja
+  6  ORDER BY f.funkcja;
+
+FUNKCJA          KOTY      RAZEM
+---------- ---------- ----------
+BANDZIOR            2        181
+DZIELCZY            1         50
+KOT                 3        123
+LAPACZ              3        158
+LOWCZY              4        258
+MILUSIA             4        243
+SZEFUNIO            1        136
+
+7 rows selected.
+
+SQL> 
+SQL> -- LEFT JOIN z COUNT(*) liczy wiersz uzupelniony NULL jako kota (HONOROWA: 1),
+SQL> -- a SUM z samych NULL zwraca NULL zamiast 0.
+SQL> SELECT f.funkcja AS "FUNKCJA", COUNT(*) AS "KOTY",
+  2         SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)) AS "RAZEM"
+  3  FROM funkcje f
+  4  LEFT JOIN kocury k ON k.funkcja = f.funkcja
+  5  GROUP BY f.funkcja
+  6  ORDER BY f.funkcja;
+
+FUNKCJA          KOTY      RAZEM
+---------- ---------- ----------
+BANDZIOR            2        181
+DZIELCZY            1         50
+HONOROWA            1
+KOT                 3        123
+LAPACZ              3        158
+LOWCZY              4        258
+MILUSIA             4        243
+SZEFUNIO            1        136
+
+8 rows selected.
+
+SQL> 
+SQL> -- Zadanie 4
+SQL> -- Samozlaczenie z JACKIEM zastepuje podzapytanie o jego date.
+SQL> SELECT k.imie AS "IMIE", k.w_stadku_od AS "POLUJE OD"
+  2  FROM kocury k
+  3  JOIN kocury j ON j.imie = 'JACEK' AND k.w_stadku_od < j.w_stadku_od
+  4  ORDER BY k.w_stadku_od DESC;
+
+IMIE            POLUJE OD
+--------------- ----------
+MELA            2008-11-01
+KSAWERY         2008-07-12
+BELA            2008-02-01
+PUNIA           2008-01-01
+PUCEK           2006-10-15
+RUDA            2006-09-17
+BOLEK           2006-08-15
+ZUZIA           2006-07-21
+KOREK           2004-03-16
+CHYTRY          2002-05-05
+MRUCZEK         2002-01-01
+
+11 rows selected.
+
+SQL> 
+SQL> -- Zadanie 5
+SQL> -- Remis na drugim miejscu rozstrzyga alfabetyczna kolejnosc pseudonimu:
+SQL> -- w bandzie 4 DAMA i MAN zjadaja po 51, wybrana jest DAMA.
+SQL> -- Pusta banda daje z LEFT JOIN jeden wiersz z numerem 1.
+SQL> SELECT nr_bandy AS "NR_BANDY", nazwa AS "NAZWA", pseudo AS "PSEUDO",
+  2         zjada AS "ZJADA"
+  3  FROM (
+  4    SELECT b.nr_bandy, b.nazwa, k.pseudo,
+  5           k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS zjada,
+  6           ROW_NUMBER() OVER (
+  7             PARTITION BY b.nr_bandy
+  8             ORDER BY k.przydzial_myszy + COALESCE(k.myszy_extra, 0) DESC, k.pseudo
+  9           ) AS miejsce
+ 10    FROM bandy b
+ 11    LEFT JOIN kocury k ON k.nr_bandy = b.nr_bandy
+ 12  )
+ 13  WHERE miejsce <= 2
+ 14  ORDER BY nr_bandy, miejsce;
+
+  NR_BANDY NAZWA                PSEUDO               ZJADA
+---------- -------------------- --------------- ----------
+         1 SZEFOSTWO            TYGRYS                 136
+         1 SZEFOSTWO            LOLA                    72
+         2 CZARNI RYCERZE       LYSY                    93
+         2 CZARNI RYCERZE       PLACEK                  67
+         3 BIALI LOWCY          ZOMBI                   88
+         3 BIALI LOWCY          KURKA                   61
+         4 LACIACI MYSLIWI      RAFA                    65
+         4 LACIACI MYSLIWI      DAMA                    51
+         5 ROCKERSI
+
+9 rows selected.
+
+SQL> 
+SQL> -- Zadanie 6
+SQL> -- RANK pokazuje wszystkich rekordzistow przy remisie; HONOROWA zostaje
+SQL> -- dzieki LEFT JOIN, a jej ocena jest NULL.
+SQL> SELECT funkcja AS "FUNKCJA", pseudo AS "PSEUDO", zjada AS "ZJADA",
+  2         CASE WHEN zjada > max_myszy THEN 'POWYZEJ WIDELEK'
+  3              WHEN zjada < min_myszy THEN 'PONIZEJ WIDELEK'
+  4              WHEN zjada IS NOT NULL THEN 'W WIDELKACH' END AS "OCENA"
+  5  FROM (
+  6    SELECT f.funkcja, f.min_myszy, f.max_myszy, k.pseudo,
+  7           k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS zjada,
+  8           RANK() OVER (
+  9             PARTITION BY f.funkcja
+ 10             ORDER BY k.przydzial_myszy + COALESCE(k.myszy_extra, 0) DESC
+ 11           ) AS miejsce
+ 12    FROM funkcje f
+ 13    LEFT JOIN kocury k ON k.funkcja = f.funkcja
+ 14  )
+ 15  WHERE miejsce = 1
+ 16  ORDER BY funkcja;
+
+FUNKCJA    PSEUDO               ZJADA OCENA
+---------- --------------- ---------- ---------------
+BANDZIOR   LYSY                    93 POWYZEJ WIDELEK
+DZIELCZY   BOLEK                   50 W WIDELKACH
+HONOROWA
+KOT        ZERO                    43 W WIDELKACH
+LAPACZ     RURA                    56 W WIDELKACH
+LOWCZY     PLACEK                  67 W WIDELKACH
+MILUSIA    LOLA                    72 POWYZEJ WIDELEK
+SZEFUNIO   TYGRYS                 136 POWYZEJ WIDELEK
+
+8 rows selected.
+
+SQL> 
+SQL> -- Zadanie 7
+SQL> -- Zamiast widoku wyrazenie WITH. Lata o liczbie rownej sredniej trafilyby
+SQL> -- do grupy "od dolu" (<=). Kolumna kolejnosc ustawia srednia miedzy grupami.
+SQL> WITH lata AS (
+  2    SELECT EXTRACT(YEAR FROM w_stadku_od) AS rok, COUNT(*) AS liczba
+  3    FROM kocury
+  4    WHERE w_stadku_od IS NOT NULL
+  5    GROUP BY EXTRACT(YEAR FROM w_stadku_od)
+  6  )
+  7  SELECT rok AS "ROK", liczba AS "LICZBA WSTAPIEN"
+  8  FROM (
+  9    SELECT 1 AS kolejnosc, TO_CHAR(rok) AS rok, liczba
+ 10    FROM lata
+ 11    WHERE liczba = (SELECT MAX(liczba) FROM lata
+ 12                    WHERE liczba <= (SELECT AVG(liczba) FROM lata))
+ 13    UNION ALL
+ 14    SELECT 2, 'Srednia', ROUND(AVG(liczba), 7) FROM lata
+ 15    UNION ALL
+ 16    SELECT 3, TO_CHAR(rok), liczba
+ 17    FROM lata
+ 18    WHERE liczba = (SELECT MIN(liczba) FROM lata
+ 19                    WHERE liczba > (SELECT AVG(liczba) FROM lata))
+ 20  )
+ 21  ORDER BY kolejnosc, rok;
+
+ROK              LICZBA WSTAPIEN
+---------------- ---------------
+2002                           2
+2009                           2
+2010                           2
+2011                           2
+Srednia                2.5714286
+2006                           4
+
+6 rows selected.
+
+SQL> 
+SQL> -- Zadanie 8
+SQL> -- Kot jedyny w bandzie bylby jednoczesnie najstarszy i najmlodszy (2 wiersze).
+SQL> -- MINUS usuwa oznaczone koty z listy kotow bez oznaczenia.
+SQL> SELECT k.imie AS "IMIE", k.w_stadku_od AS "WSTAPIL DO STADKA",
+  2         '<--- NAJSTARSZY STAZEM W BANDZIE ' || b.nazwa AS " "
+  3  FROM kocury k
+  4  JOIN bandy b ON b.nr_bandy = k.nr_bandy
+  5  WHERE k.w_stadku_od = (SELECT MIN(m.w_stadku_od) FROM kocury m
+  6                         WHERE m.nr_bandy = k.nr_bandy)
+  7  UNION ALL
+  8  SELECT k.imie, k.w_stadku_od, '<--- NAJMLODSZY STAZEM W BANDZIE ' || b.nazwa
+  9  FROM kocury k
+ 10  JOIN bandy b ON b.nr_bandy = k.nr_bandy
+ 11  WHERE k.w_stadku_od = (SELECT MAX(m.w_stadku_od) FROM kocury m
+ 12                         WHERE m.nr_bandy = k.nr_bandy)
+ 13  UNION ALL
+ 14  (
+ 15    SELECT imie, w_stadku_od, ' ' FROM kocury
+ 16    MINUS
+ 17    SELECT k.imie, k.w_stadku_od, ' '
+ 18    FROM kocury k
+ 19    WHERE k.w_stadku_od IN (SELECT MIN(m.w_stadku_od) FROM kocury m
+ 20                            WHERE m.nr_bandy = k.nr_bandy
+ 21                            UNION
+ 22                            SELECT MAX(m.w_stadku_od) FROM kocury m
+ 23                            WHERE m.nr_bandy = k.nr_bandy)
+ 24  )
+ 25  ORDER BY 1;
+
+IMIE            WSTAPIL DO STADKA
+--------------- ----------------- --------------------------------------------------
+BARI            2009-09-01        <--- NAJMLODSZY STAZEM W BANDZIE CZARNI RYCERZE
+BELA            2008-02-01
+BOLEK           2006-08-15
+CHYTRY          2002-05-05
+DUDEK           2011-05-15        <--- NAJMLODSZY STAZEM W BANDZIE LACIACI MYSLIWI
+JACEK           2008-12-01
+KOREK           2004-03-16        <--- NAJSTARSZY STAZEM W BANDZIE BIALI LOWCY
+KSAWERY         2008-07-12
+LATKA           2011-01-01
+LUCEK           2010-03-01
+MELA            2008-11-01
+MICKA           2009-10-14        <--- NAJMLODSZY STAZEM W BANDZIE SZEFOSTWO
+MRUCZEK         2002-01-01        <--- NAJSTARSZY STAZEM W BANDZIE SZEFOSTWO
+PUCEK           2006-10-15        <--- NAJSTARSZY STAZEM W BANDZIE LACIACI MYSLIWI
+PUNIA           2008-01-01
+RUDA            2006-09-17
+SONIA           2010-11-18        <--- NAJMLODSZY STAZEM W BANDZIE BIALI LOWCY
+ZUZIA           2006-07-21        <--- NAJSTARSZY STAZEM W BANDZIE CZARNI RYCERZE
+
+18 rows selected.
+
+SQL> 
+SQL> -- Zadanie 9
+SQL> -- Liczony jest przydzial podstawowy, jak w przykladzie: z dodatkiem
+SQL> -- MALA (22 + 42) przekroczylaby prog funkcji MILUSIA.
+SQL> SELECT k.pseudo AS "Do przeczolgania", b.nazwa AS "Nazwa bandy"
+  2  FROM kocury k
+  3  JOIN funkcje f ON f.funkcja = k.funkcja
+  4  LEFT JOIN bandy b ON b.nr_bandy = k.nr_bandy
+  5  WHERE NOT EXISTS (SELECT 1 FROM kocury p WHERE p.szef = k.pseudo)
+  6    AND EXISTS (SELECT 1 FROM wrogowie_kocurow w WHERE w.pseudo = k.pseudo)
+  7    AND k.przydzial_myszy >= f.min_myszy + (f.max_myszy - f.min_myszy) / 3
+  8  ORDER BY b.nazwa, k.pseudo;
+
+Do przeczolgania Nazwa bandy
+---------------- --------------------
+LASKA            CZARNI RYCERZE
+PLACEK           CZARNI RYCERZE
+RURA             CZARNI RYCERZE
+SZYBKA           CZARNI RYCERZE
+BOLEK            SZEFOSTWO
+
+5 rows selected.
+
+SQL> 
+SQL> -- Zadanie 10
+SQL> -- Oracle pozwala zagniezdzic MAX(AVG(...)) przy GROUP BY w podzapytaniu.
+SQL> SELECT funkcja AS "Funkcja",
+  2         ROUND(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)))
+  3           AS "Srednio najw. i najm. myszy"
+  4  FROM kocury
+  5  WHERE funkcja <> 'SZEFUNIO'
+  6  GROUP BY funkcja
+  7  HAVING AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) IN (
+  8           (SELECT MAX(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)))
+  9            FROM kocury WHERE funkcja <> 'SZEFUNIO' GROUP BY funkcja),
+ 10           (SELECT MIN(AVG(przydzial_myszy + COALESCE(myszy_extra, 0)))
+ 11            FROM kocury WHERE funkcja <> 'SZEFUNIO' GROUP BY funkcja))
+ 12  ORDER BY 2;
+
+Funkcja    Srednio najw. i najm. myszy
+---------- ---------------------------
+KOT                                 41
+BANDZIOR                            91
+
+2 rows selected.
+
+SQL> 
+SQL> -- Zadanie 11a: zlaczenie bez podzapytan
+SQL> -- Kot jest zlaczony z kazdym kotem swojej bandy, wiec AVG(m.) to srednia bandy.
+SQL> SELECT k.imie AS "IMIE", k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS "ZJADA",
+  2         k.nr_bandy AS "NR BANDY",
+  3         ROUND(AVG(m.przydzial_myszy + COALESCE(m.myszy_extra, 0)), 2) AS "SREDNIA BANDY"
+  4  FROM kocury k
+  5  JOIN kocury m ON m.nr_bandy = k.nr_bandy
+  6  WHERE k.plec = 'M'
+  7  GROUP BY k.pseudo, k.imie, k.przydzial_myszy, k.myszy_extra, k.nr_bandy
+  8  HAVING k.przydzial_myszy + COALESCE(k.myszy_extra, 0)
+  9         <= AVG(m.przydzial_myszy + COALESCE(m.myszy_extra, 0))
+ 10  ORDER BY k.nr_bandy DESC;
+
+IMIE                 ZJADA   NR BANDY SREDNIA BANDY
+--------------- ---------- ---------- -------------
+DUDEK                   40          4         49.40
+LUCEK                   43          3         61.75
+BARI                    56          2         66.60
+CHYTRY                  50          1         80.50
+
+4 rows selected.
+
+SQL> 
+SQL> -- Zadanie 11b: zlaczenie z jednym podzapytaniem w FROM
+SQL> SELECT k.imie AS "IMIE", k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS "ZJADA",
+  2         k.nr_bandy AS "NR BANDY", ROUND(s.srednia, 2) AS "SREDNIA BANDY"
+  3  FROM kocury k
+  4  JOIN (SELECT nr_bandy, AVG(przydzial_myszy + COALESCE(myszy_extra, 0)) AS srednia
+  5        FROM kocury
+  6        GROUP BY nr_bandy) s ON s.nr_bandy = k.nr_bandy
+  7  WHERE k.plec = 'M'
+  8    AND k.przydzial_myszy + COALESCE(k.myszy_extra, 0) <= s.srednia
+  9  ORDER BY k.nr_bandy DESC;
+
+IMIE                 ZJADA   NR BANDY SREDNIA BANDY
+--------------- ---------- ---------- -------------
+DUDEK                   40          4         49.40
+LUCEK                   43          3         61.75
+BARI                    56          2         66.60
+CHYTRY                  50          1         80.50
+
+4 rows selected.
+
+SQL> 
+SQL> -- Zadanie 11c: bez zlaczen, podzapytania w SELECT i WHERE
+SQL> SELECT k.imie AS "IMIE", k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS "ZJADA",
+  2         k.nr_bandy AS "NR BANDY",
+  3         (SELECT ROUND(AVG(m.przydzial_myszy + COALESCE(m.myszy_extra, 0)), 2)
+  4          FROM kocury m WHERE m.nr_bandy = k.nr_bandy) AS "SREDNIA BANDY"
+  5  FROM kocury k
+  6  WHERE k.plec = 'M'
+  7    AND k.przydzial_myszy + COALESCE(k.myszy_extra, 0) <=
+  8        (SELECT AVG(m.przydzial_myszy + COALESCE(m.myszy_extra, 0))
+  9         FROM kocury m WHERE m.nr_bandy = k.nr_bandy)
+ 10  ORDER BY k.nr_bandy DESC;
+
+IMIE                 ZJADA   NR BANDY SREDNIA BANDY
+--------------- ---------- ---------- -------------
+DUDEK                   40          4         49.40
+LUCEK                   43          3         61.75
+BARI                    56          2         66.60
+CHYTRY                  50          1         80.50
+
+4 rows selected.
+
+SQL> 
+SQL> -- Zadanie 12a: DECODE i SUM
+SQL> SELECT b.nazwa AS "NAZWA BANDY", DECODE(k.plec, 'D', 'Kotka', 'Kocor') AS "PLEC",
+  2         COUNT(*) AS "ILE",
+  3         SUM(DECODE(k.funkcja, 'SZEFUNIO', k.przydzial_myszy + COALESCE(k.myszy_extra, 0), 0)) AS "SZEFUNIO",
+  4         SUM(DECODE(k.funkcja, 'BANDZIOR', k.przydzial_myszy + COALESCE(k.myszy_extra, 0), 0)) AS "BANDZIOR",
+  5         SUM(DECODE(k.funkcja, 'LOWCZY', k.przydzial_myszy + COALESCE(k.myszy_extra, 0), 0)) AS "LOWCZY",
+  6         SUM(DECODE(k.funkcja, 'LAPACZ', k.przydzial_myszy + COALESCE(k.myszy_extra, 0), 0)) AS "LAPACZ",
+  7         SUM(DECODE(k.funkcja, 'KOT', k.przydzial_myszy + COALESCE(k.myszy_extra, 0), 0)) AS "KOT",
+  8         SUM(DECODE(k.funkcja, 'MILUSIA', k.przydzial_myszy + COALESCE(k.myszy_extra, 0), 0)) AS "MILUSIA",
+  9         SUM(DECODE(k.funkcja, 'DZIELCZY', k.przydzial_myszy + COALESCE(k.myszy_extra, 0), 0)) AS "DZIELCZY",
+ 10         SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0)) AS "SUMA"
+ 11  FROM kocury k
+ 12  JOIN bandy b ON b.nr_bandy = k.nr_bandy
+ 13  GROUP BY b.nazwa, k.plec
+ 14  ORDER BY b.nazwa, k.plec;
+
+NAZWA BANDY          PLEC         ILE   SZEFUNIO   BANDZIOR     LOWCZY     LAPACZ        KOT    MILUSIA   DZIELCZY       SUMA
+-------------------- ----- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+BIALI LOWCY          Kotka          2          0          0         61          0          0         55          0        116
+BIALI LOWCY          Kocor          2          0         88          0          0         43          0          0        131
+CZARNI RYCERZE       Kotka          2          0          0         65          0          0         52          0        117
+CZARNI RYCERZE       Kocor          3          0         93         67         56          0          0          0        216
+LACIACI MYSLIWI      Kotka          2          0          0          0         51         40          0          0         91
+LACIACI MYSLIWI      Kocor          3          0          0         65         51         40          0          0        156
+SZEFOSTWO            Kotka          2          0          0          0          0          0        136          0        136
+SZEFOSTWO            Kocor          2        136          0          0          0          0          0         50        186
+
+8 rows selected.
+
+SQL> 
+SQL> -- Zadanie 12b: PIVOT
+SQL> -- ILE i SUMA licza funkcje okna w zrodle; sa stale w grupie (banda, plec),
+SQL> -- wiec PIVOT grupuje po nich razem z nazwa i plcia. Kolumna p nie
+SQL> -- koliduje z aliasem PLEC, ktory w ORDER BY sortowalby Kocor przed Kotka.
+SQL> SELECT nazwa AS "NAZWA BANDY", DECODE(p, 'D', 'Kotka', 'Kocor') AS "PLEC",
+  2         ile AS "ILE",
+  3         COALESCE(szefunio, 0) AS "SZEFUNIO", COALESCE(bandzior, 0) AS "BANDZIOR",
+  4         COALESCE(lowczy, 0) AS "LOWCZY", COALESCE(lapacz, 0) AS "LAPACZ",
+  5         COALESCE(kot, 0) AS "KOT", COALESCE(milusia, 0) AS "MILUSIA",
+  6         COALESCE(dzielczy, 0) AS "DZIELCZY", suma AS "SUMA"
+  7  FROM (
+  8    SELECT b.nazwa, k.plec AS p, k.funkcja,
+  9           k.przydzial_myszy + COALESCE(k.myszy_extra, 0) AS zjada,
+ 10           COUNT(*) OVER (PARTITION BY b.nazwa, k.plec) AS ile,
+ 11           SUM(k.przydzial_myszy + COALESCE(k.myszy_extra, 0))
+ 12             OVER (PARTITION BY b.nazwa, k.plec) AS suma
+ 13    FROM kocury k
+ 14    JOIN bandy b ON b.nr_bandy = k.nr_bandy
+ 15  )
+ 16  PIVOT (
+ 17    SUM(zjada) FOR funkcja IN (
+ 18      'SZEFUNIO' AS szefunio, 'BANDZIOR' AS bandzior, 'LOWCZY' AS lowczy,
+ 19      'LAPACZ' AS lapacz, 'KOT' AS kot, 'MILUSIA' AS milusia,
+ 20      'DZIELCZY' AS dzielczy
+ 21    )
+ 22  )
+ 23  ORDER BY nazwa, p;
+
+NAZWA BANDY          PLEC         ILE   SZEFUNIO   BANDZIOR     LOWCZY     LAPACZ        KOT    MILUSIA   DZIELCZY       SUMA
+-------------------- ----- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+BIALI LOWCY          Kotka          2          0          0         61          0          0         55          0        116
+BIALI LOWCY          Kocor          2          0         88          0          0         43          0          0        131
+CZARNI RYCERZE       Kotka          2          0          0         65          0          0         52          0        117
+CZARNI RYCERZE       Kocor          3          0         93         67         56          0          0          0        216
+LACIACI MYSLIWI      Kotka          2          0          0          0         51         40          0          0         91
+LACIACI MYSLIWI      Kocor          3          0          0         65         51         40          0          0        156
+SZEFOSTWO            Kotka          2          0          0          0          0          0        136          0        136
+SZEFOSTWO            Kocor          2        136          0          0          0          0          0         50        186
+
+8 rows selected.
+
+SQL> SET ECHO OFF
+Disconnected from Oracle AI Database 26ai Free Release 23.26.4.0.0 - Develop, Learn, and Run for Free
+Version 23.26.4.0.0
