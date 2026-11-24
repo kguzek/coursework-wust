@@ -25,6 +25,8 @@ Wyniki w komentarzach pochodzą z danych z `lista01`.
 
 ## 0. Procedura
 
+**Słowa kluczowe:** procedura, krok po kroku, jak zacząć, jak zaczac, wiersz wyniku, WHERE, HAVING, EXISTS, OVER, WITH, skąd dane, skad dane, pułapki
+
 1. **Co jest wierszem wyniku?** Koty, bandy, gatunki, pary, drzewa? To wyznacza `SELECT` i ewentualne `GROUP BY`.
 2. **Jaki warunek i na jakim poziomie?**
    - dotyczy pojedynczego kota → `WHERE`,
@@ -37,6 +39,8 @@ Wyniki w komentarzach pochodzą z danych z `lista01`.
 5. **Sprawdź pułapki** z [sekcji 12](#12-checklista-pułapek): `NULL`, duplikaty po złączeniu, `>` czy `>=`, remisy.
 
 ## 1. Porównanie z agregatem „swojej” grupy
+
+**Słowa kluczowe:** większy niż średnia, wiekszy niz srednia, ponad średnią, powyżej średniej, swoja grupa, ta sama, podzapytanie skorelowane, correlated, AVG OVER, PARTITION BY, OVER (), średnia stada, średnia innych, s.pseudo <> k.pseudo
 
 „Kot ma więcej niż średnia / maksimum / suma dla kotów o tej samej X.”
 
@@ -61,6 +65,8 @@ WHERE przydzial_myszy > sr;
 - „niż średnia **innych** kotów z bandy” → w podzapytaniu dodaj `AND s.pseudo <> k.pseudo`.
 
 ## 2. Grupy, w których co najmniej N / wszystkie / żaden
+
+**Słowa kluczowe:** co najmniej N, co najmniej dwa, wszystkie, wszyscy, każdy kot, kazdy kot, żaden, zaden, HAVING COUNT, COUNT(CASE), MIN, MAX, próg, prog, COUNT(DISTINCT), bandy w których
 
 **Co najmniej N spełnia** – filtr w `WHERE`, licznik w `HAVING`:
 
@@ -91,6 +97,8 @@ złączeniu kot z dwoma incydentami występuje dwa razy.
 
 ## 3. „Jedyny” / „żaden inny”
 
+**Słowa kluczowe:** jedyny, jako jedyny, jedyna, żaden inny, zaden inny, NOT EXISTS, s.pseudo <> k.pseudo, HAVING COUNT(DISTINCT) = 1, MIN(pseudo), najstarszy, unikalny, unique
+
 „Kot jako jedyny w bandzie / funkcji / … ma cechę X.” Kluczem jest warunek `inny.pk <> ja.pk`.
 
 ```sql
@@ -117,6 +125,8 @@ Pochodne:
 
 ## 4. „Nie mający” – anti-join
 
+**Słowa kluczowe:** nie mający, nie majacy, bez, brak, anti-join, antijoin, NOT EXISTS, LEFT JOIN IS NULL, NOT IN, NOT IN NULL pułapka, koty bez wrogów, bez wrogow, funkcje bez kotów
+
 „Koty bez wrogów / funkcje, których nikt nie pełni / bandy bez kotów.”
 
 ```sql
@@ -136,6 +146,8 @@ WHERE wk.pseudo IS NULL;
 (np. `NOT IN (SELECT szef FROM kocury)`, bo TYGRYS ma `szef = NULL`). Bezpieczniej używać `NOT EXISTS`.
 
 ## 5. „Wszystkie” – dzielenie relacyjne
+
+**Słowa kluczowe:** wszystkie, z każdym, z kazdym, ze wszystkimi, każda banda, kazda banda, dzielenie relacyjne, relational division, podwójne NOT EXISTS, podwojne NOT EXISTS, COUNT(DISTINCT) = (SELECT COUNT), pusty zbiór, gatunki
 
 „Gatunki, z którymi incydent miała **każda** banda.” „Koty, które walczyły ze **wszystkimi** wrogami szefa.”
 
@@ -171,6 +183,8 @@ Uwaga na „wszystkie” w stosunku do pustego zbioru: przy podwójnym `NOT EXIS
 jest spełniony, gdy szef nie ma żadnych wrogów. Przy zliczaniu taki kot nie wyjdzie.
 
 ## 6. Maksimum w grupie / top-N
+
+**Słowa kluczowe:** maksimum, max, największy, najwiekszy, najwięcej, najwiecej, w każdej bandzie, top N, top-N, N największych, trzy największe, ranking, ROW_NUMBER, RANK, DENSE_RANK, remis, remisy, ties, COUNT(DISTINCT większych)
 
 „Kot z największym przydziałem w każdej bandzie”:
 
@@ -211,6 +225,8 @@ WHERE r <= 3;
 
 ## 7. Grupa z największym agregatem
 
+**Słowa kluczowe:** banda z największą średnią, największa suma, najwieksza, >= ALL, MAX(AVG()), zagnieżdżony agregat, FETCH FIRST, WITH TIES, HAVING ALL
+
 „Banda z największym średnim przydziałem”:
 
 ```sql
@@ -231,6 +247,8 @@ Inne zapisy:
 
 ## 8. Porównanie z szefem – self join
 
+**Słowa kluczowe:** szef, szefem, przełożony, przelozony, self join, samozłączenie, szef szefa, dłużej w stadzie, w_stadku_od, więcej niż szef, LEFT JOIN bez szefa
+
 „Koty, które mają więcej myszy niż ich szef / są w stadzie dłużej niż szef / są w innej bandzie niż szef.”
 
 ```sql
@@ -244,6 +262,8 @@ WHERE k.w_stadku_od < s.w_stadku_od;
 - „również koty bez szefa” → `LEFT JOIN`, a warunek na `s` przenieś do `ON`.
 
 ## 9. Hierarchia
+
+**Słowa kluczowe:** hierarchia, drzewo, drzewa, poddrzewo, CONNECT BY, PRIOR, START WITH, LEVEL, CONNECT_BY_ROOT, SYS_CONNECT_BY_PATH, CONNECT_BY_ISLEAF, WITH RECURSIVE, rekurencja, w dół, w górę, podwładni, przełożeni, przodkowie, głębokość, glebokosc, liście, poziom
 
 Relacja `kocury.szef → kocury.pseudo`. Najpierw ustal kierunek: **w dół** (podwładni) czy **w górę** (przełożeni).
 
@@ -302,6 +322,8 @@ Typowe pytania:
 
 ## 10. Pary kotów
 
+**Słowa kluczowe:** pary, para, self join, a.pseudo < b.pseudo, każda para raz, duplikaty, ABS, podobny przydział
+
 „Pary kotów z tej samej bandy o podobnym przydziale.”
 
 ```sql
@@ -316,6 +338,8 @@ WHERE ABS(a.przydzial_myszy - b.przydzial_myszy) <= 5;
 `<>` zamiast `<` zwróci każdą parę dwa razy: (A, B) i (B, A).
 
 ## 11. Zliczanie warunkowe / pivot
+
+**Słowa kluczowe:** zliczanie warunkowe, pivot, PIVOT, tabela przestawna, COUNT(CASE), SUM(CASE), ELSE 0, płeć, plec, kocury i kotki
 
 „Dla każdej bandy liczba kocurów, kotek i suma myszy kotek.”
 
@@ -332,6 +356,8 @@ GROUP BY nr_bandy;
 W `SUM` dajemy `ELSE 0`, żeby grupa bez pasujących wierszy dała `0`, a nie `NULL`.
 
 ## 12. Checklista pułapek
+
+**Słowa kluczowe:** pułapki, pulapki, błędy, bledy, checklista, NULL, COALESCE, NVL, NOT IN, mnożenie wierszy, duplikaty, > czy >=, remisy, agregat w WHERE, GROUP BY, LEFT JOIN WHERE
 
 - **NULL w arytmetyce.** `przydzial_myszy + myszy_extra` daje `NULL`, gdy `myszy_extra` jest `NULL`.
   Używaj `COALESCE(myszy_extra, 0)` (w Oracle też `NVL`).
@@ -351,6 +377,8 @@ W `SUM` dajemy `ELSE 0`, żeby grupa bez pasujących wierszy dała `0`, a nie `N
 - **Hierarchia.** `WHERE` przy `CONNECT BY` filtruje pojedyncze wiersze, a warunek w `CONNECT BY` ucina całe gałęzie.
 
 ## 13. Słownik: treść → konstrukcja
+
+**Słowa kluczowe:** słownik, slownik, treść, tresc, konstrukcja, ściąga, sciaga, jak przetłumaczyć treść, wzorce
 
 | W treści                                    | Konstrukcja                                                       |
 | ------------------------------------------- | ----------------------------------------------------------------- |

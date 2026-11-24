@@ -29,6 +29,8 @@ Pozostałe notatki:
 
 ## 1. Kolejność wykonania zapytania
 
+**Słowa kluczowe:** kolejność wykonania, kolejnosc wykonywania, logical order, order of evaluation, FROM, JOIN, WHERE, GROUP BY, HAVING, SELECT, ORDER BY, alias, aliasy w WHERE, dlaczego nie działa, błąd agregatu w WHERE, START WITH, CONNECT BY
+
 Piszemy `SELECT … FROM … WHERE …`, ale baza wykonuje to w innej kolejności:
 
 ```
@@ -47,6 +49,8 @@ W zapytaniu hierarchicznym (Oracle) dochodzi jeden krok:
 ---
 
 ## 2. JOIN
+
+**Słowa kluczowe:** JOIN, INNER JOIN, LEFT JOIN, LEFT OUTER JOIN, RIGHT JOIN, FULL JOIN, FULL OUTER JOIN, CROSS JOIN, złączenie, zlaczenie, łączenie tabel, laczenie tabel, ON, self join, samozłączenie, samozlaczenie, szef, szef szefa, przełożony, przelozony, mnożenie wierszy, mnozenie wierszy, duplikaty, zawyżona suma, zawyzona suma, LEFT JOIN WHERE pułapka, pulapka, NULL po prawej
 
 `JOIN` dokleja do wiersza z lewej tabeli **każdy** pasujący wiersz z prawej.
 
@@ -88,6 +92,8 @@ warunku. Taki warunek należy umieścić w `ON`.
 ---
 
 ## 3. Grupy: GROUP BY, agregaty, HAVING
+
+**Słowa kluczowe:** grupa, grupy, grupowanie, worek, GROUP BY, HAVING, WHERE vs HAVING, agregat, agregaty, funkcje agregujące, funkcje agregujace, aggregate, COUNT, SUM, AVG, MIN, MAX, średnia, srednia, suma, liczba, LISTAGG, kilka kolumn, kombinacja, not a GROUP BY expression, ORA-00979, MIN(pseudo)
 
 **Grupa** to zbiór wierszy o tej samej wartości w kolumnie z `GROUP BY` – „worek”, z którego robi się **jeden**
 wiersz wyniku.
@@ -143,6 +149,8 @@ Agregaty: `COUNT`, `SUM`, `AVG`, `MIN`, `MAX` (wszystkie oprócz `COUNT(*)` pomi
 
 ## 4. COUNT(\*) a COUNT(kolumna)
 
+**Słowa kluczowe:** COUNT, COUNT(*), COUNT(1), COUNT(kolumna), COUNT(DISTINCT), gwiazdka, *, liczba wierszy, ile wierszy, ile różnych, ile roznych, DISTINCT, NULL w COUNT, LEFT JOIN COUNT, zliczanie warunkowe, COUNT(CASE), CASE WHEN, pusty zbiór, pusty zbior, zero
+
 `*` w `COUNT(*)` to specjalny zapis oznaczający „policz wiersze” – nie jest ogólnym operatorem
 i działa tylko z `COUNT` (`SUM(*)` to błąd).
 
@@ -177,6 +185,8 @@ HAVING COUNT(myszy_extra) = COUNT(*)
 
 ## 5. NULL
 
+**Słowa kluczowe:** NULL, IS NULL, IS NOT NULL, UNKNOWN, logika trójwartościowa, trojwartosciowa, COALESCE, NVL, NVL2, NULLIF, brak wartości, brak wartosci, myszy_extra, przydział całkowity, przydzial calkowity, NOT IN NULL, pusty napis, '' w Oracle, arytmetyka z NULL
+
 `NULL` oznacza „brak wartości”, a każde porównanie z nim daje **UNKNOWN**, które `WHERE` traktuje jak fałsz.
 
 | Wyrażenie | Wynik |
@@ -198,7 +208,11 @@ Pułapki:
 
 ## 6. Podzapytania i operator >
 
+**Słowa kluczowe:** podzapytanie, podzapytania, subquery, subselect, zapytanie zagnieżdżone, zagniezdzone, operator >, porównanie, porownanie, >, <, =, >=, <=, <>, skalarne, scalar subquery
+
 ### Podzapytanie skalarne
+
+**Słowa kluczowe:** podzapytanie skalarne, scalar subquery, nieskorelowane, skorelowane, correlated subquery, dla każdego wiersza, dla kazdego wiersza, średnia bandy, srednia bandy, średnia swojej grupy, s.pseudo <> k.pseudo, bez siebie
 
 Przy `>`, `<`, `=`, `>=`, `<=`, `<>` podzapytanie musi zwrócić **dokładnie jedną wartość** (jeden wiersz,
 jedna kolumna).
@@ -231,11 +245,15 @@ Dodatkowy warunek `AND s.pseudo <> k.pseudo` wyklucza samego kota z jego grupy.
 
 ### Gdy podzapytanie nie zwraca jednej wartości
 
+**Słowa kluczowe:** ORA-01427, single-row subquery returns more than one row, more than one row returned by a subquery, wiele wierszy, zero wierszy, pusty wynik, NULL z podzapytania
+
 - **Więcej wierszy** kończy się błędem (`ORA-01427: single-row subquery returns more than one row`).
   Pomaga agregat albo `ANY` / `ALL`.
 - **Zero wierszy** daje `NULL`, a porównanie z nim UNKNOWN. Wynik jest pusty, bez błędu.
 
 ### ANY / ALL – porównanie z listą
+
+**Słowa kluczowe:** ANY, ALL, SOME, > ALL, > ANY, = ANY, <> ALL, IN, NOT IN, porównanie z listą, porownanie z lista, większy od wszystkich, wiekszy od wszystkich, większy od któregokolwiek, MAX, MIN, pusta lista, NULL na liście
 
 ```sql
 WHERE przydzial_myszy > ALL (SELECT przydzial_myszy FROM kocury WHERE nr_bandy = 4)  -- > 65
@@ -256,6 +274,8 @@ WHERE przydzial_myszy > ANY (SELECT przydzial_myszy FROM kocury WHERE nr_bandy =
 
 ### Podzapytanie w HAVING
 
+**Słowa kluczowe:** HAVING z podzapytaniem, podzapytanie w HAVING, >= ALL, banda z największą średnią, najwieksza srednia, grupa z maksimum, MAX(AVG()), zagnieżdżony agregat
+
 ```sql
 -- bandy ze średnią wyższą niż średnia stada
 HAVING AVG(przydzial_myszy) > (SELECT AVG(przydzial_myszy) FROM kocury)        -- banda 2
@@ -266,6 +286,8 @@ HAVING AVG(przydzial_myszy) >= ALL (SELECT AVG(przydzial_myszy) FROM kocury GROU
 
 ### Inne miejsca
 
+**Słowa kluczowe:** podzapytanie w SELECT, podzapytanie w FROM, inline view, tabela pomocnicza, alias podzapytania, WITH, CTE, common table expression
+
 - podzapytanie skalarne w `SELECT`: `przydzial_myszy - (SELECT AVG(…) FROM kocury)`,
 - podzapytanie w `FROM` to tabela pomocnicza (musi mieć alias),
 - `WITH nazwa AS (…)` to to samo, tylko nazwane i czytelniejsze.
@@ -273,6 +295,8 @@ HAVING AVG(przydzial_myszy) >= ALL (SELECT AVG(przydzial_myszy) FROM kocury GROU
 ---
 
 ## 7. EXISTS / NOT EXISTS
+
+**Słowa kluczowe:** EXISTS, NOT EXISTS, SELECT 1, istnieje, nie istnieje, anti-join, antijoin, semi-join, bez wrogów, bez wrogow, nie mający, nie majacy, jedyny, jako jedyny, żaden inny, zaden inny, dzielenie relacyjne, relational division, z każdym, z kazdym, ze wszystkimi, podwójne NOT EXISTS, podwojne NOT EXISTS, COUNT(DISTINCT) = COUNT
 
 `EXISTS (podzapytanie)` daje TRUE, jeśli podzapytanie zwraca **jakikolwiek** wiersz. Kolumny nie mają
 znaczenia, dlatego pisze się `SELECT 1`.
@@ -319,6 +343,8 @@ HAVING COUNT(DISTINCT k.nr_bandy) = (SELECT COUNT(DISTINCT nr_bandy) FROM kocury
 
 ## 8. Funkcje okna (OVER)
 
+**Słowa kluczowe:** funkcje okna, funkcja okienkowa, window function, analytic function, funkcje analityczne, OVER, OVER(), PARTITION BY, ORDER BY w OVER, ROW_NUMBER, RANK, DENSE_RANK, ranking, remis, remisy, ties, top N, top-N, N największych, najwiekszych, LAG, LEAD, suma narastająca, narastajaca, running total, AVG OVER, SUM OVER
+
 Działają jak `GROUP BY`, ale **nie zwijają wierszy**: każdy wiersz zostaje i dostaje wartość swojej grupy.
 
 ```sql
@@ -353,7 +379,11 @@ WHERE r <= 3;
 
 ## 9. Drzewa – zapytania hierarchiczne
 
+**Słowa kluczowe:** drzewo, drzewa, hierarchia, hierarchiczne, hierarchical query, rekurencja, rekurencyjne, recursive, szef, podwładni, podwladni, przełożeni, przelozeni
+
 ### Skąd drzewo
+
+**Słowa kluczowe:** skąd drzewo, skad drzewo, szef, pseudo, korzeń, korzen, root, liść, lisc, leaf, poziom, level, poddrzewo, subtree, rodzic, dziecko, parent, child, TYGRYS, struktura stada
 
 `kocury.szef` wskazuje na `pseudo` innego kota w **tej samej tabeli**. Kot bez szefa (TYGRYS) jest **korzeniem**.
 
@@ -387,6 +417,8 @@ Zwykły `JOIN` sięga jeden poziom (szef), dwa `JOIN`-y sięgają dwa poziomy. D
 dlatego potrzebna jest **rekurencja**.
 
 ### Oracle: START WITH … CONNECT BY PRIOR
+
+**Słowa kluczowe:** START WITH, CONNECT BY, CONNECT BY PRIOR, PRIOR, kierunek, w dół, w dol, w górę, w gore, LEVEL, LPAD, wcięcie, wciecie, CONNECT_BY_ROOT, SYS_CONNECT_BY_PATH, ścieżka, sciezka, path, CONNECT_BY_ISLEAF, liście, liscie, ORDER SIBLINGS BY, WHERE vs CONNECT BY, odcięcie gałęzi, odciecie galezi, przycinanie, kolejność w hierarchii
 
 ```sql
 SELECT LEVEL, LPAD(' ', 4 * (LEVEL - 1)) || pseudo AS drzewo
@@ -439,6 +471,8 @@ START WITH szef IS NULL CONNECT BY PRIOR pseudo = szef AND plec = 'M'
 
 ### Najważniejszy trik: brak START WITH
 
+**Słowa kluczowe:** bez START WITH, brak START WITH, każdy kot korzeniem, kazdy kot korzeniem, CONNECT_BY_ROOT, GROUP BY CONNECT_BY_ROOT, poddrzewo, poddrzewa, subtree, suma w poddrzewie, liczba podwładnych, liczba podwladnych, wszyscy podwładni, głębokość, glebokosc, depth, MAX(LEVEL)
+
 Bez `START WITH` **każdy wiersz jest korzeniem**, więc powstaje osobne drzewo dla każdego kota.
 `CONNECT_BY_ROOT` mówi, do którego drzewa należy wiersz:
 
@@ -470,6 +504,8 @@ HAVING COUNT(*) > 1;
 ```
 
 ### Standard SQL: rekurencyjne WITH (PostgreSQL i Oracle)
+
+**Słowa kluczowe:** WITH RECURSIVE, rekurencyjne WITH, recursive CTE, CTE rekurencyjne, kotwica, anchor, UNION ALL, krok rekurencyjny, recursive member, rundy, iteracje, Postgres, PostgreSQL, korzen, poziom, sciezka, bezpośredni, bezposredni, wszyscy, glebokosc
 
 ```sql
 WITH RECURSIVE drzewo (pseudo, poziom) AS (   -- Oracle: bez słowa RECURSIVE
@@ -520,6 +556,8 @@ HAVING COUNT(*) > 1;
 
 ### Rozpoznawanie zadań na drzewo
 
+**Słowa kluczowe:** rozpoznawanie, jak rozpoznać, jak rozpoznac, podwładni X, przełożeni X, poziom N, liście, bez podwładnych, bez podwladnych, bezpośredni szef, self join zamiast drzewa, bez kotek
+
 | Treść | Rozwiązanie |
 |---|---|
 | „wszyscy podwładni X”, „pod X” | `START WITH pseudo = X`, w dół |
@@ -534,7 +572,11 @@ HAVING COUNT(*) > 1;
 
 ## 10. Typy zadań → konstrukcja
 
+**Słowa kluczowe:** typy zadań, typy zadan, wzorce, schematy, jak rozwiązać, jak rozwiazac, przepis, procedura, słownik, slownik
+
 ### Procedura
+
+**Słowa kluczowe:** procedura, krok po kroku, od czego zacząć, od czego zaczac, wiersz wyniku, poziom warunku, skąd dane, skad dane
 
 1. **Co jest wierszem wyniku?** Koty, bandy, gatunki, pary, drzewa? To wyznacza `SELECT` i `GROUP BY`.
 2. **Na jakim poziomie jest warunek?** Pojedynczy kot → `WHERE`. Grupa → `HAVING`.
@@ -545,6 +587,8 @@ HAVING COUNT(*) > 1;
 5. **Przejdź [checklistę](#12-checklista-przed-oddaniem).**
 
 ### Słownik
+
+**Słowa kluczowe:** słownik, slownik, treść → konstrukcja, tresc, większy niż średnia, wiekszy niz srednia, co najmniej N, wszystkie koty, żaden kot, zaden kot, jako jedyny, nie mające, z każdym, najwięcej, najwiecej, N największych, banda z największą, niż szef, niz szef, podwładni, przełożeni, pary, pivot, przydział całkowity
 
 | W treści | Konstrukcja |
 |---|---|
@@ -568,6 +612,8 @@ HAVING COUNT(*) > 1;
 
 ### Maksimum w grupie
 
+**Słowa kluczowe:** maksimum w grupie, max w grupie, najwięcej w bandzie, najwiecej w bandzie, największy przydział, najwiekszy przydzial, najlepszy, greatest per group, = MAX, remisy
+
 ```sql
 SELECT k.nr_bandy, k.pseudo, k.przydzial_myszy
 FROM kocury k
@@ -582,6 +628,8 @@ remisujących.
 
 ### Pary
 
+**Słowa kluczowe:** pary, para, pairs, self join, a.pseudo < b.pseudo, duplikaty par, (A,B) (B,A), podobny przydział, ABS
+
 ```sql
 SELECT a.pseudo, b.pseudo
 FROM kocury a
@@ -590,6 +638,8 @@ WHERE ABS(a.przydzial_myszy - b.przydzial_myszy) <= 5;
 ```
 
 ### Pivot przez CASE
+
+**Słowa kluczowe:** pivot, PIVOT, tabela przestawna, CASE WHEN, COUNT(CASE), SUM(CASE), ELSE 0, kolumny dla płci, plec, kocury i kotki, zliczanie warunkowe
 
 ```sql
 SELECT nr_bandy,
@@ -603,6 +653,8 @@ GROUP BY nr_bandy;
 ---
 
 ## 11. Zadania z kartkówki
+
+**Słowa kluczowe:** kartkówka, kartkowka, kolokwium, zadanie 1, zadanie 2, zadanie 3, ponadprzeciętne, ponadprzecietne, płeć i funkcja, plec i funkcja, drzewa suma > 200, jedyny incydent, gatunek wroga, CZARNI RYCERZE, SZEFOSTWO
 
 Pełne opisy i wyniki są w [kartkowka.md](kartkowka.md).
 
@@ -651,6 +703,8 @@ HAVING COUNT(DISTINCT k.pseudo) = 1;
 
 ## 12. Checklista przed oddaniem
 
+**Słowa kluczowe:** checklista, checklist, pułapki, pulapki, błędy, bledy, sprawdzenie, przed oddaniem, NULL, COALESCE, duplikaty, COUNT(*) LEFT JOIN, > czy >=, remisy, agregat w WHERE, GROUP BY, LEFT JOIN WHERE, kierunek PRIOR
+
 - [ ] **NULL w arytmetyce:** `myszy_extra` owinięte w `COALESCE` / `NVL`?
 - [ ] **NULL w porównaniu:** czy `<>`, `NOT IN` albo `> ALL` nie gubi wierszy z `NULL`?
 - [ ] **Złączenie mnoży wiersze:** czy `SUM` / `COUNT` nie są zawyżone? Może `COUNT(DISTINCT)` albo `EXISTS`?
@@ -668,6 +722,8 @@ HAVING COUNT(DISTINCT k.pseudo) = 1;
 ---
 
 ## 13. Ćwiczenia
+
+**Słowa kluczowe:** ćwiczenia, cwiczenia, zadania, test, odpowiedzi, rozwiązania, rozwiazania, podwładni LYSEGO, liczba podwładnych, średnia bandy, myszy_extra, EXISTS, ścieżka od liścia, SYS_CONNECT_BY_PATH
 
 1. Wypisz wszystkich podwładnych LYSEGO z ich poziomem.
 2. Dla każdego kota, który ma podwładnych, wypisz ich liczbę (wszystkich poziomów).

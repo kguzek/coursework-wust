@@ -16,6 +16,8 @@ przydział `NULL` i wypada z każdego porównania.
 
 ## 1. Bandy z co najmniej dwoma ponadprzeciętnymi kotami
 
+**Słowa kluczowe:** zadanie 1, bandy, ponadprzeciętne, ponadprzecietne, powyżej średniej, powyzej sredniej, przydział całkowity, przydzial calkowity, ta sama płeć i funkcja, plec, funkcja, co najmniej dwa, HAVING COUNT(*) >= 2, AVG, COALESCE, CZARNI RYCERZE, SZEFOSTWO
+
 > Wypisać bandy, w których występują co najmniej dwa koty, których całkowity przydział myszy jest większy niż średni
 > przydział całkowity kotów tej samej płci i funkcji.
 
@@ -24,6 +26,8 @@ Schemat: **podzapytanie skorelowane** (średnia dla „mojej” grupy) → **GRO
 Średnią liczymy po **wszystkich** kotach o tej płci i funkcji (z całego stada, nie tylko z bandy).
 
 ### Wariant A – podzapytanie skorelowane
+
+**Słowa kluczowe:** podzapytanie skorelowane, correlated subquery, AVG w podzapytaniu, s.plec = k.plec, s.funkcja = k.funkcja, JOIN bandy, GROUP BY nazwa
 
 ```sql
 SELECT b.nazwa, COUNT(*) AS "Ile ponadprzecietnych"
@@ -39,6 +43,8 @@ HAVING COUNT(*) >= 2;
 ```
 
 ### Wariant B – funkcja okna
+
+**Słowa kluczowe:** funkcja okna, window function, AVG OVER, PARTITION BY plec, funkcja, podzapytanie w FROM, srednia
 
 `AVG(...) OVER (PARTITION BY plec, funkcja)` dokleja średnią grupy do każdego wiersza bez zwijania go.
 Funkcji okna nie można użyć w `WHERE`, dlatego jest zagnieżdżona w `FROM`.
@@ -71,6 +77,8 @@ Pułapki:
 
 ## 2. Poddrzewa hierarchii z sumą przydziałów > 200
 
+**Słowa kluczowe:** zadanie 2, drzewa, drzewo, poddrzewo, poddrzewa, hierarchia, suma > 200, suma przydziałów, suma przydzialow, co najmniej dwa koty, podwładni, podwladni, TYGRYS, LYSY, RAFA, ZOMBI 199
+
 > Wypisać drzewa z hierarchii kotów, które mają co najmniej dwa koty i suma ich przydziałów jest większa niż 200.
 
 Interpretacja: każdy kot jest korzeniem swojego poddrzewa (on + wszyscy podwładni, także pośredni).
@@ -79,6 +87,8 @@ Interpretacja: każdy kot jest korzeniem swojego poddrzewa (on + wszyscy podwła
 Schemat: **hierarchia startująca z każdego kota** → **grupowanie po korzeniu** → **HAVING**.
 
 ### Oracle – CONNECT BY bez START WITH
+
+**Słowa kluczowe:** CONNECT BY, bez START WITH, brak START WITH, CONNECT_BY_ROOT, PRIOR pseudo = szef, GROUP BY korzen, HAVING SUM, Oracle
 
 Bez `START WITH` każdy wiersz zostaje korzeniem, a `CONNECT_BY_ROOT` mówi, z którego drzewa pochodzi wiersz.
 
@@ -94,6 +104,8 @@ ORDER BY 3 DESC;
 ```
 
 ### Rekurencyjne WITH (PostgreSQL i Oracle)
+
+**Słowa kluczowe:** WITH RECURSIVE, rekurencyjne WITH, recursive CTE, kotwica, UNION ALL, korzen, Postgres, PostgreSQL
 
 W Postgresie `WITH RECURSIVE`, w Oracle samo `WITH` (lista kolumn jest wymagana).
 
@@ -132,11 +144,15 @@ Pułapki:
 
 ## 3. Koty, które jako jedyne w bandzie miały incydent z danym gatunkiem
 
+**Słowa kluczowe:** zadanie 3, jedyny, jako jedyny, jedyne, żaden inny, zaden inny, incydent, incydenty, gatunek, gatunek wroga, wrogowie, wrogowie_kocurow, banda, trzy tabele, złączenie, zlaczenie
+
 > Wypisać koty, które jako jedyne ze swojej bandy miały incydent z danym gatunkiem wroga.
 
 Gatunek siedzi w `wrogowie`, incydent w `wrogowie_kocurow`, banda w `kocury` – potrzebne złączenie trzech tabel.
 
 ### Wariant A – NOT EXISTS
+
+**Słowa kluczowe:** NOT EXISTS, k2.pseudo <> k.pseudo, inny kot, DISTINCT, ta sama banda, ten sam gatunek
 
 „Jako jedyny” = **nie istnieje inny kot** z tej samej bandy z incydentem z tym samym gatunkiem.
 
@@ -160,6 +176,8 @@ ORDER BY 2, 3;
 `DISTINCT` jest potrzebne, bo kot może mieć dwa incydenty z różnymi wrogami tego samego gatunku.
 
 ### Wariant B – GROUP BY + HAVING
+
+**Słowa kluczowe:** GROUP BY nr_bandy gatunek, HAVING COUNT(DISTINCT) = 1, COUNT(DISTINCT pseudo), MIN(pseudo), jeden kot w grupie
 
 Grupujemy po (banda, gatunek) i zostawiamy grupy z jednym kotem; skoro kot jest jeden, `MIN(pseudo)` to on.
 
@@ -191,6 +209,8 @@ Pułapki:
 - W wariancie B `pseudo` nie jest w `GROUP BY`, więc musi być w agregacie – dlatego `MIN(pseudo)`, a nie samo `pseudo`.
 
 ## Schematy do zapamiętania
+
+**Słowa kluczowe:** schematy, ściąga, sciaga, wzorce, większy niż średnia, co najmniej N, drzewa, jako jedyny, przydział całkowity
 
 | Treść zadania                                     | Konstrukcja                                                   |
 | ------------------------------------------------- | ------------------------------------------------------------- |
