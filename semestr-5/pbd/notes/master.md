@@ -5,7 +5,7 @@ Wszystko w jednym miejscu, od podstaw do drzew. Przykłady i wyniki pochodzą z 
 
 Pozostałe notatki:
 
-- [kartkowka.md](kartkowka.md) – rozwiązane zadania z kartkówki,
+- [przyklady-zadan.md](przyklady-zadan.md) – rozwiązane przykładowe zadania,
 - [wzorce-zadan.md](wzorce-zadan.md) – katalog typów zadań z gotowymi zapytaniami,
 - [oracle.md](oracle.md), [postgres.md](postgres.md), [mssql.md](mssql.md) – dokumentacja składni.
 
@@ -21,7 +21,7 @@ Pozostałe notatki:
 - [8. Funkcje okna (OVER)](#8-funkcje-okna-over)
 - [9. Drzewa – zapytania hierarchiczne](#9-drzewa--zapytania-hierarchiczne)
 - [10. Typy zadań → konstrukcja](#10-typy-zadań--konstrukcja)
-- [11. Zadania z kartkówki](#11-zadania-z-kartkówki)
+- [11. Przykładowe zadania](#11-przykładowe-zadania)
 - [12. Checklista przed oddaniem](#12-checklista-przed-oddaniem)
 - [13. Ćwiczenia](#13-ćwiczenia)
 
@@ -652,11 +652,11 @@ GROUP BY nr_bandy;
 
 ---
 
-## 11. Zadania z kartkówki
+## 11. Przykładowe zadania
 
-**Słowa kluczowe:** kartkówka, kartkowka, kolokwium, zadanie 1, zadanie 2, zadanie 3, ponadprzeciętne, ponadprzecietne, płeć i funkcja, plec i funkcja, drzewa suma > 200, jedyny incydent, gatunek wroga, CZARNI RYCERZE, SZEFOSTWO
+**Słowa kluczowe:** przykładowe zadania, przykladowe zadania, przykłady, zadanie 1, zadanie 2, zadanie 3, ponadprzeciętne, ponadprzecietne, płeć i funkcja, plec i funkcja, drzewa suma > 200, jedyny incydent, gatunek wroga, CZARNI RYCERZE, SZEFOSTWO
 
-Pełne opisy i wyniki są w [kartkowka.md](kartkowka.md).
+Pełne opisy i wyniki są w [przyklady-zadan.md](przyklady-zadan.md).
 
 **1. Bandy z co najmniej dwoma kotami, których przydział całkowity przekracza średnią dla tej samej płci i funkcji.**
 

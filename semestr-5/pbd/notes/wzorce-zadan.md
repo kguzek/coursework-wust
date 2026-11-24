@@ -1,7 +1,7 @@
 # Wzorce zadań SQL – jak rozwiązywać zadania typu kartkówkowego
 
 Ogólne podejście do zadań na schemacie `kocury` / `bandy` / `funkcje` / `wrogowie` / `wrogowie_kocurow`.
-Rozwiązane przykłady z kartkówki są w [kartkowka.md](kartkowka.md).
+Rozwiązane przykładowe zadania są w [przyklady-zadan.md](przyklady-zadan.md).
 
 Zapytania są pisane tak, żeby działały w PostgreSQL i Oracle (`COALESCE`, `CASE`, `EXISTS`). Wyjątki są oznaczone.
 Wyniki w komentarzach pochodzą z danych z `lista01`.

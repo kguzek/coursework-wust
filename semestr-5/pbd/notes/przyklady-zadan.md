@@ -1,7 +1,7 @@
-# Kartkówka – zadania z poprzednich grup
+# Przykładowe zadania
 
-Treści odtworzone z pamięci („jakoś tak”), więc przy każdym zadaniu jest zapisana przyjęta interpretacja.
-Zapytania sprawdzone w PostgreSQL na danych z `lista01`; wersje Oracle różnią się tylko tam, gdzie jest to zaznaczone
+Przykładowe zadania z rozwiązaniami. Przy zadaniach, których treść można rozumieć na kilka sposobów, jest zapisana
+przyjęta interpretacja. Zapytania sprawdzone w PostgreSQL na danych z `lista01`; wersje Oracle różnią się tylko tam, gdzie jest to zaznaczone
 (`COALESCE` działa w obu bazach, w Oracle można też użyć `NVL`).
 
 Przydział całkowity = `przydzial_myszy + COALESCE(myszy_extra, 0)`. Bez `COALESCE` kot z `myszy_extra IS NULL` ma
