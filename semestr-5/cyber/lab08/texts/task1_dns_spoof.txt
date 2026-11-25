@@ -1,0 +1,31 @@
+=== Zadanie 1: ARP poisoning + DNS spoofing ===
+
+# Stan POCZĄTKOWY ofiary (przed atakiem)
+# getent hosts pwr.edu.pl  ->  156.17.75.200   pwr.edu.pl
+# ip neigh:  192.168.64.1 (brama) -> 6a:ca:c4:e8:1a:64   (prawdziwy MAC bramy)
+#            192.168.64.4 (Kali)  -> b6:ba:6d:50:c6:03
+
+# ettercap (Kali, atakujący) — ARP poisoning + plugin dns_spoof
+### ARP poisoning victims
+3 hosts added to the hosts list...
+ GROUP 1 : 192.168.64.1 6A:CA:C4:E8:1A:64
+ GROUP 2 : 192.168.64.5 16:21:C3:CA:B5:FA
+Starting Unified sniffing...
+Activating dns_spoof plugin...
+
+### dns_spoof (sfałszowana odpowiedź DNS)
+dns_spoof: A [pwr.edu.pl] spoofed to [192.168.64.4] TTL [3600 s]
+
+# Stan OFIARY W TRAKCIE ataku
+# ip neigh:  192.168.64.1 (brama) -> b6:ba:6d:50:c6:03   <-- MAC Kali (MitM!)
+#            192.168.64.4 (Kali)  -> b6:ba:6d:50:c6:03
+# getent hosts pwr.edu.pl  ->  192.168.64.4   pwr.edu.pl   <-- przekierowane na Kali
+
+### Apache (Kali) access.log — zapytania OFIARY (192.168.64.5)
+192.168.64.5 - - [25/Nov/2026:00:52:34 +0100] "GET / HTTP/1.1" 200 920 "-" "curl/8.18.0"
+192.168.64.5 - - [25/Nov/2026:00:54:26 +0100] "GET / HTTP/1.1" 200 800 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:154.0) Firefox/154.0"
+192.168.64.5 - - [25/Nov/2026:00:54:27 +0100] "GET / HTTP/1.1" 200 800 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:154.0) Firefox/154.0"
+
+# Stan OFIARY PO zatrzymaniu ataku (ettercap przywraca tablice ARP)
+# ip neigh:  192.168.64.1 (brama) -> 6a:ca:c4:e8:1a:64   (znów prawdziwy MAC bramy)
+# getent hosts pwr.edu.pl  ->  156.17.75.200   pwr.edu.pl
