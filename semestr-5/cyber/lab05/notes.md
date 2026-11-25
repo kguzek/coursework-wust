@@ -232,9 +232,54 @@ P = 904134904094618595898892764489641390659638953336749064967006   (200 najstars
 p = 6514978587477093514599931192279526377617384721401419340853539…  (znalezione)
 ```
 
+Następnie w trybie wprowadzania własnych parametrów (`In order to apply examples from the literature…`) rozłożono trzy moduły z załączonego pliku z danymi (część „Ex. 2”):
+
+| N [bit] | p [bit] | Znana część P | Wymagane (n/4+1) | Wymiar kraty | Czas | Znalezione p | Znalezione q |
+| ---: | ---: | --- | ---: | ---: | --- | --- | --- |
+| 200 | 80 | `990733116324678635714929` (LSB) | 51 | 6 | 0 s | `990733116324678635714929` | `904460366991188774130487192903268629` |
+| 300 | 120 | `1203913635950852904612246732972320839` (MSB) | 76 | 6 | 0 s | `1203913635950852904612246732972320839` | `1422458531319990071883594570105956433624238723550674981` |
+| 500 | 200 | `0139426640958351641779950989194304947653679` (LSB) | 126 | 31 | ok. 7 min | `909404938351951735305921595352423468642595853052566090189871` | `1907449396974742957879018139763724144994525886733939953046768306414728539453742673800557767` |
+
+We wszystkich trzech przypadkach atak zakończył się komunikatem `Attack successful.`, a iloczyn znalezionych `p · q` jest równy podanemu N. W pierwszych dwóch przykładach znany fragment obejmuje całe `p`, więc krata ma najmniejszy wymiar (6) i wynik jest natychmiastowy. W trzecim znane są tylko najmłodsze bity 200-bitowego `p` (`p mod 2^141 = P`), przy progu 126 bitów, więc krata ma wymiar 31, a redukcja trwała ok. 7 minut.
+
 ![Faktoryzacja z podpowiedzią, N 512 bitów](screenshots/2.3_faktoryzacja_z_podpowiedzia.png)
 
 Skuteczność zależy przede wszystkim od zapasu znanych bitów ponad próg `n/4`. Poniżej progu atak w ogóle nie jest możliwy (program odrzuca P=50 przy N=200), tuż nad progiem jest teoretycznie możliwy, ale potrzebna krata ma bardzo duży wymiar (99 dla 52 bitów) i redukcja LLL trwa dziesiątki minut. Przy zapasie kilkudziesięciu bitów wymiar kraty spada do 6–7 i wynik pojawia się natychmiast, niezależnie od tego, czy N ma 200, czy 2048 bitów. Długość N wpływa na czas głównie przez rozmiar liczb w kracie: przy tym samym wymiarze 23 atak dla N=1024 trwał 2 minuty, a dla N=2048 nie skończył się w 3 minuty. Znajomość bitów najmłodszych (LSB) też wystarcza, choć przy tej samej liczbie bitów potrzebna była nieco większa krata i dłuższy czas niż dla MSB.
+
+### 2.4 Atak na wiadomości stereotypowe
+
+Użyto `Indiv. Procedures/RSA Cryptosystem/Lattice-Based Attacks on RSA/Attack on Stereotyped Messages` z opcją `The ciphertext and a part of the plaintext are known`. Wprowadzono klucz publiczny `(N, e)`, kryptogram, znaną część tekstu jawnego oraz pozycję i długość brakującego fragmentu z pliku z danymi (część „Ex. 4”). Atak (Coppersmith) zakłada, że kryptogram to `c = m^e mod N` bez losowego dopełnienia, a tekst ma postać `m = znany_prefiks · 256^k + x · 256^j + znany_sufiks` z nieznanym `x`. Szuka małego pierwiastka wielomianu `(…+x·256^j+…)^e − c` modulo N redukcją kraty LLL. Parametr `h` (pozostawiono domyślne 4) wyznacza wymiar kraty i maksymalną długość nieznanej części.
+
+**Wiadomość 1:** N 1024 bity, `e = 7`, brakujący fragment na pozycji 95, długość 10 znaków.
+
+```text
+znana część:  As a way of clearing the way for the implementation of elliptic curves to
+              protect US and allied**********t information, the Nat
+```
+
+| Wymiar kraty | Maks. długość nieznanej części | Redukcje | Czas | Znaleziony fragment |
+| ---: | ---: | ---: | --- | --- |
+| 28 | 14 znaków | 132 176 | 37 s | `␣governmen` |
+
+Odtworzony tekst: `…to protect US and allied government information, the Nat`.
+
+**Wiadomość 2:** N 2048 bitów, `e = 5`, brakujący fragment na pozycji 151, długość 35 znaków.
+
+```text
+znana część:  1These estimates are based on the theoretic costing of an n-bit multiply modulo a large
+              prime as costing roughly n2 operations. It is also based on an ***...***modulo a large
+              prime is roughly 8 multiplies. Actual implementations
+```
+
+| Wymiar kraty | Maks. długość nieznanej części | Redukcje | Czas | Znaleziony fragment |
+| ---: | ---: | ---: | --- | --- |
+| 20 | 40 znaków | 109 508 | 52 s | `estimate that computing an inverse␣` |
+
+Odtworzony tekst: `…It is also based on an estimate that computing an inverse modulo a large prime is roughly 8 multiplies…`.
+
+W obu przypadkach odzyskany fragment sprawdzono, szyfrując pełny tekst jawny (jako liczbę z kolejnych bajtów ASCII) podanym kluczem publicznym. Wynik `m^e mod N` był dokładnie równy podanemu kryptogramowi. Mimo 1024- i 2048-bitowego modułu atak trwał poniżej minuty, bo nieznana część była krótka (80 i 280 bitów) w stosunku do `n/e` (ok. 146 i 409 bitów), a RSA zastosowano bez dopełnienia z małym wykładnikiem.
+
+![Atak na wiadomość stereotypową, N 1024 bity](screenshots/2.4_wiadomosc_stereotypowa.png)
 
 ### Wnioski (pytania 2.5 do 2.7)
 
@@ -242,5 +287,5 @@ Skuteczność zależy przede wszystkim od zapasu znanych bitów ponad próg `n/4
 
 **2.6.** Tak. Atak z 2.3 działa także dla N=2048 bitów: przy znanych 800 z 1024 bitów czynnika p moduł został rozłożony natychmiast, a teoretycznie wystarcza nieco ponad połowa bitów p (n/4 + 1 = 513 bitów). Bezpieczna długość modułu chroni więc tylko wtedy, gdy żadna istotna część p nie wycieknie. Taki wyciek może wynikać z ataków bocznokanałowych (pomiary czasu, poboru prądu, cold boot), wadliwego generatora liczb losowych (np. podatność ROCA w kartach Infineon z 2017 r. dawała przewidywalną strukturę p i q) albo częściowego ujawnienia klucza prywatnego. Długość N nie zastępuje ochrony samego klucza i jego generowania.
 
-**2.7.** Atak na wiadomości stereotypowe (Coppersmith) pozwala odzyskać nieznaną część wiadomości `m`, jeśli reszta jest znana, a szyfrowanie odbywa się bez losowego dopełnienia (textbook RSA) z małym wykładnikiem publicznym, np. `e = 3`. Zagrożone są więc systemy, które szyfrują wiadomości o przewidywalnym formacie (np. `Twoje hasło to: ********`, nagłówki, stałe szablony, klucze sesyjne doklejane do znanych danych) bezpośrednio wzorem `c = m^e mod N`. Atak działa, gdy nieznana część jest krótsza niż ok. `n/e` bitów, np. dla e=3 i N 2048 bitów do ok. 680 bitów. Zagrożenie występuje też przy wysyłaniu tej samej lub podobnej wiadomości do wielu odbiorców z małym e (atak Håstada) oraz przy dopełnieniu deterministycznym. Ochroną jest stosowanie losowego dopełnienia OAEP (lub co najmniej PKCS#1 v1.5 z pełną weryfikacją), wykładnika `e = 65537` i używanie RSA do szyfrowania tylko losowych kluczy sesyjnych, a nie wiadomości o znanej strukturze.
+**2.7.** Atak na wiadomości stereotypowe (Coppersmith, punkt 2.4) pozwala odzyskać nieznaną część wiadomości `m`, jeśli reszta jest znana, a szyfrowanie odbywa się bez losowego dopełnienia (textbook RSA) z małym wykładnikiem publicznym, np. `e = 3`. Zagrożone są więc systemy, które szyfrują wiadomości o przewidywalnym formacie (np. `Twoje hasło to: ********`, nagłówki, stałe szablony, klucze sesyjne doklejane do znanych danych) bezpośrednio wzorem `c = m^e mod N`. Atak działa, gdy nieznana część jest krótsza niż ok. `n/e` bitów, np. dla e=3 i N 2048 bitów do ok. 680 bitów. W 2.4 odzyskanie 10 i 35 brakujących znaków przy modułach 1024 i 2048 bitów zajęło mniej niż minutę. W 2.4 wystarczyło niecałe 40 i 53 s, żeby odzyskać 10 i 35 brakujących znaków przy modułach 1024 i 2048 bitów. Zagrożenie występuje też przy wysyłaniu tej samej lub podobnej wiadomości do wielu odbiorców z małym e (atak Håstada) oraz przy dopełnieniu deterministycznym. Ochroną jest stosowanie losowego dopełnienia OAEP (lub co najmniej PKCS#1 v1.5 z pełną weryfikacją), wykładnika `e = 65537` i używanie RSA do szyfrowania tylko losowych kluczy sesyjnych, a nie wiadomości o znanej strukturze.
 
