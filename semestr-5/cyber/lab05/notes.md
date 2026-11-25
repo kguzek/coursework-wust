@@ -1,6 +1,6 @@
 # Cyberbezpieczeństwo laboratorium
 
-2026-11-25
+2026-11-09
 
 Konrad Guzek grupa 8
 
@@ -149,19 +149,19 @@ Liczbę utworzono z numeru indeksu, roku, miesiąca, dnia, godziny i minuty wyko
 
 | Numer indeksu | Rok | Miesiąc | Dzień | Godzina | Minuta |
 | --- | --- | --- | --- | --- | --- |
-| 284306 | 2026 | 11 | 24 | 23 | 22 |
+| 284306 | 2026 | 11 | 09 | 17 | 32 |
 
 ```text
-n = 284306 2026 11 24 23 22 = 284306202611242322   (18 cyfr, ok. 2^58)
+n = 284306 2026 11 09 17 32 = 284306202611091732   (18 cyfr, ok. 2^58)
 ```
 
 W `Indiv. Procedures/RSA Cryptosystem/Prime Number Test` test Millera-Rabina od razu wykazał, że liczba jest złożona (jest zresztą parzysta). Przycisk `Factorize number` przeniósł ją do okna `Factorization of a Number`, gdzie zaznaczone były wszystkie metody (brute-force, Brent, Pollard, Williams, Lenstra, sito kwadratowe). `Complete factorization into primes` dało wynik:
 
 ```text
-284306202611242322 = 2 · 7 · 229 · 3011 · 29451814817
+284306202611091732 = 2^2 · 3 · 103 · 230021199523537
 ```
 
-Program znalazł 5 czynników w 0,040 s, a ostatnim użytym algorytmem był brute-force: liczba ma małe dzielniki, które wystarczy sprawdzić po kolei, a pozostały czynnik `29451814817` (11 cyfr) jest pierwszy.
+Program znalazł 5 czynników (licząc krotność dwójki) w 0,081 s, a ostatnim użytym algorytmem był brute-force: liczba ma małe dzielniki, które wystarczy sprawdzić po kolei, a pozostały czynnik `230021199523537` (15 cyfr) jest pierwszy.
 
 ![Faktoryzacja liczby z zadania 2.1](screenshots/2.1_faktoryzacja.png)
 
