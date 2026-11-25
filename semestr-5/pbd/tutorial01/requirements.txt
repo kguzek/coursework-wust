@@ -1,0 +1,39 @@
+# PWRdydaktyka workspace — Python dependencies
+# Install: .venv/bin/pip install -r requirements.txt
+#
+# Baza do uruchomienia notatników PBD (kernel JupySQL `pbd`), m.in.:
+#   PBD/cwiczenia/PBD-2627-Cwiczenia-Optymalizacja.ipynb
+# Notatnik łączy się z trzema SZBD naraz (PG / MSSQL / Oracle) przez
+# JupySQL; connection stringi czytane są ze zmiennych środowiskowych
+# (PBD/.env: PG_CONN, MSSQL_CONN, ORACLE_CONN — nie commitować!).
+
+# silnik %sql: rozszerzenie IPython i warstwa SQLAlchemy
+jupysql==0.11.1
+sqlalchemy==2.1.4
+
+# sterowniki DBAPI dla trzech baz (składają się na schematy URL-i
+# postgresql+psycopg2 / mssql+pymssql / oracle+oracledb)
+psycopg2-binary==2.9.13
+pymssql==2.4.4
+oracledb==26.0.1
+
+# wczytanie sekretów z PBD/.env (komórka load_dotenv())
+python-dotenv==1.2.4
+
+# kernel `pbd` (test_sql.py uruchamia notatniki w świeżym kernelu pbd)
+ipykernel==7.4.0
+
+# interaktywny frontend (przeglądarka): `jupyter lab` — ta sama wersja co w
+# /home/wl/.venvs/pbd. Zbędny tylko przy wykonaniu headless (test_sql.py /
+# nbclient startują kernel bez serwera) i w VS Code (frontend robi
+# rozszerzenie, wystarczy ipykernel). Na świeżej maszynie zarejestruj
+# kernel o nazwie `pbd` (taką deklaruje notatnik) z tego venv:
+#   .venv/bin/python -m ipykernel install --user --name pbd
+jupyterlab==4.6.5
+
+# pakiety pomocnicze: test_sql.py (nbclient), praca z formatem .ipynb
+nbclient==0.11.0
+nbformat==5.11.1
+
+# praca z dokumentami kursowymi .docx
+python-docx
